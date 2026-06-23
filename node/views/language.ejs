@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ပျူဘာသာစကား နှင့် အက္ခရာ - PyuHeritage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300 overflow-x-hidden">
+    <!-- nav_section -->
+    <nav class="bg-gray-100/80 dark:bg-gray-800/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="/" class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">ပျူအမွေအနှစ်</a>
+                </div>
+
+                <div class="hidden md:flex flex-1 justify-center space-x-8">
+                    <a href="/" class="hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">ပင်မစာမျက်နှာ</a>
+                    <a href="/chat" class="hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">ပျူအကြောင်းမေးမြန်းရန်</a>
+                    
+                    <div class="relative">
+                        <button id="history-dropdown-btn" class="flex items-center text-indigo-600 dark:text-indigo-400 font-medium focus:outline-none transition-colors duration-200">
+                            အကြောင်းအရာများ
+                            <svg id="history-arrow" class="ml-1 w-4 h-4 rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div id="history-dropdown-menu" class="absolute hidden left-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-gray-700 ring-1 ring-black ring-opacity-5 z-50">
+                            <div class="py-1">
+                                <a href="/history/cities" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">မြို့ပြနိုင်ငံများ</a>
+                                <a href="/history/religion" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">သာသနာထွန်းကားမှု</a>
+                                <a href="/history/language" class="block px-4 py-2 text-sm bg-gray-100 dark:bg-gray-600 font-semibold">ပျူဘာသာစကား နှင့် အက္ခရာ</a>
+                                <a href="/history/culture" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">ယဉ်ကျေးမှု နှင့် ဘာသာရေး</a>
+                                <a href="/history/artifacts" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">ရှေးဟောင်းသုတေသန ပစ္စည်းများ</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hidden md:flex items-center">
+                    <button id="theme-toggle" class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none">
+                        <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path>
+                        </svg>
+                        <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-gray-100 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="/" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-200 dark:hover:bg-gray-700">ပင်မစာမျက်နှာ</a>
+                <a href="/chat" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-200 dark:hover:bg-gray-700">ပျူအကြောင်းမေးမြန်းရန်</a>
+                <div class="space-y-1">
+                    <button class="w-full text-left px-3 py-2 text-base font-medium text-gray-600 dark:text-gray-300">အထွေထွေ ဗဟုသုတ</button>
+                    <a href="/history/cities" class="block pl-6 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700">မြို့ပြနိုင်ငံများ</a>
+                    <a href="/history/religion" class="block pl-6 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700">သာသနာထွန်းကားမှု</a>
+                    <a href="/history/language" class="block pl-6 px-3 py-2 rounded-md text-sm font-semibold bg-gray-200 dark:bg-gray-700 text-indigo-600 dark:text-indigo-400">ပျူဘာသာစကား နှင့် အက္ခရာ</a>
+                    <a href="/history/culture" class="block pl-6 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700">ယဉ်ကျေးမှု နှင့် ဘာသာရေး</a>
+                    <a href="/history/artifacts" class="block pl-6 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700">ရှေးဟောင်းသုတေသန ပစ္စည်းများ</a>
+                </div>
+                <button id="mobile-theme-toggle" class="w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-gray-200 dark:hover:bg-gray-700 flex justify-between items-center">
+                    <span>Theme</span>
+                    <span id="theme-status" class="text-sm text-gray-500">Light</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+    <!-- /nav_section -->
+
+    <!-- Header Banner -->
+    <header class="bg-indigo-900 text-white py-16 px-4 text-center relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-cover bg-center" style="background-image: url('/halin1.webp');"></div>
+        <div class="relative z-10 max-w-4xl mx-auto">
+            <h1 class="text-3xl md:text-5xl font-extrabold mb-4">ပျူဘာသာစကား နှင့် အက္ခရာ</h1>
+            <p class="text-indigo-200 text-lg md:text-xl">တိဗက်-ဗမာနွယ်ဖွား ရှေးဦးပျူဘာသာစကားနှင့် ကဒမ္ဗ၊ ဗြာဟ္မီနွယ်ဖွား ပျူအက္ခရာများအကြောင်း</p>
+        </div>
+    </header>
+
+    <!-- Content -->
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <article class="prose dark:prose-invert max-w-none space-y-8">
+            <section class="space-y-4">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white border-b-2 border-indigo-500 pb-2">ပျူအက္ခရာစနစ် (Pyu Script)</h2>
+                <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-lg">
+                    ပျူအက္ခရာသည် အိန္ဒိယတောင်ပိုင်းတွင် အသုံးပြုခဲ့သော ကဒမ္ဗ (Kadamba) အက္ခရာနှင့် ဗြာဟ္မီ (Brahmi) အက္ခရာတို့ကို အခြေခံ၍ ဆင်းသက်လာသော အက္ခရာစနစ်တစ်ခု ဖြစ်သည်။ ၎င်းအက္ခရာစနစ်သည် မြန်မာနိုင်ငံရှိ အစောဆုံးသော စာရေးသားမှုစနစ်ဖြစ်ပြီး အေဒီ ၄ ရာစုခန့်ကတည်းက စတင်အသုံးပြုခဲ့ကြောင်း ခိုင်မာသော သက်သေများရှိသည်။
+                </p>
+                <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-lg">
+                    ပျူစာပေကို အုတ်ခဲများ၊ ကျောက်စာများ၊ ရွှေပေလွှာများနှင့် ငွေဒင်္ဂါးပြားများပေါ်တွင် ရေးထိုးလေ့ရှိသည်။ အထူးသဖြင့် ဆရာတော်ကြီးများ၊ ဘုရင်များနှင့် အရပ်သားများက ကိုးကွယ်မှုဆိုင်ရာ ကမ္ပည်းစာများနှင့် မှတ်တမ်းများကို ဤအက္ခရာဖြင့် မှတ်တမ်းတင်ခဲ့ကြသည်။
+                </p>
+            </section>
+
+            <section class="bg-gray-50 dark:bg-gray-800 p-6 md:p-8 rounded-2xl shadow-inner border border-gray-100 dark:border-gray-700">
+                <h3 class="text-xl md:text-2xl font-bold mb-4 text-indigo-600 dark:text-indigo-400">ရာဇကုမာရ် ကျောက်စာ (မြစေတီကျောက်စာ) ၏ အရေးပါပုံ</h3>
+                <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                    အေဒီ ၁၁၁၃ တွင် ရေးထိုးခဲ့သော ရာဇကုမာရ် ကျောက်စာသည် ပျူစာပေကို ဖော်ထုတ်ရာတွင် အဓိက သော့ချက်ဖြစ်ခဲ့သည်။ ဤကျောက်စာကို ပျူ၊ မွန်၊ မြန်မာ၊ ပါဠိ ဟူ၍ ဘာသာစကား လေးမျိုးဖြင့် ရေးထိုးထားသောကြောင့် ပျူစာပေနှင့် ဘာသာစကားကို ပညာရှင်များ အလွယ်တကူ ဖတ်ရှုအဓိပ္ပာယ်ဖော်နိုင်ခဲ့ကြသည်။ ထို့ကြောင့် ဤကျောက်စာသည် ပျူသမိုင်းကြောင်းအတွက် မရှိမဖြစ်လိုအပ်သော ပြကွက်တစ်ခု ဖြစ်လာခဲ့သည်။
+                </p>
+            </section>
+
+            <section class="space-y-4">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white border-b-2 border-indigo-500 pb-2">ဘာသာစကား သဘာဝ</h2>
+                <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-lg">
+                    ဗေဒပညာရှင်များနှင့် သမိုင်းပညာရှင်များ၏ လေ့လာချက်အရ ပျူဘာသာစကားသည် 'တိဗက်-ဗမာ' (Tibeto-Burman) ဘာသာစကားနွယ်ဝင် ဖြစ်သည်။ အသံနေအသံထားနှင့် စကားလုံးတည်ဆောက်ပုံ အချို့သည် မျက်မှောက်ခေတ် မြန်မာဘာသာစကားနှင့် အနွယ်တူသော်လည်း သီးခြား လက္ခဏာရပ်များစွာ ရှိခဲ့သည်။ ပျူဘာသာစကားသည် အေဒီ ၁၂ ရာစုခန့်တွင် ပုဂံခေတ် မြန်မာစာပေ အကြီးအကျယ် ထွန်းကားလာမှုနှင့်အတူ တစ်စစ တိမ်ကောပပျောက်သွားခဲ့ရသည်။
+                </p>
+            </section>
+        </article>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-gray-100 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 transition-colors duration-300 mt-24">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+                <div class="col-span-1 md:col-span-2">
+                    <span class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">ပျူအမွေအနှစ်</span>
+                    <p class="mt-4 text-gray-600 dark:text-gray-400 max-w-sm leading-relaxed">
+                        ပျူအမွေအနှစ် ပရောဂျက်သည် မြန်မာနိုင်ငံ၏ ရှေးဦးယဉ်ကျေးမှုဖြစ်သော ပျူမြို့ပြနိုင်ငံများ၏ သမိုင်းကြောင်း၊ အနုပညာနှင့် နည်းပညာများကို နောင်လာနောက်သားများ လေ့လာနိုင်ရန်နှင့် ထိန်းသိမ်းစောင့်ရှောက်ရန် ရည်ရွယ်ပါသည်။
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-4">ကဏ္ဍများ</h3>
+                    <ul class="space-y-3">
+                        <li><a href="/" class="text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition">ပင်မစာမျက်နှာ</a></li>
+                        <li><a href="/chat" class="text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition">ပျူအကြောင်းမေးမြန်းရန်</a></li>
+                        <li><a href="/history/cities" class="text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition">မြို့ပြနိုင်ငံများ</a></li>
+                        <li><a href="/history/culture" class="text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition">ယဉ်ကျေးမှုနှင့် အနုပညာ</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
+                <p>&copy; 2026 PyuHeritage Project. All rights reserved.</p>
+                <p class="mt-4 md:mt-0">Developed for Final Year Project</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Theme Toggle Logic
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const mobileThemeToggleBtn = document.getElementById('mobile-theme-toggle');
+        const themeStatus = document.getElementById('theme-status');
+        const darkIcon = document.getElementById('theme-toggle-dark-icon');
+        const lightIcon = document.getElementById('theme-toggle-light-icon');
+
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            lightIcon?.classList.remove('hidden');
+            if(themeStatus) themeStatus.textContent = 'Dark';
+        } else {
+            document.documentElement.classList.remove('dark');
+            darkIcon?.classList.remove('hidden');
+            if(themeStatus) themeStatus.textContent = 'Light';
+        }
+
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+                lightIcon?.classList.add('hidden');
+                darkIcon?.classList.remove('hidden');
+                if(themeStatus) themeStatus.textContent = 'Light';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+                darkIcon?.classList.add('hidden');
+                lightIcon?.classList.remove('hidden');
+                if(themeStatus) themeStatus.textContent = 'Dark';
+            }
+        }
+
+        themeToggleBtn?.addEventListener('click', toggleTheme);
+        mobileThemeToggleBtn?.addEventListener('click', toggleTheme);
+
+        // History Dropdown Toggle Logic
+        const historyDropdownBtn = document.getElementById('history-dropdown-btn');
+        const historyDropdownMenu = document.getElementById('history-dropdown-menu');
+        const historyArrow = document.getElementById('history-arrow');
+
+        historyDropdownBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isHidden = historyDropdownMenu.classList.contains('hidden');
+            if (isHidden) {
+                historyDropdownMenu.classList.remove('hidden');
+                historyArrow.classList.add('rotate-180');
+            } else {
+                historyDropdownMenu.classList.add('hidden');
+                historyArrow.classList.remove('rotate-180');
+            }
+        });
+
+        window.addEventListener('click', (e) => {
+            if (!historyDropdownBtn.contains(e.target) && !historyDropdownMenu.contains(e.target)) {
+                historyDropdownMenu.classList.add('hidden');
+                historyArrow.classList.remove('rotate-180');
+            }
+        });
+    </script>
+</body>
+</html>

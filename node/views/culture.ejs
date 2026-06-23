@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ယဉ်ကျေးမှု နှင့် ဘာသာရေး - PyuHeritage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300 overflow-x-hidden">
+    <!-- nav_section -->
+    <nav class="bg-gray-100/80 dark:bg-gray-800/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="/" class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">ပျူအမွေအနှစ်</a>
+                </div>
+
+                <div class="hidden md:flex flex-1 justify-center space-x-8">
+                    <a href="/" class="hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">ပင်မစာမျက်နှာ</a>
+                    <a href="/chat" class="hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">ပျူအကြောင်းမေးမြန်းရန်</a>
+                    
+                    <div class="relative">
+                        <button id="history-dropdown-btn" class="flex items-center text-indigo-600 dark:text-indigo-400 font-medium focus:outline-none transition-colors duration-200">
+                            အကြောင်းအရာများ
+                            <svg id="history-arrow" class="ml-1 w-4 h-4 rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div id="history-dropdown-menu" class="absolute hidden left-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-gray-700 ring-1 ring-black ring-opacity-5 z-50">
+                            <div class="py-1">
+                                <a href="/history/cities" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">မြို့ပြနိုင်ငံများ</a>
+                                <a href="/history/religion" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">သာသနာထွန်းကားမှု</a>
+                                <a href="/history/language" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">ပျူဘာသာစကား နှင့် အက္ခရာ</a>
+                                <a href="/history/culture" class="block px-4 py-2 text-sm bg-gray-100 dark:bg-gray-600 font-semibold">ယဉ်ကျေးမှု နှင့် ဘာသာရေး</a>
+                                <a href="/history/artifacts" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">ရှေးဟောင်းသုတေသန ပစ္စည်းများ</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hidden md:flex items-center">
+                    <button id="theme-toggle" class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none">
+                        <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path>
+                        </svg>
+                        <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-gray-100 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="/" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-200 dark:hover:bg-gray-700">ပင်မစာမျက်နှာ</a>
+                <a href="/chat" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-200 dark:hover:bg-gray-700">ပျူအကြောင်းမေးမြန်းရန်</a>
+                <div class="space-y-1">
+                    <button class="w-full text-left px-3 py-2 text-base font-medium text-gray-600 dark:text-gray-300">အထွေထွေ ဗဟုသုတ</button>
+                    <a href="/history/cities" class="block pl-6 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700">မြို့ပြနိုင်ငံများ</a>
+                    <a href="/history/religion" class="block pl-6 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700">သာသနာထွန်းကားမှု</a>
+                    <a href="/history/language" class="block pl-6 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700">ပျူဘာသာစကား နှင့် အက္ခရာ</a>
+                    <a href="/history/culture" class="block pl-6 px-3 py-2 rounded-md text-sm font-semibold bg-gray-200 dark:bg-gray-700 text-indigo-600 dark:text-indigo-400">ယဉ်ကျေးမှု နှင့် ဘာသာရေး</a>
+                    <a href="/history/artifacts" class="block pl-6 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700">ရှေးဟောင်းသုတေသန ပစ္စည်းများ</a>
+                </div>
+                <button id="mobile-theme-toggle" class="w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-gray-200 dark:hover:bg-gray-700 flex justify-between items-center">
+                    <span>Theme</span>
+                    <span id="theme-status" class="text-sm text-gray-500">Light</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+    <!-- /nav_section -->
+
+    <!-- Header Banner -->
+    <header class="bg-indigo-950 text-white py-16 px-4 text-center relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20 bg-cover bg-center" style="background-image: url('/beikthano1.webp');"></div>
+        <div class="relative z-10 max-w-4xl mx-auto">
+            <h1 class="text-3xl md:text-5xl font-extrabold mb-4">ပျူတို့၏ ယဉ်ကျေးမှု နှင့် နေထိုင်မှုဓလေ့</h1>
+            <p class="text-indigo-200 text-lg md:text-xl">ဂီတ၊ ကပွဲ၊ အနုပညာ နှင့် အဆင့်မြင့်မားသော မြို့ပြယဉ်ကျေးမှုတို့ ပေါင်းစပ်တည်ရှိပုံ</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+            <div class="space-y-6">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">အနုပညာ နှင့် ဂီတ</h2>
+                <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-lg">
+                    ပျူလူမျိုးများသည် အနုပညာနှင့် ဂီတတွင် အလွန်ဝါသနာထုံပြီး ကျွမ်းကျင်ကြသူများ ဖြစ်သည်။ တရုတ်နန်းတွင်း မှတ်တမ်းများအရ အေဒီ ၈၀၂ ခုနှစ်တွင် ပျူအဖွဲ့တစ်ဖွဲ့သည် တရုတ်နိုင်ငံ 'ထန်' မင်းဆက် နန်းတော်သို့ သွားရောက်ကာ ပျူဂီတနှင့် ကပွဲများကို ဖျော်ဖြေခဲ့ကြကြောင်း ဖော်ပြထားသည်။
+                </p>
+                <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-lg">
+                    ပျူတို့သည် ကြေး၊ ဝါး၊ သားရေ နှင့် ကြိုးတပ်တူရိယာ အမျိုးစုံကို အသုံးပြုခဲ့ကြပြီး၊ ၎င်းတို့၏ တေးဂီတသည် ငြိမ့်ညောင်းသာယာကာ ကိုယ်ကျင့်တရားနှင့် ဘာသာရေးဆိုင်ရာ အဓိပ္ပာယ်များ ပါဝင်လေ့ရှိသည်။
+                </p>
+                <div class="p-6 bg-indigo-50 dark:bg-gray-800 rounded-2xl">
+                    <h4 class="font-bold text-indigo-700 dark:text-indigo-400 mb-2">ထင်ရှားသော အနုပညာလက်ရာ</h4>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">ဟန်လင်းနှင့် သရေခေတ္တရာတို့တွင် တွေ့ရှိရသော ကချေသည်ရုပ်တုများ၊ ဂီတတူရိယာတီးခတ်နေသော မြေမီးဖုတ်ရုပ်တုများသည် ပျူတို့၏ ပျော်ပျော်ရွှင်ရွှင် နေထိုင်တတ်သော ယဉ်ကျေးမှုကို ဖော်ပြနေသည်။</p>
+                </div>
+            </div>
+            
+            <div class="space-y-6">
+                <img src="/beikthano.webp" alt="Pyu Culture" class="rounded-3xl shadow-2xl w-full h-80 object-cover">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">ဝတ်စားဆင်ယင်မှု နှင့် လူမှုဘဝ</h2>
+                <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-lg">
+                    ပျူတို့သည် ချည်ထည်နှင့် ပိုးထည်များကို ကျွမ်းကျင်စွာ ရက်လုပ်နိုင်ကြသည်။ အမျိုးသားရော အမျိုးသမီးပါ လက်ဝတ်ရတနာများကို မြတ်နိုးစွာ ဝတ်ဆင်ကြပြီး၊ ရွှေ၊ ငွေ နှင့် ကျောက်မျက်ရတနာများကို အနုစိတ်ပုံဖော်ရာတွင် လက်ရာမြောက်လှသည်။
+                </p>
+                <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-lg">
+                    မြို့ပြနေထိုင်မှုစနစ်တွင် ပျူတို့သည် သိမ်မွေ့ငြိမ်းချမ်းစွာ နေထိုင်ကြပြီး၊ ဘာသာရေးနှင့် ကိုယ်ကျင့်တရားကို အလေးထားကြသည်။ ငွေဒင်္ဂါးများကို ကိုယ်ပိုင်ပုံစံဖြင့် သွန်းလုပ်အသုံးပြုခြင်းက ၎င်းတို့၏ စီးပွားရေးနှင့် ယဉ်ကျေးမှု အဆင့်အတန်း မြင့်မားမှုကို သက်သေပြနေသည်။
+                </p>
+            </div>
+        </div>
+
+        <section class="mt-20 border-t border-gray-200 dark:border-gray-700 pt-12">
+            <h2 class="text-3xl font-bold text-center mb-10">ပျူတို့၏ ထူးခြားသော ဝိသေသလက္ခဏာများ</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-md">
+                    <div class="w-16 h-16 bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-400 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.754 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">ငြိမ်းချမ်းခြင်း</h3>
+                    <p class="text-gray-600 dark:text-gray-400">စစ်မက်ထက် စိုက်ပျိုးရေးနှင့် ကုန်သွယ်ရေးကို ပိုမိုအလေးထားသော လူမျိုးများ ဖြစ်ကြသည်။</p>
+                </div>
+                <div class="p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-md">
+                    <div class="w-16 h-16 bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-400 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">အနုပညာဆန်ခြင်း</h3>
+                    <p class="text-gray-600 dark:text-gray-400">ဂီတ၊ ကပွဲနှင့် ကျောက်ဆစ်ပညာရပ်များတွင် ထူးချွန်ပြောင်မြောက်ခဲ့ကြသည်။</p>
+                </div>
+                <div class="p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-md">
+                    <div class="w-16 h-16 bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-400 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">ကမ္ဘာနှင့် ဆက်ဆံခြင်း</h3>
+                    <p class="text-gray-600 dark:text-gray-400">အိန္ဒိယနှင့် တရုတ်နိုင်ငံတို့နှင့် နီးကပ်သော ယဉ်ကျေးမှုနှင့် ကုန်သွယ်ရေး ဆက်ဆံမှုများ ရှိခဲ့သည်။</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-gray-100 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 transition-colors duration-300 mt-24">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+                <div class="col-span-1 md:col-span-2">
+                    <span class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">ပျူအမွေအနှစ်</span>
+                    <p class="mt-4 text-gray-600 dark:text-gray-400 max-w-sm leading-relaxed">
+                        ပျူအမွေအနှစ် ပရောဂျက်သည် မြန်မာနိုင်ငံ၏ ရှေးဦးယဉ်ကျေးမှုဖြစ်သော ပျူမြို့ပြနိုင်ငံများ၏ သမိုင်းကြောင်း၊ အနုပညာနှင့် နည်းပညာများကို နောင်လာနောက်သားများ လေ့လာနိုင်ရန်နှင့် ထိန်းသိမ်းစောင့်ရှောက်ရန် ရည်ရွယ်ပါသည်။
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-4">ကဏ္ဍများ</h3>
+                    <ul class="space-y-3">
+                        <li><a href="/" class="text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition">ပင်မစာမျက်နှာ</a></li>
+                        <li><a href="/chat" class="text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition">ပျူအကြောင်းမေးမြန်းရန်</a></li>
+                        <li><a href="/history/cities" class="text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition">မြို့ပြနိုင်ငံများ</a></li>
+                        <li><a href="/history/culture" class="text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition">ယဉ်ကျေးမှုနှင့် အနုပညာ</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
+                <p>&copy; 2026 PyuHeritage Project. All rights reserved.</p>
+                <p class="mt-4 md:mt-0">Developed for Final Year Project</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Theme Toggle Logic
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const mobileThemeToggleBtn = document.getElementById('mobile-theme-toggle');
+        const themeStatus = document.getElementById('theme-status');
+        const darkIcon = document.getElementById('theme-toggle-dark-icon');
+        const lightIcon = document.getElementById('theme-toggle-light-icon');
+
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            lightIcon?.classList.remove('hidden');
+            if(themeStatus) themeStatus.textContent = 'Dark';
+        } else {
+            document.documentElement.classList.remove('dark');
+            darkIcon?.classList.remove('hidden');
+            if(themeStatus) themeStatus.textContent = 'Light';
+        }
+
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+                lightIcon?.classList.add('hidden');
+                darkIcon?.classList.remove('hidden');
+                if(themeStatus) themeStatus.textContent = 'Light';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+                darkIcon?.classList.add('hidden');
+                lightIcon?.classList.remove('hidden');
+                if(themeStatus) themeStatus.textContent = 'Dark';
+            }
+        }
+
+        themeToggleBtn?.addEventListener('click', toggleTheme);
+        mobileThemeToggleBtn?.addEventListener('click', toggleTheme);
+
+        // History Dropdown Toggle Logic
+        const historyDropdownBtn = document.getElementById('history-dropdown-btn');
+        const historyDropdownMenu = document.getElementById('history-dropdown-menu');
+        const historyArrow = document.getElementById('history-arrow');
+
+        historyDropdownBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isHidden = historyDropdownMenu.classList.contains('hidden');
+            if (isHidden) {
+                historyDropdownMenu.classList.remove('hidden');
+                historyArrow.classList.add('rotate-180');
+            } else {
+                historyDropdownMenu.classList.add('hidden');
+                historyArrow.classList.remove('rotate-180');
+            }
+        });
+
+        window.addEventListener('click', (e) => {
+            if (!historyDropdownBtn.contains(e.target) && !historyDropdownMenu.contains(e.target)) {
+                historyDropdownMenu.classList.add('hidden');
+                historyArrow.classList.remove('rotate-180');
+            }
+        });
+    </script>
+</body>
+</html>
