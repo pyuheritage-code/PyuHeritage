@@ -1,6 +1,8 @@
 const express = require('express');
 const routers = express.Router();
-const controllers = require('../controllers/controllers');
+const controllers = require('../controllers/site/siteControllers');
+const siteArtifactController = require('../controllers/site/siteArtifactController');
+const threeDArtifactController = require('../controllers/site/threeDArtifactController');
 
 routers.get('/', controllers.index);
 
@@ -13,6 +15,7 @@ routers.get('/history/cities', controllers.cities);
 routers.get('/history/religion', controllers.religion);
 routers.get('/history/language', controllers.language);
 routers.get('/history/culture', controllers.culture);
-routers.get('/history/artifacts', controllers.artifacts);
+routers.get('/history/artifacts', siteArtifactController.artifacts);
+routers.get('/history/artifacts/3d', threeDArtifactController.threeDArtifacts);
 
 module.exports = routers;

@@ -1,0 +1,14 @@
+CREATE DATABASE IF NOT EXISTS pyu CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+USE pyu;
+
+CREATE TABLE IF NOT EXISTS three_d_artifacts (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    title       VARCHAR(255) NOT NULL,
+    description TEXT         NOT NULL,
+    image_url   VARCHAR(500) DEFAULT NULL,
+    model_url   VARCHAR(500) DEFAULT NULL,
+    category    VARCHAR(100) DEFAULT 'General',
+    created_at  TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);

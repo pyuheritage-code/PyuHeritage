@@ -38,6 +38,7 @@
                                 <a href="/history/language" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">ပျူဘာသာစကား နှင့် အက္ခရာ</a>
                                 <a href="/history/culture" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">ယဉ်ကျေးမှု နှင့် ဘာသာရေး</a>
                                 <a href="/history/artifacts" class="block px-4 py-2 text-sm bg-gray-100 dark:bg-gray-600 font-semibold">ရှေးဟောင်းသုတေသန ပစ္စည်းများ</a>
+                                <a href="/history/artifacts/3d" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">3D ရှေးဟောင်းပစ္စည်းများ</a>
                             </div>
                         </div>
                     </div>
@@ -75,6 +76,7 @@
                     <a href="/history/language" class="block pl-6 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700">ပျူဘာသာစကား နှင့် အက္ခရာ</a>
                     <a href="/history/culture" class="block pl-6 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700">ယဉ်ကျေးမှု နှင့် ဘာသာရေး</a>
                     <a href="/history/artifacts" class="block pl-6 px-3 py-2 rounded-md text-sm font-semibold bg-gray-200 dark:bg-gray-700 text-indigo-600 dark:text-indigo-400">ရှေးဟောင်းသုတေသန ပစ္စည်းများ</a>
+                    <a href="/history/artifacts/3d" class="block pl-6 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">3D ရှေးဟောင်းပစ္စည်းများ</a>
                 </div>
                 <button id="mobile-theme-toggle" class="w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-gray-200 dark:hover:bg-gray-700 flex justify-between items-center">
                     <span>Theme</span>
@@ -97,47 +99,31 @@
     <!-- Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            <!-- Artifact 1 -->
-            <div class="group bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all">
-                <div class="h-64 bg-gray-200 dark:bg-gray-700 relative overflow-hidden">
-                    <div class="absolute inset-0 flex items-center justify-center text-gray-400 font-bold italic">Artifact Image (Coins)</div>
-                    <div class="absolute top-4 left-4 bg-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase">Silver Coins</div>
+            <% if (artifacts && artifacts.length > 0) { %>
+                <% artifacts.forEach(function(a) { %>
+                    <div class="group bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all">
+                        <div class="h-64 bg-gray-200 dark:bg-gray-700 relative overflow-hidden">
+                            <% if (a.image_url) { %>
+                                <img src="<%= a.image_url %>" alt="<%= a.title %>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <% } else { %>
+                                <div class="absolute inset-0 flex items-center justify-center text-gray-400 dark:text-gray-500 font-bold italic">
+                                    <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                </div>
+                            <% } %>
+                            <div class="absolute top-4 left-4 bg-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase"><%= a.category || 'General' %></div>
+                        </div>
+                        <div class="p-8">
+                            <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white"><%= a.title %></h3>
+                            <p class="text-gray-600 dark:text-gray-400 leading-relaxed"><%= a.description %></p>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <div class="col-span-full text-center py-20 text-gray-500 dark:text-gray-400">
+                    <p class="text-2xl font-bold mb-2">ဒေတာမရှိသေးပါ။</p>
+                    <p>ရှေးဟောင်းသုတေသန ပစ္စည်းများကို ထည့်သွင်းပြီးပါက ဤနေရာတွင် ကြည့်ရှုနိုင်ပါမည်။</p>
                 </div>
-                <div class="p-8">
-                    <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">ပျူဒင်္ဂါးပြားများ</h3>
-                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
-                        ပျူမြို့ဟောင်းများတွင် တူးဖော်တွေ့ရှိရသော ငွေဒင်္ဂါးများသည် ပျူယဉ်ကျေးမှု၏ အထင်ရှားဆုံး အမှတ်အသားများ ဖြစ်သည်။ ဒင်္ဂါးများ၏ တစ်ဖက်တွင် သီရိဝစ္ဆ (Srivatsa) အမှတ်အသားနှင့် အခြားတစ်ဖက်တွင် နေနှင့်လ အမှတ်အသားများကို တွေ့ရလေ့ရှိသည်။
-                    </p>
-                </div>
-            </div>
-
-            <!-- Artifact 2 -->
-            <div class="group bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all">
-                <div class="h-64 bg-gray-200 dark:bg-gray-700 relative overflow-hidden">
-                    <div class="absolute inset-0 flex items-center justify-center text-gray-400 font-bold italic">Artifact Image (Beads)</div>
-                    <div class="absolute top-4 left-4 bg-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase">Beads & Jewelry</div>
-                </div>
-                <div class="p-8">
-                    <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">ကျောက်မျက်ရတနာ ပုတီးစေ့များ</h3>
-                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
-                        ပျူတို့သည် ကျောက်နီ၊ ကျောက်စိမ်း နှင့် ဖန်ပုတီးစေ့များကို အနုစိတ်ပုံဖော်ရာတွင် အလွန်ကျွမ်းကျင်ကြသည်။ ၎င်းတို့ကို ဟန်လင်းမြို့ဟောင်းတွင် အများဆုံးတွေ့ရှိရပြီး ပျူတို့၏ အဆင့်မြင့်မားသော နည်းပညာကို ပြသနေသည်။
-                    </p>
-                </div>
-            </div>
-
-            <!-- Artifact 3 -->
-            <div class="group bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all">
-                <div class="h-64 bg-gray-200 dark:bg-gray-700 relative overflow-hidden">
-                    <div class="absolute inset-0 flex items-center justify-center text-gray-400 font-bold italic">Artifact Image (Pottery)</div>
-                    <div class="absolute top-4 left-4 bg-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase">Pottery</div>
-                </div>
-                <div class="p-8">
-                    <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">မြေမီးဖုတ် အိုးလုပ်ငန်း</h3>
-                    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
-                        ဗိဿနိုးမြို့ဟောင်းတွင် တွေ့ရှိရသော အရိုးအိုးများနှင့် အသုံးအဆောင် မြေအိုးများသည် ပျူတို့၏ နေ့စဉ်ဘဝနှင့် သေခြင်းဆိုင်ရာ ဓလေ့ထုံးတမ်းများကို လေ့လာရာတွင် အလွန်အရေးပါသော အထောက်အထားများ ဖြစ်ကြသည်။
-                    </p>
-                </div>
-            </div>
+            <% } %>
         </div>
 
         <section class="mt-20 bg-gray-50 dark:bg-gray-800 rounded-3xl p-10 shadow-inner">

@@ -1,23 +1,32 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Admin Dashboard - PyuHeritage</title>
-    <meta name="description" content="PyuHeritage Admin Dashboard - Manage cities, culture, language, religion, and artifacts content">
+    <meta name="description"
+        content="PyuHeritage Admin Dashboard - Manage cities, culture, language, religion, and artifacts content">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <style>
-        * { font-family: 'Inter', sans-serif; }
+        * {
+            font-family: 'Inter', sans-serif;
+        }
 
-        /* Sidebar transition */
+        /* Sidebar drawer animation */
         .sidebar-transition {
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar-overlay {
+            transition: opacity 0.3s ease;
         }
 
         /* Content section transitions */
@@ -25,22 +34,32 @@
             display: none;
             animation: fadeSlideIn 0.4s ease-out;
         }
+
         .content-section.active {
             display: block;
         }
 
         @keyframes fadeSlideIn {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Modal animation */
         .modal-overlay {
             transition: opacity 0.3s ease;
         }
+
         .modal-content {
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
         }
+
         .modal-overlay.hidden .modal-content {
             transform: scale(0.95) translateY(10px);
             opacity: 0;
@@ -50,9 +69,14 @@
         .stat-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
         .stat-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.15);
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-card:active {
+            transform: scale(0.97);
         }
 
         /* Table row hover */
@@ -60,19 +84,49 @@
             transition: background-color 0.15s ease;
         }
 
+        /* Mobile bottom nav */
+        .bottom-nav-btn {
+            transition: all 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .bottom-nav-btn:active {
+            transform: scale(0.9);
+        }
+
         /* Scrollbar styling */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-        .dark ::-webkit-scrollbar-thumb { background: #475569; }
-        .dark ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
 
         /* Nav link hover effect */
         .nav-link {
             position: relative;
             transition: all 0.2s ease;
         }
+
         .nav-link::before {
             content: '';
             position: absolute;
@@ -85,6 +139,7 @@
             transform: scaleY(0);
             transition: transform 0.2s ease;
         }
+
         .nav-link:hover::before,
         .nav-link.active::before {
             transform: scaleY(1);
@@ -96,112 +151,225 @@
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
         }
+
         .dark .glass {
             background: rgba(30, 41, 59, 0.8);
         }
 
         /* Pulse dot animation */
         @keyframes pulse-dot {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.4;
+            }
         }
-        .pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
+
+        .pulse-dot {
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        /* Swipe indicator */
+        @keyframes swipeHint {
+
+            0%,
+            100% {
+                transform: translateX(0);
+                opacity: 0.4;
+            }
+
+            50% {
+                transform: translateX(8px);
+                opacity: 1;
+            }
+        }
+
+        .swipe-hint {
+            animation: swipeHint 2s ease-in-out infinite;
+        }
+
+        /* Safe area bottom for mobile */
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
+        /* Mobile card table styling */
+        .mobile-card {
+            transition: all 0.2s ease;
+        }
+
+        .mobile-card:active {
+            transform: scale(0.98);
+        }
+
+        /* Prevent body scroll when sidebar open on mobile */
+        body.sidebar-open {
+            overflow: hidden;
+        }
     </style>
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300 overflow-x-hidden">
+
+<body
+    class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300 overflow-x-hidden pb-16 lg:pb-0">
 
     <!-- Mobile Sidebar Overlay -->
-    <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 hidden lg:hidden" onclick="toggleSidebar()"></div>
+    <div id="sidebar-overlay"
+        class="sidebar-overlay fixed inset-0 bg-black/50 backdrop-blur-sm z-40 hidden opacity-0 lg:hidden"
+        onclick="toggleSidebar()"></div>
 
-    <!-- ==================== SIDEBAR ==================== -->
-    <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 z-50 sidebar-transition -translate-x-full lg:translate-x-0 flex flex-col shadow-xl lg:shadow-md">
-        
-        <!-- Logo Area -->
-        <div class="px-6 py-6 border-b border-gray-100 dark:border-gray-700">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+    <!-- ==================== SIDEBAR DRAWER ==================== -->
+    <aside id="sidebar"
+        class="fixed top-0 left-0 h-full w-72 sm:w-80 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 z-50 sidebar-transition -translate-x-full lg:translate-x-0 lg:w-64 flex flex-col shadow-xl lg:shadow-md">
+
+        <!-- Logo Area with Close Button -->
+        <div class="px-4 sm:px-6 py-5 border-b border-gray-100 dark:border-gray-700">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div
+                        class="w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30 flex-shrink-0">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                            </path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white leading-tight">
+                            ပျူအမွေအနှစ်</h1>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 font-medium">Admin Panel</p>
+                    </div>
+                </div>
+                <!-- Close button - mobile only -->
+                <button onclick="toggleSidebar()"
+                    class="lg:hidden p-2 rounded-xl text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors -mr-1">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
                     </svg>
-                </div>
-                <div>
-                    <h1 class="text-lg font-bold text-gray-900 dark:text-white">ပျူအမွေအနှစ်</h1>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 font-medium">Admin Panel</p>
-                </div>
+                </button>
             </div>
         </div>
 
         <!-- Navigation Links -->
         <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-            <p class="px-3 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">Main Menu</p>
-            
-            <button onclick="switchSection('dashboard')" data-section="dashboard" class="nav-link active w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30">
+            <p class="px-3 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">Main
+                Menu</p>
+
+            <button onclick="switchSection('dashboard')" data-section="dashboard"
+                class="nav-link active w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                    </path>
                 </svg>
                 <span>Dashboard</span>
             </button>
 
-            <p class="px-3 pt-4 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">Content Management</p>
+            <p class="px-3 pt-4 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">
+                Content Management</p>
 
-            <button onclick="switchSection('cities')" data-section="cities" class="nav-link w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50">
+            <button onclick="switchSection('cities')" data-section="cities"
+                class="nav-link w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                    </path>
                 </svg>
                 <span>Cities</span>
-                <span class="ml-auto text-xs bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 px-2 py-0.5 rounded-full font-semibold">3</span>
+                <span
+                    class="ml-auto text-xs bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 px-2 py-0.5 rounded-full font-semibold">3</span>
             </button>
 
-            <button onclick="switchSection('culture')" data-section="culture" class="nav-link w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50">
+            <button onclick="switchSection('culture')" data-section="culture"
+                class="nav-link w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01">
+                    </path>
                 </svg>
                 <span>Culture</span>
-                <span class="ml-auto text-xs bg-emerald-100 dark:bg-emerald-900/50 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full font-semibold">12</span>
+                <span
+                    class="ml-auto text-xs bg-emerald-100 dark:bg-emerald-900/50 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full font-semibold">12</span>
             </button>
 
-            <button onclick="switchSection('language')" data-section="language" class="nav-link w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50">
+            <button onclick="switchSection('language')" data-section="language"
+                class="nav-link w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129">
+                    </path>
                 </svg>
                 <span>Language</span>
-                <span class="ml-auto text-xs bg-amber-100 dark:bg-amber-900/50 text-amber-600 dark:text-amber-400 px-2 py-0.5 rounded-full font-semibold">8</span>
+                <span
+                    class="ml-auto text-xs bg-amber-100 dark:bg-amber-900/50 text-amber-600 dark:text-amber-400 px-2 py-0.5 rounded-full font-semibold">8</span>
             </button>
 
-            <button onclick="switchSection('religion')" data-section="religion" class="nav-link w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50">
+            <button onclick="switchSection('religion')" data-section="religion"
+                class="nav-link w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                    </path>
                 </svg>
                 <span>Religion</span>
-                <span class="ml-auto text-xs bg-rose-100 dark:bg-rose-900/50 text-rose-600 dark:text-rose-400 px-2 py-0.5 rounded-full font-semibold">5</span>
+                <span
+                    class="ml-auto text-xs bg-rose-100 dark:bg-rose-900/50 text-rose-600 dark:text-rose-400 px-2 py-0.5 rounded-full font-semibold">5</span>
             </button>
 
-            <button onclick="switchSection('artifacts')" data-section="artifacts" class="nav-link w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50">
+            <button onclick="switchSection('artifacts')" data-section="artifacts"
+                class="nav-link w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>
                 </svg>
                 <span>Artifacts</span>
-                <span class="ml-auto text-xs bg-cyan-100 dark:bg-cyan-900/50 text-cyan-600 dark:text-cyan-400 px-2 py-0.5 rounded-full font-semibold">24</span>
+                <span id="sidebar-artifact-count"
+                    class="ml-auto text-xs bg-cyan-100 dark:bg-cyan-900/50 text-cyan-600 dark:text-cyan-400 px-2 py-0.5 rounded-full font-semibold">
+                    <%= artifactCount || 0 %>
+                </span>
+            </button>
+
+            <button onclick="switchSection('3d-artifacts')" data-section="3d-artifacts"
+                class="nav-link w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"></path>
+                </svg>
+                <span>3D Artifacts</span>
+                <span id="sidebar-three-d-artifact-count"
+                    class="ml-auto text-xs bg-purple-100 dark:bg-purple-900/50 text-purple-600 dark:text-purple-400 px-2 py-0.5 rounded-full font-semibold">
+                    <%= threeDArtifactCount || 0 %>
+                </span>
             </button>
         </nav>
 
         <!-- Sidebar Footer -->
-        <div class="px-3 py-4 border-t border-gray-100 dark:border-gray-700 space-y-2">
+        <div class="px-3 py-3 border-t border-gray-100 dark:border-gray-700 space-y-1">
             <!-- Dark Mode Toggle -->
-            <button id="theme-toggle" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors">
+            <button id="theme-toggle"
+                class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors">
                 <svg id="theme-icon-sun" class="hidden w-5 h-5 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path>
+                    <path
+                        d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z">
+                    </path>
                 </svg>
-                <svg id="theme-icon-moon" class="hidden w-5 h-5 text-indigo-400" fill="currentColor" viewBox="0 0 20 20">
+                <svg id="theme-icon-moon" class="hidden w-5 h-5 text-indigo-400" fill="currentColor"
+                    viewBox="0 0 20 20">
                     <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
                 </svg>
                 <span id="theme-label">Dark Mode</span>
             </button>
 
             <!-- View Site Link -->
-            <a href="/" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors">
+            <a href="/"
+                class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
                 </svg>
                 <span>View Site</span>
             </a>
@@ -209,45 +377,65 @@
     </aside>
 
     <!-- ==================== MAIN CONTENT ==================== -->
-    <div class="lg:ml-64 min-h-screen transition-all duration-300">
+    <div id="main-content" class="lg:ml-64 min-h-screen transition-all duration-300">
 
         <!-- Top Header Bar -->
         <header class="sticky top-0 z-30 glass border-b border-gray-200 dark:border-gray-700">
-            <div class="flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16">
+            <div class="flex items-center justify-between px-3 sm:px-6 lg:px-8 h-14 sm:h-16">
                 <!-- Left: Hamburger + Page Title -->
-                <div class="flex items-center space-x-4">
-                    <button id="sidebar-toggle" onclick="toggleSidebar()" class="lg:hidden p-2 rounded-xl text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none transition-colors">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                <div class="flex items-center space-x-2 sm:space-x-4 min-w-0">
+                    <button id="sidebar-toggle" onclick="toggleSidebar()"
+                        class="lg:hidden p-2 rounded-xl text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none transition-colors flex-shrink-0">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
                     </button>
-                    <div>
-                        <h2 id="page-title" class="text-xl font-bold text-gray-900 dark:text-white">Dashboard</h2>
-                        <p id="page-subtitle" class="text-xs text-gray-500 dark:text-gray-400 hidden sm:block">Overview & Analytics</p>
+                    <div class="min-w-0">
+                        <h2 id="page-title"
+                            class="text-base sm:text-xl font-bold text-gray-900 dark:text-white truncate">Dashboard</h2>
+                        <p id="page-subtitle" class="text-xs text-gray-500 dark:text-gray-400 hidden sm:block">Overview
+                            & Analytics</p>
                     </div>
                 </div>
 
                 <!-- Right: Search + Actions -->
-                <div class="flex items-center space-x-3">
-                    <!-- Search -->
-                    <div class="hidden md:flex items-center bg-gray-100 dark:bg-gray-700/50 rounded-xl px-3 py-2 space-x-2 border border-transparent focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
+                <div class="flex items-center space-x-1 sm:space-x-3">
+                    <!-- Search - hidden on very small -->
+                    <div
+                        class="hidden md:flex items-center bg-gray-100 dark:bg-gray-700/50 rounded-xl px-3 py-2 space-x-2 border border-transparent focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
                         <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
-                        <input type="text" placeholder="Search..." class="bg-transparent text-sm text-gray-700 dark:text-gray-200 placeholder-gray-400 focus:outline-none w-40 lg:w-56">
+                        <input type="text" placeholder="Search..."
+                            class="bg-transparent text-sm text-gray-700 dark:text-gray-200 placeholder-gray-400 focus:outline-none w-32 lg:w-56">
                     </div>
 
-                    <!-- Notification Bell -->
-                    <button class="relative p-2 rounded-xl text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none transition-colors">
+                    <!-- Search icon - mobile only -->
+                    <button
+                        class="md:hidden p-2 rounded-xl text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </button>
+
+                    <!-- Notification Bell -->
+                    <button
+                        class="relative p-2 rounded-xl text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                            </path>
                         </svg>
                         <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full pulse-dot"></span>
                     </button>
 
-                    <!-- Admin Avatar -->
-                    <div class="flex items-center space-x-2 pl-2 border-l border-gray-200 dark:border-gray-700">
-                        <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center">
+                    <!-- Admin Avatar - hide name on mobile -->
+                    <div class="flex items-center space-x-2 pl-1 sm:pl-2 border-l border-gray-200 dark:border-gray-700">
+                        <div
+                            class="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center">
                             <span class="text-white text-xs font-bold">A</span>
                         </div>
                         <span class="hidden sm:block text-sm font-medium text-gray-700 dark:text-gray-300">Admin</span>
@@ -257,117 +445,232 @@
         </header>
 
         <!-- ==================== CONTENT SECTIONS ==================== -->
-        <main class="p-4 sm:p-6 lg:p-8">
+        <main class="p-3 sm:p-6 lg:p-8">
 
             <!-- ===== DASHBOARD OVERVIEW ===== -->
             <div id="section-dashboard" class="content-section active">
                 <!-- Stats Cards Grid -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-6 mb-8">
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5 gap-3 sm:gap-6 mb-6 sm:mb-8">
                     <!-- Cities Stat -->
-                    <div class="stat-card bg-gradient-to-br from-indigo-500 to-indigo-700 rounded-2xl p-5 text-white shadow-lg shadow-indigo-500/20 cursor-pointer" onclick="switchSection('cities')">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    <div class="stat-card bg-gradient-to-br from-indigo-500 to-indigo-700 rounded-xl sm:rounded-2xl p-4 sm:p-5 text-white shadow-lg shadow-indigo-500/20 cursor-pointer active:scale-95 transition-transform"
+                        onclick="switchSection('cities')">
+                        <div class="flex items-center justify-between mb-3 sm:mb-4">
+                            <div
+                                class="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 rounded-lg sm:rounded-xl flex items-center justify-center backdrop-blur-sm">
+                                <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                                    </path>
                                 </svg>
                             </div>
-                            <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            <svg class="w-3 h-3 sm:w-4 sm:h-4 opacity-60 hidden sm:block" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                                </path>
+                            </svg>
                         </div>
-                        <p class="text-3xl font-extrabold">3</p>
-                        <p class="text-sm text-indigo-100 font-medium mt-1">Cities</p>
+                        <p class="text-xl sm:text-3xl font-extrabold">3</p>
+                        <p class="text-xs sm:text-sm text-indigo-100 font-medium mt-0.5 sm:mt-1">Cities</p>
                     </div>
 
                     <!-- Culture Stat -->
-                    <div class="stat-card bg-gradient-to-br from-emerald-500 to-teal-700 rounded-2xl p-5 text-white shadow-lg shadow-emerald-500/20 cursor-pointer" onclick="switchSection('culture')">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path>
+                    <div class="stat-card bg-gradient-to-br from-emerald-500 to-teal-700 rounded-xl sm:rounded-2xl p-4 sm:p-5 text-white shadow-lg shadow-emerald-500/20 cursor-pointer active:scale-95 transition-transform"
+                        onclick="switchSection('culture')">
+                        <div class="flex items-center justify-between mb-3 sm:mb-4">
+                            <div
+                                class="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 rounded-lg sm:rounded-xl flex items-center justify-center backdrop-blur-sm">
+                                <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01">
+                                    </path>
                                 </svg>
                             </div>
-                            <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            <svg class="w-3 h-3 sm:w-4 sm:h-4 opacity-60 hidden sm:block" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                                </path>
+                            </svg>
                         </div>
-                        <p class="text-3xl font-extrabold">12</p>
-                        <p class="text-sm text-emerald-100 font-medium mt-1">Culture</p>
+                        <p class="text-xl sm:text-3xl font-extrabold">12</p>
+                        <p class="text-xs sm:text-sm text-emerald-100 font-medium mt-0.5 sm:mt-1">Culture</p>
                     </div>
 
                     <!-- Language Stat -->
-                    <div class="stat-card bg-gradient-to-br from-amber-500 to-orange-700 rounded-2xl p-5 text-white shadow-lg shadow-amber-500/20 cursor-pointer" onclick="switchSection('language')">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
+                    <div class="stat-card bg-gradient-to-br from-amber-500 to-orange-700 rounded-xl sm:rounded-2xl p-4 sm:p-5 text-white shadow-lg shadow-amber-500/20 cursor-pointer active:scale-95 transition-transform"
+                        onclick="switchSection('language')">
+                        <div class="flex items-center justify-between mb-3 sm:mb-4">
+                            <div
+                                class="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 rounded-lg sm:rounded-xl flex items-center justify-center backdrop-blur-sm">
+                                <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129">
+                                    </path>
                                 </svg>
                             </div>
-                            <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            <svg class="w-3 h-3 sm:w-4 sm:h-4 opacity-60 hidden sm:block" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                                </path>
+                            </svg>
                         </div>
-                        <p class="text-3xl font-extrabold">8</p>
-                        <p class="text-sm text-amber-100 font-medium mt-1">Language</p>
+                        <p class="text-xl sm:text-3xl font-extrabold">8</p>
+                        <p class="text-xs sm:text-sm text-amber-100 font-medium mt-0.5 sm:mt-1">Language</p>
                     </div>
 
                     <!-- Religion Stat -->
-                    <div class="stat-card bg-gradient-to-br from-rose-500 to-pink-700 rounded-2xl p-5 text-white shadow-lg shadow-rose-500/20 cursor-pointer" onclick="switchSection('religion')">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    <div class="stat-card bg-gradient-to-br from-rose-500 to-pink-700 rounded-xl sm:rounded-2xl p-4 sm:p-5 text-white shadow-lg shadow-rose-500/20 cursor-pointer active:scale-95 transition-transform"
+                        onclick="switchSection('religion')">
+                        <div class="flex items-center justify-between mb-3 sm:mb-4">
+                            <div
+                                class="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 rounded-lg sm:rounded-xl flex items-center justify-center backdrop-blur-sm">
+                                <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                    </path>
                                 </svg>
                             </div>
-                            <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            <svg class="w-3 h-3 sm:w-4 sm:h-4 opacity-60 hidden sm:block" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                                </path>
+                            </svg>
                         </div>
-                        <p class="text-3xl font-extrabold">5</p>
-                        <p class="text-sm text-rose-100 font-medium mt-1">Religion</p>
+                        <p class="text-xl sm:text-3xl font-extrabold">5</p>
+                        <p class="text-xs sm:text-sm text-rose-100 font-medium mt-0.5 sm:mt-1">Religion</p>
                     </div>
 
                     <!-- Artifacts Stat -->
-                    <div class="stat-card bg-gradient-to-br from-cyan-500 to-blue-700 rounded-2xl p-5 text-white shadow-lg shadow-cyan-500/20 cursor-pointer" onclick="switchSection('artifacts')">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>
+                    <div class="stat-card bg-gradient-to-br from-cyan-500 to-blue-700 rounded-xl sm:rounded-2xl p-4 sm:p-5 text-white shadow-lg shadow-cyan-500/20 cursor-pointer active:scale-95 transition-transform col-span-2 sm:col-span-1"
+                        onclick="switchSection('artifacts')">
+                        <div class="flex items-center justify-between mb-3 sm:mb-4">
+                            <div
+                                class="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 rounded-lg sm:rounded-xl flex items-center justify-center backdrop-blur-sm">
+                                <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4">
+                                    </path>
                                 </svg>
                             </div>
-                            <svg class="w-4 h-4 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            <svg class="w-3 h-3 sm:w-4 sm:h-4 opacity-60 hidden sm:block" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                                </path>
+                            </svg>
                         </div>
-                        <p class="text-3xl font-extrabold">24</p>
-                        <p class="text-sm text-cyan-100 font-medium mt-1">Artifacts</p>
+                        <p id="stat-artifact-count" class="text-xl sm:text-3xl font-extrabold">
+                            <%= artifactCount || 0 %>
+                        </p>
+                        <p class="text-xs sm:text-sm text-cyan-100 font-medium mt-0.5 sm:mt-1">Artifacts</p>
+                    </div>
+
+                    <!-- 3D Artifacts Stat -->
+                    <div class="stat-card bg-gradient-to-br from-purple-500 to-violet-700 rounded-xl sm:rounded-2xl p-4 sm:p-5 text-white shadow-lg shadow-purple-500/20 cursor-pointer active:scale-95 transition-transform col-span-2 sm:col-span-1"
+                        onclick="switchSection('3d-artifacts')">
+                        <div class="flex items-center justify-between mb-3 sm:mb-4">
+                            <div
+                                class="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 rounded-lg sm:rounded-xl flex items-center justify-center backdrop-blur-sm">
+                                <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"></path>
+                                </svg>
+                            </div>
+                            <svg class="w-3 h-3 sm:w-4 sm:h-4 opacity-60 hidden sm:block" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                                </path>
+                            </svg>
+                        </div>
+                        <p id="stat-three-d-artifact-count" class="text-xl sm:text-3xl font-extrabold">
+                            <%= threeDArtifactCount || 0 %>
+                        </p>
+                        <p class="text-xs sm:text-sm text-purple-100 font-medium mt-0.5 sm:mt-1">3D Artifacts</p>
                     </div>
                 </div>
 
                 <!-- Quick Actions + Recent Activity -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
                     <!-- Quick Actions -->
-                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
-                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
-                            <svg class="w-5 h-5 mr-2 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    <div
+                        class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-4 sm:p-6">
+                        <h3
+                            class="text-base sm:text-lg font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 flex items-center">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-indigo-500" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
                             Quick Actions
                         </h3>
                         <div class="space-y-2">
-                            <button onclick="switchSection('cities'); setTimeout(()=>openModal('cities'), 300)" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all">
-                                <span class="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/50 rounded-lg flex items-center justify-center"><svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg></span>
+                            <button onclick="switchSection('cities'); setTimeout(()=>openModal('cities'), 300)"
+                                class="w-full flex items-center space-x-3 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all active:scale-[0.98]">
+                                <span
+                                    class="w-7 h-7 sm:w-8 sm:h-8 bg-indigo-100 dark:bg-indigo-900/50 rounded-lg flex items-center justify-center flex-shrink-0"><svg
+                                        class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-600 dark:text-indigo-400"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 4v16m8-8H4"></path>
+                                    </svg></span>
                                 <span>Add New City</span>
                             </button>
-                            <button onclick="switchSection('culture'); setTimeout(()=>openModal('culture'), 300)" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all">
-                                <span class="w-8 h-8 bg-emerald-100 dark:bg-emerald-900/50 rounded-lg flex items-center justify-center"><svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg></span>
+                            <button onclick="switchSection('culture'); setTimeout(()=>openModal('culture'), 300)"
+                                class="w-full flex items-center space-x-3 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all active:scale-[0.98]">
+                                <span
+                                    class="w-7 h-7 sm:w-8 sm:h-8 bg-emerald-100 dark:bg-emerald-900/50 rounded-lg flex items-center justify-center flex-shrink-0"><svg
+                                        class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600 dark:text-emerald-400"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 4v16m8-8H4"></path>
+                                    </svg></span>
                                 <span>Add New Culture</span>
                             </button>
-                            <button onclick="switchSection('artifacts'); setTimeout(()=>openModal('artifacts'), 300)" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-cyan-50 dark:hover:bg-cyan-900/20 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all">
-                                <span class="w-8 h-8 bg-cyan-100 dark:bg-cyan-900/50 rounded-lg flex items-center justify-center"><svg class="w-4 h-4 text-cyan-600 dark:text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg></span>
+                            <button onclick="switchSection('artifacts'); setTimeout(()=>openModal('artifacts'), 300)"
+                                class="w-full flex items-center space-x-3 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-cyan-50 dark:hover:bg-cyan-900/20 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all active:scale-[0.98]">
+                                <span
+                                    class="w-7 h-7 sm:w-8 sm:h-8 bg-cyan-100 dark:bg-cyan-900/50 rounded-lg flex items-center justify-center flex-shrink-0"><svg
+                                        class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-600 dark:text-cyan-400" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 4v16m8-8H4"></path>
+                                    </svg></span>
                                 <span>Add New Artifact</span>
+                            </button>
+                            <button onclick="switchSection('3d-artifacts'); setTimeout(()=>document.querySelector('[onclick*=\"open3DArtifactModal\"]')?.click(), 300)"
+                                class="w-full flex items-center space-x-3 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700/50 hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 dark:hover:text-purple-400 transition-all active:scale-[0.98]">
+                                <span
+                                    class="w-7 h-7 sm:w-8 sm:h-8 bg-purple-100 dark:bg-purple-900/50 rounded-lg flex items-center justify-center flex-shrink-0"><svg
+                                        class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-600 dark:text-purple-400" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 4v16m8-8H4"></path>
+                                    </svg></span>
+                                <span>Add New 3D Artifact</span>
                             </button>
                         </div>
                     </div>
 
                     <!-- Recent Activity -->
-                    <div class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
-                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
-                            <svg class="w-5 h-5 mr-2 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <div
+                        class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-4 sm:p-6">
+                        <h3
+                            class="text-base sm:text-lg font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 flex items-center">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-indigo-500" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
                             Recent Activity
                         </h3>
-                        <div class="overflow-x-auto">
+                        <!-- Desktop table -->
+                        <div class="hidden sm:block overflow-x-auto">
                             <table class="w-full text-sm">
                                 <thead>
-                                    <tr class="text-left text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">
+                                    <tr
+                                        class="text-left text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">
                                         <th class="pb-3 pr-4">Action</th>
                                         <th class="pb-3 pr-4">Section</th>
                                         <th class="pb-3 pr-4">Item</th>
@@ -376,31 +679,43 @@
                                 </thead>
                                 <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
                                     <tr class="table-row-hover hover:bg-gray-50 dark:hover:bg-gray-700/30">
-                                        <td class="py-3 pr-4"><span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400">Created</span></td>
+                                        <td class="py-3 pr-4"><span
+                                                class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400">Created</span>
+                                        </td>
                                         <td class="py-3 pr-4 text-gray-600 dark:text-gray-300">Cities</td>
                                         <td class="py-3 pr-4 font-medium text-gray-900 dark:text-white">သရေခေတ္တရာ</td>
                                         <td class="py-3 text-gray-500 dark:text-gray-400">2 hours ago</td>
                                     </tr>
                                     <tr class="table-row-hover hover:bg-gray-50 dark:hover:bg-gray-700/30">
-                                        <td class="py-3 pr-4"><span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400">Updated</span></td>
+                                        <td class="py-3 pr-4"><span
+                                                class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400">Updated</span>
+                                        </td>
                                         <td class="py-3 pr-4 text-gray-600 dark:text-gray-300">Culture</td>
-                                        <td class="py-3 pr-4 font-medium text-gray-900 dark:text-white">ပျူယဉ်ကျေးမှု</td>
+                                        <td class="py-3 pr-4 font-medium text-gray-900 dark:text-white">ပျူယဉ်ကျေးမှု
+                                        </td>
                                         <td class="py-3 text-gray-500 dark:text-gray-400">5 hours ago</td>
                                     </tr>
                                     <tr class="table-row-hover hover:bg-gray-50 dark:hover:bg-gray-700/30">
-                                        <td class="py-3 pr-4"><span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400">Created</span></td>
+                                        <td class="py-3 pr-4"><span
+                                                class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400">Created</span>
+                                        </td>
                                         <td class="py-3 pr-4 text-gray-600 dark:text-gray-300">Artifacts</td>
                                         <td class="py-3 pr-4 font-medium text-gray-900 dark:text-white">ပျူရွှေပြား</td>
                                         <td class="py-3 text-gray-500 dark:text-gray-400">1 day ago</td>
                                     </tr>
                                     <tr class="table-row-hover hover:bg-gray-50 dark:hover:bg-gray-700/30">
-                                        <td class="py-3 pr-4"><span class="px-2 py-1 text-xs font-semibold rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400">Updated</span></td>
+                                        <td class="py-3 pr-4"><span
+                                                class="px-2 py-1 text-xs font-semibold rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400">Updated</span>
+                                        </td>
                                         <td class="py-3 pr-4 text-gray-600 dark:text-gray-300">Religion</td>
-                                        <td class="py-3 pr-4 font-medium text-gray-900 dark:text-white">ထေရဝါဒဗုဒ္ဓဘာသာ</td>
+                                        <td class="py-3 pr-4 font-medium text-gray-900 dark:text-white">ထေရဝါဒဗုဒ္ဓဘာသာ
+                                        </td>
                                         <td class="py-3 text-gray-500 dark:text-gray-400">2 days ago</td>
                                     </tr>
                                     <tr class="table-row-hover hover:bg-gray-50 dark:hover:bg-gray-700/30">
-                                        <td class="py-3 pr-4"><span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400">Deleted</span></td>
+                                        <td class="py-3 pr-4"><span
+                                                class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400">Deleted</span>
+                                        </td>
                                         <td class="py-3 pr-4 text-gray-600 dark:text-gray-300">Language</td>
                                         <td class="py-3 pr-4 font-medium text-gray-900 dark:text-white">Draft Item</td>
                                         <td class="py-3 text-gray-500 dark:text-gray-400">3 days ago</td>
@@ -408,352 +723,197 @@
                                 </tbody>
                             </table>
                         </div>
+                        <!-- Mobile cards -->
+                        <div class="sm:hidden space-y-2">
+                            <div class="mobile-card bg-gray-50 dark:bg-gray-700/30 rounded-xl p-3">
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <span
+                                        class="px-2 py-0.5 text-xs font-semibold rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400">Created</span>
+                                    <span class="text-xs text-gray-400">2h ago</span>
+                                </div>
+                                <p class="text-sm font-medium text-gray-900 dark:text-white">သရေခေတ္တရာ</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Cities section</p>
+                            </div>
+                            <div class="mobile-card bg-gray-50 dark:bg-gray-700/30 rounded-xl p-3">
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <span
+                                        class="px-2 py-0.5 text-xs font-semibold rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400">Updated</span>
+                                    <span class="text-xs text-gray-400">5h ago</span>
+                                </div>
+                                <p class="text-sm font-medium text-gray-900 dark:text-white">ပျူယဉ်ကျေးမှု</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Culture section</p>
+                            </div>
+                            <div class="mobile-card bg-gray-50 dark:bg-gray-700/30 rounded-xl p-3">
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <span
+                                        class="px-2 py-0.5 text-xs font-semibold rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400">Created</span>
+                                    <span class="text-xs text-gray-400">1d ago</span>
+                                </div>
+                                <p class="text-sm font-medium text-gray-900 dark:text-white">ပျူရွှေပြား</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Artifacts section</p>
+                            </div>
+                            <div class="mobile-card bg-gray-50 dark:bg-gray-700/30 rounded-xl p-3">
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <span
+                                        class="px-2 py-0.5 text-xs font-semibold rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400">Updated</span>
+                                    <span class="text-xs text-gray-400">2d ago</span>
+                                </div>
+                                <p class="text-sm font-medium text-gray-900 dark:text-white">ထေရဝါဒဗုဒ္ဓဘာသာ</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Religion section</p>
+                            </div>
+                            <div class="mobile-card bg-gray-50 dark:bg-gray-700/30 rounded-xl p-3">
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <span
+                                        class="px-2 py-0.5 text-xs font-semibold rounded-full bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400">Deleted</span>
+                                    <span class="text-xs text-gray-400">3d ago</span>
+                                </div>
+                                <p class="text-sm font-medium text-gray-900 dark:text-white">Draft Item</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Language section</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- ===== CITIES SECTION ===== -->
-            <div id="section-cities" class="content-section">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 space-y-3 sm:space-y-0">
-                    <div>
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Manage Cities</h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Add, edit, or remove Pyu ancient city records</p>
-                    </div>
-                    <button onclick="openModal('cities')" class="inline-flex items-center px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl shadow-lg shadow-indigo-500/30 transition-all hover:shadow-indigo-500/40 hover:-translate-y-0.5">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                        Add New City
-                    </button>
-                </div>
-                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm" id="cities-table">
-                            <thead class="bg-gray-50 dark:bg-gray-700/50">
-                                <tr class="text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                    <th class="px-6 py-4">ID</th>
-                                    <th class="px-6 py-4">Title</th>
-                                    <th class="px-6 py-4">Image</th>
-                                    <th class="px-6 py-4">Description</th>
-                                    <th class="px-6 py-4 text-right">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
-                                <tr class="table-row-hover hover:bg-gray-50 dark:hover:bg-gray-700/30">
-                                    <td class="px-6 py-4 text-gray-500 dark:text-gray-400 font-mono text-xs">1</td>
-                                    <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">ဟန်လင်း (Halin)</td>
-                                    <td class="px-6 py-4"><div class="w-12 h-12 rounded-lg bg-gray-200 dark:bg-gray-600 overflow-hidden"><img src="/halin.webp" alt="Halin" class="w-full h-full object-cover"></div></td>
-                                    <td class="px-6 py-4 text-gray-600 dark:text-gray-300 max-w-xs truncate">စစ်ကိုင်းတိုင်းဒေသကြီး၊ ဝက်လက်မြို့နယ်တွင် တည်ရှိပြီး ရှေးဟောင်းပျူမြို့ပြနိုင်ငံများထဲတွင် အကြီးဆုံးမြို့များထဲမှ တစ်ခုဖြစ်သည်။</td>
-                                    <td class="px-6 py-4 text-right">
-                                        <div class="flex items-center justify-end space-x-2">
-                                            <button onclick="openModal('cities', 1)" class="p-2 rounded-lg text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors" title="Edit"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>
-                                            <button onclick="confirmDelete('cities', 1)" class="p-2 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors" title="Delete"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="table-row-hover hover:bg-gray-50 dark:hover:bg-gray-700/30">
-                                    <td class="px-6 py-4 text-gray-500 dark:text-gray-400 font-mono text-xs">2</td>
-                                    <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">ဗိဿနိုး (Beikthano)</td>
-                                    <td class="px-6 py-4"><div class="w-12 h-12 rounded-lg bg-gray-200 dark:bg-gray-600 overflow-hidden"><img src="/beikthano.webp" alt="Beikthano" class="w-full h-full object-cover"></div></td>
-                                    <td class="px-6 py-4 text-gray-600 dark:text-gray-300 max-w-xs truncate">မကွေးတိုင်းဒေသကြီး၊ တောင်တွင်းကြီးမြို့နယ်တွင် တည်ရှိပြီး ပျူယဉ်ကျေးမှု၏ အစောဆုံးကာလများကို လေ့လာနိုင်သော မြို့ဟောင်းဖြစ်သည်။</td>
-                                    <td class="px-6 py-4 text-right">
-                                        <div class="flex items-center justify-end space-x-2">
-                                            <button onclick="openModal('cities', 2)" class="p-2 rounded-lg text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors" title="Edit"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>
-                                            <button onclick="confirmDelete('cities', 2)" class="p-2 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors" title="Delete"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="table-row-hover hover:bg-gray-50 dark:hover:bg-gray-700/30">
-                                    <td class="px-6 py-4 text-gray-500 dark:text-gray-400 font-mono text-xs">3</td>
-                                    <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">သရေခေတ္တရာ (Sri Ksetra)</td>
-                                    <td class="px-6 py-4"><div class="w-12 h-12 rounded-lg bg-gray-200 dark:bg-gray-600 overflow-hidden"><img src="/sri_ksetra.webp" alt="Sri Ksetra" class="w-full h-full object-cover"></div></td>
-                                    <td class="px-6 py-4 text-gray-600 dark:text-gray-300 max-w-xs truncate">ပဲခူးတိုင်းဒေသကြီး၊ ပြည်မြို့အနီးတွင် တည်ရှိပြီး ပျူမြို့ဟောင်းများထဲတွင် စနစ်တကျ အကျယ်ပြန့်ဆုံးနှင့် အကြွယ်ဝဆုံး မြို့ဟောင်းဖြစ်သည်။</td>
-                                    <td class="px-6 py-4 text-right">
-                                        <div class="flex items-center justify-end space-x-2">
-                                            <button onclick="openModal('cities', 3)" class="p-2 rounded-lg text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors" title="Edit"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>
-                                            <button onclick="confirmDelete('cities', 3)" class="p-2 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors" title="Delete"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+            <%- include('adminCities') %>
 
-            <!-- ===== CULTURE SECTION ===== -->
-            <div id="section-culture" class="content-section">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 space-y-3 sm:space-y-0">
-                    <div>
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Manage Culture</h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Add, edit, or remove Pyu cultural records</p>
-                    </div>
-                    <button onclick="openModal('culture')" class="inline-flex items-center px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-xl shadow-lg shadow-emerald-500/30 transition-all hover:shadow-emerald-500/40 hover:-translate-y-0.5">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                        Add New Culture
-                    </button>
-                </div>
-                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm">
-                            <thead class="bg-gray-50 dark:bg-gray-700/50">
-                                <tr class="text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                    <th class="px-6 py-4">ID</th>
-                                    <th class="px-6 py-4">Title</th>
-                                    <th class="px-6 py-4">Image</th>
-                                    <th class="px-6 py-4">Description</th>
-                                    <th class="px-6 py-4 text-right">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
-                                <tr class="table-row-hover hover:bg-gray-50 dark:hover:bg-gray-700/30">
-                                    <td class="px-6 py-4 text-gray-500 dark:text-gray-400 font-mono text-xs">1</td>
-                                    <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">ပျူယဉ်ကျေးမှု</td>
-                                    <td class="px-6 py-4"><div class="w-12 h-12 rounded-lg bg-gray-200 dark:bg-gray-600 flex items-center justify-center"><svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg></div></td>
-                                    <td class="px-6 py-4 text-gray-600 dark:text-gray-300 max-w-xs truncate">ပျူလူမျိုးတို့သည် အနုပညာ၊ ဂီတ၊ အကနှင့် လက်မှုပညာတို့တွင် ထူးချွန်ခဲ့ကြသည်။</td>
-                                    <td class="px-6 py-4 text-right">
-                                        <div class="flex items-center justify-end space-x-2">
-                                            <button onclick="openModal('culture', 1)" class="p-2 rounded-lg text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors" title="Edit"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>
-                                            <button onclick="confirmDelete('culture', 1)" class="p-2 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors" title="Delete"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="table-row-hover hover:bg-gray-50 dark:hover:bg-gray-700/30">
-                                    <td class="px-6 py-4 text-gray-500 dark:text-gray-400 font-mono text-xs">2</td>
-                                    <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">ပျူဂီတပညာ</td>
-                                    <td class="px-6 py-4"><div class="w-12 h-12 rounded-lg bg-gray-200 dark:bg-gray-600 flex items-center justify-center"><svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg></div></td>
-                                    <td class="px-6 py-4 text-gray-600 dark:text-gray-300 max-w-xs truncate">ပျူတို့၏ဂီတပညာသည် အထူးထွန်းကားခဲ့ပြီး တရုတ်မင်းဆက်သို့ ဂီတအဖွဲ့ စေလွှတ်ခဲ့သည်။</td>
-                                    <td class="px-6 py-4 text-right">
-                                        <div class="flex items-center justify-end space-x-2">
-                                            <button onclick="openModal('culture', 2)" class="p-2 rounded-lg text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors" title="Edit"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>
-                                            <button onclick="confirmDelete('culture', 2)" class="p-2 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors" title="Delete"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+                <%- include('adminCulture') %>
 
-            <!-- ===== LANGUAGE SECTION ===== -->
-            <div id="section-language" class="content-section">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 space-y-3 sm:space-y-0">
-                    <div>
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Manage Language</h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Add, edit, or remove Pyu language & script records</p>
-                    </div>
-                    <button onclick="openModal('language')" class="inline-flex items-center px-4 py-2.5 bg-amber-600 hover:bg-amber-700 text-white text-sm font-semibold rounded-xl shadow-lg shadow-amber-500/30 transition-all hover:shadow-amber-500/40 hover:-translate-y-0.5">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                        Add New Language
-                    </button>
-                </div>
-                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm">
-                            <thead class="bg-gray-50 dark:bg-gray-700/50">
-                                <tr class="text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                    <th class="px-6 py-4">ID</th>
-                                    <th class="px-6 py-4">Title</th>
-                                    <th class="px-6 py-4">Image</th>
-                                    <th class="px-6 py-4">Description</th>
-                                    <th class="px-6 py-4 text-right">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
-                                <tr class="table-row-hover hover:bg-gray-50 dark:hover:bg-gray-700/30">
-                                    <td class="px-6 py-4 text-gray-500 dark:text-gray-400 font-mono text-xs">1</td>
-                                    <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">ပျူစာပေ</td>
-                                    <td class="px-6 py-4"><div class="w-12 h-12 rounded-lg bg-gray-200 dark:bg-gray-600 flex items-center justify-center"><svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg></div></td>
-                                    <td class="px-6 py-4 text-gray-600 dark:text-gray-300 max-w-xs truncate">ပျူဘာသာစကားသည် တိဗက်-ဗမာ ဘာသာစကားမျိုးနွယ်ဝင် ဖြစ်ပြီး ကျောက်စာများတွင် တွေ့ရှိနိုင်သည်။</td>
-                                    <td class="px-6 py-4 text-right">
-                                        <div class="flex items-center justify-end space-x-2">
-                                            <button onclick="openModal('language', 1)" class="p-2 rounded-lg text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors" title="Edit"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>
-                                            <button onclick="confirmDelete('language', 1)" class="p-2 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors" title="Delete"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="table-row-hover hover:bg-gray-50 dark:hover:bg-gray-700/30">
-                                    <td class="px-6 py-4 text-gray-500 dark:text-gray-400 font-mono text-xs">2</td>
-                                    <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">ပျူအက္ခရာ</td>
-                                    <td class="px-6 py-4"><div class="w-12 h-12 rounded-lg bg-gray-200 dark:bg-gray-600 flex items-center justify-center"><svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg></div></td>
-                                    <td class="px-6 py-4 text-gray-600 dark:text-gray-300 max-w-xs truncate">ပျူအက္ခရာသည် ဗြဟ္မီအက္ခရာမှ ဆင်းသက်လာပြီး မြန်မာအက္ခရာ၏ မူလပုံစံဖြစ်သည်။</td>
-                                    <td class="px-6 py-4 text-right">
-                                        <div class="flex items-center justify-end space-x-2">
-                                            <button onclick="openModal('language', 2)" class="p-2 rounded-lg text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors" title="Edit"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>
-                                            <button onclick="confirmDelete('language', 2)" class="p-2 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors" title="Delete"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+                    <%- include('adminLanguage') %>
 
-            <!-- ===== RELIGION SECTION ===== -->
-            <div id="section-religion" class="content-section">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 space-y-3 sm:space-y-0">
-                    <div>
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Manage Religion</h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Add, edit, or remove Pyu religion records</p>
-                    </div>
-                    <button onclick="openModal('religion')" class="inline-flex items-center px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold rounded-xl shadow-lg shadow-rose-500/30 transition-all hover:shadow-rose-500/40 hover:-translate-y-0.5">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                        Add New Religion
-                    </button>
-                </div>
-                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm">
-                            <thead class="bg-gray-50 dark:bg-gray-700/50">
-                                <tr class="text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                    <th class="px-6 py-4">ID</th>
-                                    <th class="px-6 py-4">Title</th>
-                                    <th class="px-6 py-4">Image</th>
-                                    <th class="px-6 py-4">Description</th>
-                                    <th class="px-6 py-4 text-right">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
-                                <tr class="table-row-hover hover:bg-gray-50 dark:hover:bg-gray-700/30">
-                                    <td class="px-6 py-4 text-gray-500 dark:text-gray-400 font-mono text-xs">1</td>
-                                    <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">ထေရဝါဒဗုဒ္ဓဘာသာ</td>
-                                    <td class="px-6 py-4"><div class="w-12 h-12 rounded-lg bg-gray-200 dark:bg-gray-600 flex items-center justify-center"><svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg></div></td>
-                                    <td class="px-6 py-4 text-gray-600 dark:text-gray-300 max-w-xs truncate">ပျူခေတ်တွင် ထေရဝါဒဗုဒ္ဓဘာသာသည် အဓိကကိုးကွယ်ယုံကြည်မှု ဖြစ်ခဲ့ပါသည်။</td>
-                                    <td class="px-6 py-4 text-right">
-                                        <div class="flex items-center justify-end space-x-2">
-                                            <button onclick="openModal('religion', 1)" class="p-2 rounded-lg text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors" title="Edit"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>
-                                            <button onclick="confirmDelete('religion', 1)" class="p-2 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors" title="Delete"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="table-row-hover hover:bg-gray-50 dark:hover:bg-gray-700/30">
-                                    <td class="px-6 py-4 text-gray-500 dark:text-gray-400 font-mono text-xs">2</td>
-                                    <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">ဟိန္ဒူဘာသာ</td>
-                                    <td class="px-6 py-4"><div class="w-12 h-12 rounded-lg bg-gray-200 dark:bg-gray-600 flex items-center justify-center"><svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg></div></td>
-                                    <td class="px-6 py-4 text-gray-600 dark:text-gray-300 max-w-xs truncate">ပျူလူမျိုးများသည် ဟိန္ဒူဘာသာ၏ လွှမ်းမိုးမှုကိုလည်း ခံယူခဲ့ကြသည်။ ဗိဿနိုးနှင့် ဝိဿနူရုပ်ထုများ တွေ့ရှိရသည်။</td>
-                                    <td class="px-6 py-4 text-right">
-                                        <div class="flex items-center justify-end space-x-2">
-                                            <button onclick="openModal('religion', 2)" class="p-2 rounded-lg text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors" title="Edit"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>
-                                            <button onclick="confirmDelete('religion', 2)" class="p-2 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors" title="Delete"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+                        <%- include('adminReligious') %>
 
-            <!-- ===== ARTIFACTS SECTION ===== -->
-            <div id="section-artifacts" class="content-section">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 space-y-3 sm:space-y-0">
-                    <div>
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Manage Artifacts</h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Add, edit, or remove archaeological artifact records</p>
-                    </div>
-                    <button onclick="openModal('artifacts')" class="inline-flex items-center px-4 py-2.5 bg-cyan-600 hover:bg-cyan-700 text-white text-sm font-semibold rounded-xl shadow-lg shadow-cyan-500/30 transition-all hover:shadow-cyan-500/40 hover:-translate-y-0.5">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                        Add New Artifact
-                    </button>
-                </div>
-                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm">
-                            <thead class="bg-gray-50 dark:bg-gray-700/50">
-                                <tr class="text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                    <th class="px-6 py-4">ID</th>
-                                    <th class="px-6 py-4">Title</th>
-                                    <th class="px-6 py-4">Image</th>
-                                    <th class="px-6 py-4">Description</th>
-                                    <th class="px-6 py-4 text-right">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
-                                <tr class="table-row-hover hover:bg-gray-50 dark:hover:bg-gray-700/30">
-                                    <td class="px-6 py-4 text-gray-500 dark:text-gray-400 font-mono text-xs">1</td>
-                                    <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">ပျူရွှေပြား</td>
-                                    <td class="px-6 py-4"><div class="w-12 h-12 rounded-lg bg-gray-200 dark:bg-gray-600 flex items-center justify-center"><svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg></div></td>
-                                    <td class="px-6 py-4 text-gray-600 dark:text-gray-300 max-w-xs truncate">သရေခေတ္တရာမြို့ဟောင်းတွင် တွေ့ရှိသော ပျူခေတ် ရွှေပြားများ - ပါဠိစာသားများ ပါဝင်သည်။</td>
-                                    <td class="px-6 py-4 text-right">
-                                        <div class="flex items-center justify-end space-x-2">
-                                            <button onclick="openModal('artifacts', 1)" class="p-2 rounded-lg text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors" title="Edit"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>
-                                            <button onclick="confirmDelete('artifacts', 1)" class="p-2 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors" title="Delete"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="table-row-hover hover:bg-gray-50 dark:hover:bg-gray-700/30">
-                                    <td class="px-6 py-4 text-gray-500 dark:text-gray-400 font-mono text-xs">2</td>
-                                    <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">ပျူကျောက်စာ</td>
-                                    <td class="px-6 py-4"><div class="w-12 h-12 rounded-lg bg-gray-200 dark:bg-gray-600 flex items-center justify-center"><svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg></div></td>
-                                    <td class="px-6 py-4 text-gray-600 dark:text-gray-300 max-w-xs truncate">ဟန်လင်းနှင့် သရေခေတ္တရာတို့တွင် တွေ့ရှိသော ပျူအက္ခရာ ကျောက်စာအချပ်များ။</td>
-                                    <td class="px-6 py-4 text-right">
-                                        <div class="flex items-center justify-end space-x-2">
-                                            <button onclick="openModal('artifacts', 2)" class="p-2 rounded-lg text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors" title="Edit"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>
-                                            <button onclick="confirmDelete('artifacts', 2)" class="p-2 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors" title="Delete"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="table-row-hover hover:bg-gray-50 dark:hover:bg-gray-700/30">
-                                    <td class="px-6 py-4 text-gray-500 dark:text-gray-400 font-mono text-xs">3</td>
-                                    <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">ငွေဒင်္ဂါး</td>
-                                    <td class="px-6 py-4"><div class="w-12 h-12 rounded-lg bg-gray-200 dark:bg-gray-600 flex items-center justify-center"><svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg></div></td>
-                                    <td class="px-6 py-4 text-gray-600 dark:text-gray-300 max-w-xs truncate">ပျူခေတ်တွင် သုံးစွဲခဲ့သော ငွေဒင်္ဂါးများ - သူရိယဒေဝ (နေဘုရား) ပုံပါဝင်သည်။</td>
-                                    <td class="px-6 py-4 text-right">
-                                        <div class="flex items-center justify-end space-x-2">
-                                            <button onclick="openModal('artifacts', 3)" class="p-2 rounded-lg text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors" title="Edit"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>
-                                            <button onclick="confirmDelete('artifacts', 3)" class="p-2 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors" title="Delete"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+                            <%- include('adminArtifacts') %>
+
+                            <%- include('adminThreeDArtifacts') %>
 
         </main>
     </div>
 
+    <!-- ==================== MOBILE BOTTOM NAVIGATION ==================== -->
+    <nav id="bottom-nav"
+        class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 pb-safe shadow-2xl">
+        <div class="flex items-center justify-around py-1">
+            <button onclick="switchSection('dashboard')" data-section="dashboard"
+                class="bottom-nav-btn active flex flex-col items-center py-1.5 px-2 rounded-xl text-indigo-600 dark:text-indigo-400 min-w-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                    </path>
+                </svg>
+                <span class="text-[10px] font-medium mt-0.5">Dashboard</span>
+            </button>
+            <button onclick="switchSection('cities')" data-section="cities"
+                class="bottom-nav-btn flex flex-col items-center py-1.5 px-2 rounded-xl text-gray-500 dark:text-gray-400 min-w-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                    </path>
+                </svg>
+                <span class="text-[10px] font-medium mt-0.5">Cities</span>
+            </button>
+            <button onclick="switchSection('culture')" data-section="culture"
+                class="bottom-nav-btn flex flex-col items-center py-1.5 px-2 rounded-xl text-gray-500 dark:text-gray-400 min-w-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01">
+                    </path>
+                </svg>
+                <span class="text-[10px] font-medium mt-0.5">Culture</span>
+            </button>
+            <button onclick="switchSection('language')" data-section="language"
+                class="bottom-nav-btn flex flex-col items-center py-1.5 px-2 rounded-xl text-gray-500 dark:text-gray-400 min-w-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129">
+                    </path>
+                </svg>
+                <span class="text-[10px] font-medium mt-0.5">Language</span>
+            </button>
+            <button onclick="switchSection('religion')" data-section="religion"
+                class="bottom-nav-btn flex flex-col items-center py-1.5 px-2 rounded-xl text-gray-500 dark:text-gray-400 min-w-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                    </path>
+                </svg>
+                <span class="text-[10px] font-medium mt-0.5">Religion</span>
+            </button>
+            <button onclick="switchSection('artifacts')" data-section="artifacts"
+                class="bottom-nav-btn flex flex-col items-center py-1.5 px-2 rounded-xl text-gray-500 dark:text-gray-400 min-w-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>
+                </svg>
+                <span class="text-[10px] font-medium mt-0.5">Artifacts</span>
+            </button>
+            <button onclick="switchSection('3d-artifacts')" data-section="3d-artifacts"
+                class="bottom-nav-btn flex flex-col items-center py-1.5 px-2 rounded-xl text-gray-500 dark:text-gray-400 min-w-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"></path>
+                </svg>
+                <span class="text-[10px] font-medium mt-0.5">3D</span>
+            </button>
+        </div>
+    </nav>
+
     <!-- ==================== ADD/EDIT MODAL ==================== -->
-    <div id="modal-overlay" class="modal-overlay fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4" onclick="closeModal(event)">
-        <div class="modal-content bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto border border-gray-200 dark:border-gray-700" onclick="event.stopPropagation()">
+    <div id="modal-overlay"
+        class="modal-overlay fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] hidden flex items-end sm:items-center justify-center p-0 sm:p-4"
+        onclick="closeModal(event)">
+        <div class="modal-content bg-white dark:bg-gray-800 rounded-t-2xl sm:rounded-2xl shadow-2xl w-full sm:max-w-lg max-h-[90vh] overflow-y-auto border-gray-200 dark:border-gray-700 sm:border"
+            onclick="event.stopPropagation()">
             <!-- Modal Header -->
-            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-gray-700">
-                <h3 id="modal-title" class="text-lg font-bold text-gray-900 dark:text-white">Add New Item</h3>
-                <button onclick="closeModal()" class="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            <div
+                class="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-100 dark:border-gray-700 sticky top-0 bg-white dark:bg-gray-800 z-10">
+                <h3 id="modal-title" class="text-base sm:text-lg font-bold text-gray-900 dark:text-white">Add New Item
+                </h3>
+                <button onclick="closeModal()"
+                    class="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
                 </button>
             </div>
 
             <!-- Modal Body (Form) -->
-            <form id="modal-form" class="p-6 space-y-5" onsubmit="handleSubmit(event)">
+            <form id="modal-form" class="p-4 sm:p-6 space-y-4 sm:space-y-5" onsubmit="handleSubmit(event)">
                 <input type="hidden" id="form-section" value="">
                 <input type="hidden" id="form-id" value="">
 
                 <!-- Title Field -->
                 <div>
-                    <label for="form-title" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Title</label>
-                    <input type="text" id="form-title" placeholder="Enter title..." required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm">
+                    <label for="form-title"
+                        class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Title</label>
+                    <input type="text" id="form-title" placeholder="Enter title..." required
+                        class="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm">
                 </div>
 
                 <!-- Description Field -->
                 <div>
-                    <label for="form-description" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Description</label>
-                    <textarea id="form-description" rows="4" placeholder="Enter description..." required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm resize-none"></textarea>
+                    <label for="form-description"
+                        class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Description</label>
+                    <textarea id="form-description" rows="4" placeholder="Enter description..." required
+                        class="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm resize-none"></textarea>
                 </div>
 
                 <!-- Image URL Field -->
                 <div>
-                    <label for="form-image" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Image URL</label>
-                    <input type="text" id="form-image" placeholder="e.g. /halin.webp or https://..." class="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm">
+                    <label for="form-image"
+                        class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Image URL</label>
+                    <input type="text" id="form-image" placeholder="e.g. /halin.webp or https://..."
+                        class="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm">
                 </div>
 
                 <!-- Modal Buttons -->
                 <div class="flex items-center justify-end space-x-3 pt-2">
-                    <button type="button" onclick="closeModal()" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                    <button type="button" onclick="closeModal()"
+                        class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl text-sm font-semibold text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
                         Cancel
                     </button>
-                    <button type="submit" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 shadow-lg shadow-indigo-500/30 transition-all hover:shadow-indigo-500/40">
+                    <button type="submit"
+                        class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 shadow-lg shadow-indigo-500/30 transition-all hover:shadow-indigo-500/40">
                         Save Changes
                     </button>
                 </div>
@@ -762,18 +922,30 @@
     </div>
 
     <!-- ==================== DELETE CONFIRMATION MODAL ==================== -->
-    <div id="delete-modal" class="modal-overlay fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4" onclick="closeDeleteModal(event)">
-        <div class="modal-content bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-sm border border-gray-200 dark:border-gray-700 p-6 text-center" onclick="event.stopPropagation()">
-            <div class="w-14 h-14 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg class="w-7 h-7 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"></path></svg>
+    <div id="delete-modal"
+        class="modal-overlay fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4"
+        onclick="closeDeleteModal(event)">
+        <div class="modal-content bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-sm border border-gray-200 dark:border-gray-700 p-6 text-center"
+            onclick="event.stopPropagation()">
+            <div
+                class="w-14 h-14 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-7 h-7 text-red-600 dark:text-red-400" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z">
+                    </path>
+                </svg>
             </div>
             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Delete Item?</h3>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">This action cannot be undone. Are you sure you want to permanently delete this item?</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">This action cannot be undone. Are you sure you want
+                to permanently delete this item?</p>
             <div class="flex items-center justify-center space-x-3">
-                <button onclick="closeDeleteModal()" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                <button onclick="closeDeleteModal()"
+                    class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl text-sm font-semibold text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
                     Cancel
                 </button>
-                <button id="confirm-delete-btn" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-red-600 hover:bg-red-700 shadow-lg shadow-red-500/30 transition-all">
+                <button id="confirm-delete-btn"
+                    class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-red-600 hover:bg-red-700 shadow-lg shadow-red-500/30 transition-all">
                     Delete
                 </button>
             </div>
@@ -781,25 +953,53 @@
     </div>
 
     <!-- ==================== TOAST NOTIFICATION ==================== -->
-    <div id="toast" class="fixed bottom-6 right-6 z-[70] transform translate-y-20 opacity-0 transition-all duration-500 pointer-events-none">
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 px-5 py-3 flex items-center space-x-3">
-            <div id="toast-icon" class="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
-                <svg class="w-4 h-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+    <div id="toast"
+        class="fixed bottom-20 lg:bottom-6 right-3 left-3 sm:left-auto sm:right-6 z-[70] transform translate-y-20 opacity-0 transition-all duration-500 pointer-events-none">
+        <div
+            class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 px-4 py-3 flex items-center space-x-3">
+            <div id="toast-icon"
+                class="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
+                <svg class="w-4 h-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
             </div>
-            <p id="toast-message" class="text-sm font-medium text-gray-900 dark:text-white">Action completed successfully!</p>
+            <p id="toast-message" class="text-sm font-medium text-gray-900 dark:text-white">Action completed
+                successfully!</p>
         </div>
     </div>
 
     <!-- ==================== JAVASCRIPT ==================== -->
     <script>
-        // ===== SIDEBAR TOGGLE =====
+        // ===== SIDEBAR TOGGLE (DRAWER) =====
         const sidebar = document.getElementById('sidebar');
         const sidebarOverlay = document.getElementById('sidebar-overlay');
 
         function toggleSidebar() {
-            sidebar.classList.toggle('-translate-x-full');
-            sidebarOverlay.classList.toggle('hidden');
-            document.body.classList.toggle('overflow-hidden');
+            const isOpen = !sidebar.classList.contains('-translate-x-full');
+            if (isOpen) {
+                closeSidebar();
+            } else {
+                openSidebar();
+            }
+        }
+
+        function openSidebar() {
+            sidebar.classList.remove('-translate-x-full');
+            sidebarOverlay.classList.remove('hidden');
+            // Trigger reflow for opacity transition
+            sidebarOverlay.offsetHeight;
+            sidebarOverlay.classList.remove('opacity-0');
+            document.body.classList.add('sidebar-open');
+        }
+
+        function closeSidebar() {
+            sidebar.classList.add('-translate-x-full');
+            sidebarOverlay.classList.add('opacity-0');
+            document.body.classList.remove('sidebar-open');
+            setTimeout(() => {
+                sidebarOverlay.classList.add('hidden');
+            }, 300);
         }
 
         // Close sidebar on resize to desktop
@@ -807,9 +1007,45 @@
             if (window.innerWidth >= 1024) {
                 sidebar.classList.remove('-translate-x-full');
                 sidebarOverlay.classList.add('hidden');
-                document.body.classList.remove('overflow-hidden');
+                sidebarOverlay.classList.add('opacity-0');
+                document.body.classList.remove('sidebar-open');
             }
         });
+
+        // Touch swipe to close sidebar
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchDeltaX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+
+        document.addEventListener('touchmove', (e) => {
+            if (!sidebar.classList.contains('-translate-x-full')) {
+                touchDeltaX = e.changedTouches[0].screenX - touchStartX;
+                // Only for horizontal swipes
+                const deltaY = Math.abs(e.changedTouches[0].screenY - touchStartY);
+                if (deltaY < Math.abs(touchDeltaX) && touchDeltaX < 0) {
+                    sidebar.style.transform = 'translateX(' + Math.max(-288, touchDeltaX) + 'px)';
+                }
+            }
+        }, { passive: true });
+
+        document.addEventListener('touchend', (e) => {
+            if (!sidebar.classList.contains('-translate-x-full')) {
+                if (touchDeltaX < -80) {
+                    closeSidebar();
+                }
+                sidebar.style.transform = '';
+                touchDeltaX = 0;
+            }
+            // Open sidebar with right edge swipe from left side
+            if (touchStartX < 30 && (e.changedTouches[0].screenX - touchStartX) > 60 && window.innerWidth < 1024) {
+                openSidebar();
+            }
+        }, { passive: true });
 
         // ===== SECTION SWITCHING =====
         const sectionTitles = {
@@ -819,6 +1055,7 @@
             language: { title: 'Language', subtitle: 'Manage Language & Script Records' },
             religion: { title: 'Religion', subtitle: 'Manage Religious Records' },
             artifacts: { title: 'Artifacts', subtitle: 'Manage Archaeological Artifacts' },
+            '3d-artifacts': { title: '3D Artifacts', subtitle: 'Manage 3D Artifact Models' },
         };
 
         function switchSection(sectionName) {
@@ -830,9 +1067,8 @@
             // Show target section
             const target = document.getElementById('section-' + sectionName);
             if (target) {
-                // Force re-trigger animation
                 target.style.animation = 'none';
-                target.offsetHeight; // Trigger reflow
+                target.offsetHeight;
                 target.style.animation = '';
                 target.classList.add('active');
             }
@@ -844,8 +1080,8 @@
                 document.getElementById('page-subtitle').textContent = info.subtitle;
             }
 
-            // Update nav link active states
-            document.querySelectorAll('.nav-link').forEach(link => {
+            // Update sidebar nav link active states
+            document.querySelectorAll('#sidebar .nav-link').forEach(link => {
                 const linkSection = link.getAttribute('data-section');
                 if (linkSection === sectionName) {
                     link.classList.add('active', 'text-indigo-600', 'dark:text-indigo-400', 'bg-indigo-50', 'dark:bg-indigo-900/30');
@@ -856,11 +1092,21 @@
                 }
             });
 
+            // Update bottom nav active states
+            document.querySelectorAll('#bottom-nav .bottom-nav-btn').forEach(btn => {
+                const btnSection = btn.getAttribute('data-section');
+                if (btnSection === sectionName) {
+                    btn.classList.add('text-indigo-600', 'dark:text-indigo-400');
+                    btn.classList.remove('text-gray-500', 'dark:text-gray-400');
+                } else {
+                    btn.classList.remove('text-indigo-600', 'dark:text-indigo-400');
+                    btn.classList.add('text-gray-500', 'dark:text-gray-400');
+                }
+            });
+
             // Close mobile sidebar
             if (window.innerWidth < 1024) {
-                sidebar.classList.add('-translate-x-full');
-                sidebarOverlay.classList.add('hidden');
-                document.body.classList.remove('overflow-hidden');
+                closeSidebar();
             }
         }
 
@@ -882,7 +1128,6 @@
             }
         }
 
-        // Initialize theme
         if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         } else {
@@ -908,29 +1153,22 @@
         const formId = document.getElementById('form-id');
         const formTitle = document.getElementById('form-title');
         const formDescription = document.getElementById('form-description');
-        const formImage = document.getElementById('form-image');
 
         function openModal(section, id = null) {
             formSection.value = section;
-            formId.value = id || '';
+            formId.value = parseInt(id) || '';
+            formTitle.value = '';
+            formDescription.value = '';
 
             if (id) {
                 modalTitle.textContent = 'Edit ' + section.charAt(0).toUpperCase() + section.slice(1) + ' Item';
-                // Populate form from table row (simulate)
-                formTitle.value = 'Sample Title';
-                formDescription.value = 'Sample description text...';
-                formImage.value = '';
             } else {
                 modalTitle.textContent = 'Add New ' + section.charAt(0).toUpperCase() + section.slice(1);
-                formTitle.value = '';
-                formDescription.value = '';
-                formImage.value = '';
             }
 
             modalOverlay.classList.remove('hidden');
             modalOverlay.classList.add('flex');
             document.body.classList.add('overflow-hidden');
-            // Focus first input
             setTimeout(() => formTitle.focus(), 200);
         }
 
@@ -939,16 +1177,16 @@
             modalOverlay.classList.add('hidden');
             modalOverlay.classList.remove('flex');
             document.body.classList.remove('overflow-hidden');
+            document.getElementById('modal-form').reset();
         }
 
         function handleSubmit(e) {
             e.preventDefault();
             const section = formSection.value;
             const id = formId.value;
-            const action = id ? 'updated' : 'created';
 
             closeModal();
-            showToast(`Item ${action} successfully in ${section}!`);
+            showToast(`Item ${id ? 'updated' : 'created'} successfully in ${section}!`);
         }
 
         // ===== DELETE MODAL =====
@@ -971,8 +1209,9 @@
         }
 
         confirmDeleteBtn.addEventListener('click', () => {
+            const { section } = pendingDelete;
             closeDeleteModal();
-            showToast(`Item deleted from ${pendingDelete.section}!`, 'delete');
+            showToast(`Item deleted from ${section}!`, 'delete');
         });
 
         // ===== TOAST NOTIFICATION =====
@@ -1009,4 +1248,5 @@
         });
     </script>
 </body>
+
 </html>

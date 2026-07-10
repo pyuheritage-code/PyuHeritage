@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D ရှေးဟောင်းပစ္စည်းများ - PyuHeritage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' }
+    </script>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js">
+    </script>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300 overflow-x-hidden">
+    <!-- nav_section -->
+    <nav class="bg-gray-100/80 dark:bg-gray-800/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="/" class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">ပျူအမွေအနှစ်</a>
+                </div>
+
+                <div class="hidden md:flex flex-1 justify-center space-x-8">
+                    <a href="/" class="hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">ပင်မစာမျက်နှာ</a>
+                    <a href="/chat" class="hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">ပျူအကြောင်းမေးမြန်းရန်</a>
+
+                    <div class="relative">
+                        <button id="history-dropdown-btn" class="flex items-center text-indigo-600 dark:text-indigo-400 font-medium focus:outline-none transition-colors duration-200">
+                            အကြောင်းအရာများ
+                            <svg id="history-arrow" class="ml-1 w-4 h-4 rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div id="history-dropdown-menu" class="absolute hidden left-0 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-gray-700 ring-1 ring-black ring-opacity-5 z-50">
+                            <div class="py-1">
+                                <a href="/history/cities" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">မြို့ပြနိုင်ငံများ</a>
+                                <a href="/history/religion" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">သာသနာထွန်းကားမှု</a>
+                                <a href="/history/language" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">ပျူဘာသာစကား နှင့် အက္ခရာ</a>
+                                <a href="/history/culture" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">ယဉ်ကျေးမှု နှင့် ဘာသာရေး</a>
+                                <a href="/history/artifacts" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">ရှေးဟောင်းသုတေသန ပစ္စည်းများ</a>
+                                <a href="/history/artifacts/3d" class="block px-4 py-2 text-sm bg-indigo-100 dark:bg-indigo-800 font-semibold text-indigo-700 dark:text-indigo-300">3D ရှေးဟောင်းပစ္စည်းများ</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hidden md:flex items-center">
+                    <button id="theme-toggle" class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none">
+                        <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path>
+                        </svg>
+                        <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="/" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">ပင်မစာမျက်နှာ</a>
+                <a href="/chat" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">ပျူအကြောင်းမေးမြန်းရန်</a>
+                <a href="/history/cities" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">မြို့ပြနိုင်ငံများ</a>
+                <a href="/history/religion" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">သာသနာထွန်းကားမှု</a>
+                <a href="/history/language" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">ပျူဘာသာစကား နှင့် အက္ခရာ</a>
+                <a href="/history/culture" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">ယဉ်ကျေးမှု နှင့် ဘာသာရေး</a>
+                <a href="/history/artifacts" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700">ရှေးဟောင်းသုတေသန ပစ္စည်းများ</a>
+                <a href="/history/artifacts/3d" class="block px-3 py-2 rounded-md text-base font-medium bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300">3D ရှေးဟောင်းပစ္စည်းများ</a>
+            </div>
+        </div>
+    </nav>
+    <!-- /nav_section -->
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Page Header -->
+        <div class="text-center mb-12">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg shadow-indigo-500/30 mb-4">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"></path>
+                </svg>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">3D ရှေးဟောင်းပစ္စည်းများ</h1>
+            <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">ပျူခေတ်မှ ရှေးဟောင်းပစ္စည်းများကို 3D မော်ဒယ်ဖြင့် လေ့လာကြည့်ရှုနိုင်ပါသည်။</p>
+        </div>
+
+        <!-- Artifacts Grid -->
+        <% if (artifacts && artifacts.length > 0) { %>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                <% artifacts.forEach(function(a) { %>
+                    <div class="group bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                        <!-- Image -->
+                        <div class="relative h-52 bg-gray-200 dark:bg-gray-700 overflow-hidden">
+                            <% if (a.image_url) { %>
+                                <img src="<%= a.image_url %>" alt="<%= a.title %>"
+                                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <% } else { %>
+                                <div class="w-full h-full flex items-center justify-center">
+                                    <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"></path>
+                                    </svg>
+                                </div>
+                            <% } %>
+                            <% if (a.category) { %>
+                                <span class="absolute top-3 left-3 px-3 py-1 text-xs font-semibold rounded-full bg-white/90 dark:bg-gray-900/90 text-gray-700 dark:text-gray-300 backdrop-blur-sm shadow-sm">
+                                    <%= a.category %>
+                                </span>
+                            <% } %>
+                            <% if (a.model_url) { %>
+                                <button onclick="open3DViewer('<%= a.model_url %>', '<%= a.title.replace(/'/g, "\\'") %>')"
+                                    class="absolute bottom-3 right-3 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl shadow-lg shadow-indigo-500/30 transition-all hover:shadow-indigo-500/40 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 duration-300 flex items-center space-x-1.5">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"></path>
+                                    </svg>
+                                    <span>3D View</span>
+                                </button>
+                            <% } %>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="p-5">
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2"><%= a.title %></h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-3"><%= a.description %></p>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        <% } else { %>
+            <div class="text-center py-20">
+                <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                    <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">၃ဓ ပစ္စည်းများ မရှိသေးပါ</h3>
+                <p class="text-gray-500 dark:text-gray-400">မကြာမီတွင် 3D ရှေးဟောင်းပစ္စည်းများကို ထည့်သွင်းပေးသွားပါမည်။</p>
+            </div>
+        <% } %>
+    </main>
+
+    <!-- ==================== 3D VIEWER MODAL ==================== -->
+    <div id="viewer-modal-overlay"
+        class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-0 sm:p-4"
+        onclick="close3DViewer(event)">
+        <div class="relative w-full h-full sm:w-[90vw] sm:h-[90vh] max-w-6xl max-h-[90vh] bg-gray-900 rounded-none sm:rounded-2xl overflow-hidden"
+            onclick="event.stopPropagation()">
+            <!-- Viewer Header -->
+            <div class="absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-4 sm:px-6 py-3 bg-gradient-to-b from-black/60 to-transparent">
+                <h3 id="viewer-title" class="text-white font-bold text-lg truncate pr-4">3D Model</h3>
+                <button onclick="close3DViewer()"
+                    class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors flex-shrink-0">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Model Viewer -->
+            <model-viewer id="artifact-model-viewer"
+                class="w-full h-full"
+                camera-controls
+                auto-rotate
+                rotation-per-second="30deg"
+                ar
+                ar-modes="webxr scene-viewer quick-look"
+                shadow-intensity="1"
+                exposure="1"
+                loading="eager">
+            </model-viewer>
+
+            <!-- Loading indicator -->
+            <div id="viewer-loading" class="absolute inset-0 flex items-center justify-center">
+                <div class="text-center">
+                    <div class="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                    <p class="text-white/70 text-sm">Loading 3D model...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+
+    <script>
+        // Theme Toggle
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const darkIcon = document.getElementById('theme-toggle-dark-icon');
+        const lightIcon = document.getElementById('theme-toggle-light-icon');
+
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            if(lightIcon) lightIcon.classList.remove('hidden');
+        } else {
+            document.documentElement.classList.remove('dark');
+            if(darkIcon) darkIcon.classList.remove('hidden');
+        }
+
+        themeToggleBtn?.addEventListener('click', () => {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+                lightIcon?.classList.add('hidden');
+                darkIcon?.classList.remove('hidden');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+                darkIcon?.classList.add('hidden');
+                lightIcon?.classList.remove('hidden');
+            }
+        });
+
+        // History dropdown
+        const dropdownBtn = document.getElementById('history-dropdown-btn');
+        const dropdownMenu = document.getElementById('history-dropdown-menu');
+        const historyArrow = document.getElementById('history-arrow');
+
+        dropdownBtn?.addEventListener('click', () => {
+            dropdownMenu.classList.toggle('hidden');
+            historyArrow.classList.toggle('rotate-180');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (dropdownBtn && !dropdownBtn.contains(e.target) && !dropdownMenu?.contains(e.target)) {
+                dropdownMenu?.classList.add('hidden');
+                historyArrow?.classList.remove('rotate-180');
+            }
+        });
+
+        // Mobile menu
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton?.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // 3D Viewer Modal
+        const viewerOverlay = document.getElementById('viewer-modal-overlay');
+        const modelViewer = document.getElementById('artifact-model-viewer');
+        const viewerTitle = document.getElementById('viewer-title');
+        const viewerLoading = document.getElementById('viewer-loading');
+
+        function open3DViewer(modelUrl, title) {
+            viewerTitle.textContent = title || '3D Model';
+            modelViewer.setAttribute('src', modelUrl);
+            viewerLoading.classList.remove('hidden');
+            viewerOverlay.classList.remove('hidden');
+            viewerOverlay.classList.add('flex');
+            document.body.classList.add('overflow-hidden');
+            // Hide loader once model loads
+            modelViewer.addEventListener('load', () => {
+                viewerLoading.classList.add('hidden');
+            }, { once: true });
+            modelViewer.addEventListener('error', () => {
+                viewerLoading.innerHTML = '<p class="text-red-400">Failed to load 3D model</p>';
+            }, { once: true });
+        }
+
+        function close3DViewer(e) {
+            if (e && e.target !== viewerOverlay) return;
+            viewerOverlay.classList.add('hidden');
+            viewerOverlay.classList.remove('flex');
+            document.body.classList.remove('overflow-hidden');
+            modelViewer.removeAttribute('src');
+            viewerLoading.classList.add('hidden');
+            viewerLoading.innerHTML = `
+                <div class="text-center">
+                    <div class="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                    <p class="text-white/70 text-sm">Loading 3D model...</p>
+                </div>
+            `;
+        }
+
+        // Keyboard shortcut
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (!viewerOverlay.classList.contains('hidden')) close3DViewer();
+            }
+        });
+    </script>
+</body>
+</html>

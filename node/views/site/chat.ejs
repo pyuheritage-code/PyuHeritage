@@ -226,7 +226,7 @@
                     if (data.response) {
                         addMessage(data.response);
                     } else if (data.error) {
-                        addMessage("စိတ်မရှိပါနဲ့၊ အမှားတစ်ခုဖြစ်သွားလို့ နောက်တစ်ခေါက်ပြန်ကြိုးစားကြည့်ပေးပါ။");
+                        addMessage(data.detail || "စိတ်မရှိပါနဲ့၊ အမှားတစ်ခုဖြစ်သွားလို့ နောက်တစ်ခေါက်ပြန်ကြိုးစားကြည့်ပေးပါ။");
                     }
                 } catch (error) {
                     console.error('Error:', error);

@@ -1,0 +1,353 @@
+<!-- ===== ARTIFACTS SECTION ===== -->
+<div id="section-artifacts" class="content-section">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 space-y-3 sm:space-y-0">
+        <div>
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Manage Artifacts</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Add, edit, or remove archaeological artifact
+                records</p>
+        </div>
+        <button onclick="openArtifactModal()"
+            class="inline-flex items-center px-4 py-2.5 bg-cyan-600 hover:bg-cyan-700 text-white text-sm font-semibold rounded-xl shadow-lg shadow-cyan-500/30 transition-all hover:shadow-cyan-500/40 hover:-translate-y-0.5">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            Add New Artifact
+        </button>
+    </div>
+    <div
+        class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead class="bg-gray-50 dark:bg-gray-700/50">
+                    <tr
+                        class="text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                        <th class="px-6 py-4">ID</th>
+                        <th class="px-6 py-4">Title</th>
+                        <th class="px-6 py-4">Image</th>
+                        <th class="px-6 py-4">Description</th>
+                        <th class="px-6 py-4 text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="artifacts-table-body" class="divide-y divide-gray-100 dark:divide-gray-700">
+                    <% if (artifacts && artifacts.length> 0) { %>
+                        <% artifacts.forEach(function(a) { %>
+                            <tr class="table-row-hover hover:bg-gray-50 dark:hover:bg-gray-700/30"
+                                data-id="<%= a.id %>">
+                                <td class="px-6 py-4 text-gray-500 dark:text-gray-400 font-mono text-xs">
+                                    <%= a.id %>
+                                </td>
+                                <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                                    <%= a.title %>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <% if (a.image_url) { %>
+                                        <img src="<%= a.image_url %>" alt="<%= a.title %>"
+                                            class="w-12 h-12 rounded-lg object-cover">
+                                        <% } else { %>
+                                            <div
+                                                class="w-12 h-12 rounded-lg bg-gray-200 dark:bg-gray-600 flex items-center justify-center">
+                                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                            <% } %>
+                                </td>
+                                <td class="px-6 py-4 text-gray-600 dark:text-gray-300 max-w-xs truncate">
+                                    <%= a.description %>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <div class="flex items-center justify-end space-x-2">
+                                        <button onclick="openArtifactModal('<%= a.id %>')"
+                                            class="p-2 rounded-lg text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors"
+                                            title="Edit"><svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                                </path>
+                                            </svg></button>
+                                        <button onclick="confirmDeleteArtifact('<%= a.id %>')"
+                                            class="p-2 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors"
+                                            title="Delete"><svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                                </path>
+                                            </svg></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <% }); %>
+                                <% } else { %>
+                                    <tr id="no-artifacts-row">
+                                        <td colspan="5" class="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
+                                            No artifacts found. Click "Add New Artifact" to get started.
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== ARTIFACT ADD/EDIT MODAL ==================== -->
+<div id="artifact-modal-overlay"
+    class="modal-overlay fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] hidden flex items-end sm:items-center justify-center p-0 sm:p-4"
+    onclick="closeArtifactModal(event)">
+    <div class="modal-content bg-white dark:bg-gray-800 rounded-t-2xl sm:rounded-2xl shadow-2xl w-full sm:max-w-lg max-h-[90vh] overflow-y-auto border-gray-200 dark:border-gray-700 sm:border"
+        onclick="event.stopPropagation()">
+        <!-- Modal Header -->
+        <div
+            class="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-100 dark:border-gray-700 sticky top-0 bg-white dark:bg-gray-800 z-10">
+            <h3 id="artifact-modal-title" class="text-base sm:text-lg font-bold text-gray-900 dark:text-white">Add New
+                Artifact</h3>
+            <button onclick="closeArtifactModal()"
+                class="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Modal Body (Form) -->
+        <form id="artifact-modal-form" class="p-4 sm:p-6 space-y-4 sm:space-y-5" onsubmit="submitArtifactForm(event)"
+            enctype="multipart/form-data">
+            <input type="hidden" id="artifact-form-id" name="id" value="">
+
+            <!-- Title Field -->
+            <div>
+                <label for="artifact-form-title"
+                    class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Title</label>
+                <input type="text" id="artifact-form-title" name="title" placeholder="Enter title..." required
+                    class="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all text-sm">
+            </div>
+
+            <!-- Description Field -->
+            <div>
+                <label for="artifact-form-description"
+                    class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Description</label>
+                <textarea id="artifact-form-description" name="description" rows="4" placeholder="Enter description..." required
+                    class="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all text-sm resize-none"></textarea>
+            </div>
+
+            <!-- Image Upload Field -->
+            <div>
+                <label for="artifact-form-image"
+                    class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Image</label>
+                <input type="file" id="artifact-form-image" name="image" accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+                    class="w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-cyan-50 dark:file:bg-cyan-900/30 file:text-cyan-600 dark:file:text-cyan-400 hover:file:bg-cyan-100 dark:hover:file:bg-cyan-900/50 file:cursor-pointer file:transition-colors">
+            </div>
+
+            <!-- Modal Buttons -->
+            <div class="flex items-center justify-end space-x-3 pt-2">
+                <button type="button" onclick="closeArtifactModal()"
+                    class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl text-sm font-semibold text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                    Cancel
+                </button>
+                <button type="submit"
+                    class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-cyan-600 hover:bg-cyan-700 shadow-lg shadow-cyan-500/30 transition-all hover:shadow-cyan-500/40">
+                    Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ==================== ARTIFACT DELETE CONFIRMATION MODAL ==================== -->
+<div id="artifact-delete-modal"
+    class="modal-overlay fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4"
+    onclick="closeDeleteArtifactModal(event)">
+    <div class="modal-content bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-sm border border-gray-200 dark:border-gray-700 p-6 text-center"
+        onclick="event.stopPropagation()">
+        <div class="w-14 h-14 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-7 h-7 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z">
+                </path>
+            </svg>
+        </div>
+        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Delete Artifact?</h3>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">This action cannot be undone. Are you sure you want to
+            permanently delete this artifact?</p>
+        <div class="flex items-center justify-center space-x-3">
+            <button onclick="closeDeleteArtifactModal()"
+                class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl text-sm font-semibold text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                Cancel
+            </button>
+            <button id="confirm-delete-artifact-btn"
+                class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-red-600 hover:bg-red-700 shadow-lg shadow-red-500/30 transition-all">
+                Delete
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== ARTIFACT TOAST NOTIFICATION ==================== -->
+<div id="artifact-toast"
+    class="fixed bottom-20 lg:bottom-6 right-3 left-3 sm:left-auto sm:right-6 z-[70] transform translate-y-20 opacity-0 transition-all duration-500 pointer-events-none">
+    <div
+        class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 px-4 py-3 flex items-center space-x-3">
+        <div id="artifact-toast-icon"
+            class="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
+            <svg class="w-4 h-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+        </div>
+        <p id="artifact-toast-message" class="text-sm font-medium text-gray-900 dark:text-white">Action completed
+            successfully!</p>
+    </div>
+</div>
+
+<script>
+    // ===== ARTIFACT MODAL LOGIC =====
+    const artifactModalOverlay = document.getElementById('artifact-modal-overlay');
+    const artifactModalTitle = document.getElementById('artifact-modal-title');
+    const artifactFormId = document.getElementById('artifact-form-id');
+    const artifactFormTitle = document.getElementById('artifact-form-title');
+    const artifactFormDescription = document.getElementById('artifact-form-description');
+    const artifactFormImage = document.getElementById('artifact-form-image');
+
+    async function openArtifactModal(id = null) {
+        artifactFormId.value = id || '';
+        artifactFormTitle.value = '';
+        artifactFormDescription.value = '';
+        artifactFormImage.value = '';
+
+        if (id) {
+            try {
+                const res = await fetch(`/admin/artifacts/${id}`);
+                const data = await res.json();
+                if (data.id) {
+                    artifactModalTitle.textContent = 'Edit Artifact';
+                    artifactFormTitle.value = data.title || '';
+                    artifactFormDescription.value = data.description || '';
+                } else {
+                    artifactModalTitle.textContent = 'Add New Artifact';
+                }
+            } catch (err) {
+                artifactModalTitle.textContent = 'Add New Artifact';
+            }
+        } else {
+            artifactModalTitle.textContent = 'Add New Artifact';
+        }
+
+        artifactModalOverlay.classList.remove('hidden');
+        artifactModalOverlay.classList.add('flex');
+        document.body.classList.add('overflow-hidden');
+        setTimeout(() => artifactFormTitle.focus(), 200);
+    }
+
+    function closeArtifactModal(e) {
+        if (e && e.target !== artifactModalOverlay) return;
+        artifactModalOverlay.classList.add('hidden');
+        artifactModalOverlay.classList.remove('flex');
+        document.body.classList.remove('overflow-hidden');
+        document.getElementById('artifact-modal-form').reset();
+    }
+
+    async function submitArtifactForm(e) {
+        e.preventDefault();
+        const id = artifactFormId.value;
+        const formData = new FormData(e.target);
+
+        try {
+            const url = id ? `/admin/artifacts/${id}` : '/admin/artifacts';
+            const res = await fetch(url, { method: 'POST', body: formData });
+            const data = await res.json();
+
+            if (data.success) {
+                closeArtifactModal();
+                showArtifactToast(`Artifact ${id ? 'updated' : 'created'} successfully!`);
+                setTimeout(() => location.reload(), 800);
+            } else {
+                showArtifactToast(data.error || 'Operation failed', 'delete');
+            }
+        } catch (err) {
+            showArtifactToast('Network error: ' + err.message, 'delete');
+        }
+    }
+
+    // ===== ARTIFACT DELETE MODAL =====
+    const artifactDeleteModal = document.getElementById('artifact-delete-modal');
+    const confirmDeleteArtifactBtn = document.getElementById('confirm-delete-artifact-btn');
+    let pendingArtifactDeleteId = null;
+
+    function confirmDeleteArtifact(id) {
+        pendingArtifactDeleteId = id;
+        artifactDeleteModal.classList.remove('hidden');
+        artifactDeleteModal.classList.add('flex');
+        document.body.classList.add('overflow-hidden');
+    }
+
+    function closeDeleteArtifactModal(e) {
+        if (e && e.target !== artifactDeleteModal) return;
+        artifactDeleteModal.classList.add('hidden');
+        artifactDeleteModal.classList.remove('flex');
+        document.body.classList.remove('overflow-hidden');
+    }
+
+    confirmDeleteArtifactBtn.addEventListener('click', async () => {
+        const id = pendingArtifactDeleteId;
+        closeDeleteArtifactModal();
+
+        if (!id) return;
+
+        try {
+            const res = await fetch(`/admin/artifacts/${id}`, { method: 'DELETE' });
+            const data = await res.json();
+            if (data.success) {
+                showArtifactToast('Artifact deleted successfully!', 'delete');
+                setTimeout(() => location.reload(), 800);
+            } else {
+                showArtifactToast(data.error || 'Delete failed', 'delete');
+            }
+        } catch (err) {
+            showArtifactToast('Network error: ' + err.message, 'delete');
+        }
+    });
+
+    // ===== ARTIFACT TOAST =====
+    function showArtifactToast(message, type = 'success') {
+        const toast = document.getElementById('artifact-toast');
+        const msg = document.getElementById('artifact-toast-message');
+        const icon = document.getElementById('artifact-toast-icon');
+
+        msg.textContent = message;
+
+        if (type === 'delete') {
+            icon.innerHTML = '<svg class="w-4 h-4 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>';
+            icon.className = 'w-8 h-8 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center flex-shrink-0';
+        } else {
+            icon.innerHTML = '<svg class="w-4 h-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
+            icon.className = 'w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0';
+        }
+
+        toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+        toast.classList.add('translate-y-0', 'opacity-100');
+
+        setTimeout(() => {
+            toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+            toast.classList.remove('translate-y-0', 'opacity-100');
+        }, 3000);
+    }
+
+    // ===== KEYBOARD SHORTCUT =====
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            const artifactModal = document.getElementById('artifact-modal-overlay');
+            const artifactDelModal = document.getElementById('artifact-delete-modal');
+            if (!artifactModal.classList.contains('hidden')) {
+                closeArtifactModal();
+            }
+            if (!artifactDelModal.classList.contains('hidden')) {
+                closeDeleteArtifactModal();
+            }
+        }
+    });
+</script>
