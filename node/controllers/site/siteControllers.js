@@ -12,7 +12,7 @@ const chat = (req, res) => {
 
 const chatMessage = async (req, res) => {
     const message = req.body.message?.trim();
-
+    console.log(message);
     if (!message) {
         return res.status(400).json({ error: 'Message is required' });
     }
