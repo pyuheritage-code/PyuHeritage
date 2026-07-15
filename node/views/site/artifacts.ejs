@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,9 +12,11 @@
         }
     </script>
 </head>
+
 <body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300 overflow-x-hidden">
     <!-- nav_section -->
-    <nav class="bg-gray-100/80 dark:bg-gray-800/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
+    <nav
+        class="bg-gray-100/80 dark:bg-gray-800/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
                 <div class="flex-shrink-0 flex items-center">
@@ -22,32 +25,51 @@
 
                 <div class="hidden md:flex flex-1 justify-center space-x-8">
                     <a href="/" class="hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">ပင်မစာမျက်နှာ</a>
-                    <a href="/chat" class="hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">ပျူအကြောင်းမေးမြန်းရန်</a>
-                    
+                    <a href="/chat"
+                        class="hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">ပျူအကြောင်းမေးမြန်းရန်</a>
+
                     <div class="relative">
-                        <button id="history-dropdown-btn" class="flex items-center text-indigo-600 dark:text-indigo-400 font-medium focus:outline-none transition-colors duration-200">
+                        <button id="history-dropdown-btn"
+                            class="flex items-center text-indigo-600 dark:text-indigo-400 font-medium focus:outline-none transition-colors duration-200">
                             အကြောင်းအရာများ
-                            <svg id="history-arrow" class="ml-1 w-4 h-4 rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            <svg id="history-arrow" class="ml-1 w-4 h-4 rotate-180 transition-transform duration-200"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7"></path>
                             </svg>
                         </button>
-                        <div id="history-dropdown-menu" class="absolute hidden left-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-gray-700 ring-1 ring-black ring-opacity-5 z-50">
+                        <div id="history-dropdown-menu"
+                            class="absolute hidden left-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-gray-700 ring-1 ring-black ring-opacity-5 z-50">
                             <div class="py-1">
-                                <a href="/history/cities" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">မြို့ပြနိုင်ငံများ</a>
-                                <a href="/history/religion" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">သာသနာထွန်းကားမှု</a>
-                                <a href="/history/language" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">ပျူဘာသာစကား နှင့် အက္ခရာ</a>
-                                <a href="/history/culture" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">ယဉ်ကျေးမှု နှင့် ဘာသာရေး</a>
-                                <a href="/history/artifacts" class="block px-4 py-2 text-sm bg-gray-100 dark:bg-gray-600 font-semibold">ရှေးဟောင်းသုတေသန ပစ္စည်းများ</a>
-                                <a href="/history/artifacts/3d" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">3D ရှေးဟောင်းပစ္စည်းများ</a>
+                                <a href="/history/cities"
+                                    class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">မြို့ပြနိုင်ငံများ</a>
+                                <a href="/history/religion"
+                                    class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">သာသနာထွန်းကားမှု</a>
+                                <a href="/history/language"
+                                    class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">ပျူဘာသာစကား
+                                    နှင့် အက္ခရာ</a>
+                                <a href="/history/culture"
+                                    class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">ယဉ်ကျေးမှု
+                                    နှင့် ဘာသာရေး</a>
+                                <a href="/history/artifacts"
+                                    class="block px-4 py-2 text-sm bg-gray-100 dark:bg-gray-600 font-semibold">ရှေးဟောင်းသုတေသန
+                                    ပစ္စည်းများ</a>
+                                <a href="/history/artifacts/3d"
+                                    class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">3D
+                                    ရှေးဟောင်းပစ္စည်းများ</a>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="hidden md:flex items-center">
-                    <button id="theme-toggle" class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none">
-                        <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path>
+                    <button id="theme-toggle"
+                        class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none">
+                        <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path
+                                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z">
+                            </path>
                         </svg>
                         <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
@@ -56,29 +78,47 @@
                 </div>
 
                 <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
+                    <button id="mobile-menu-button"
+                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
                     </button>
                 </div>
             </div>
         </div>
 
-        <div id="mobile-menu" class="hidden md:hidden bg-gray-100 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+        <div id="mobile-menu"
+            class="hidden md:hidden bg-gray-100 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
             <div class="px-2 pt-2 pb-3 space-y-1">
-                <a href="/" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-200 dark:hover:bg-gray-700">ပင်မစာမျက်နှာ</a>
-                <a href="/chat" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-200 dark:hover:bg-gray-700">ပျူအကြောင်းမေးမြန်းရန်</a>
+                <a href="/"
+                    class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-200 dark:hover:bg-gray-700">ပင်မစာမျက်နှာ</a>
+                <a href="/chat"
+                    class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-200 dark:hover:bg-gray-700">ပျူအကြောင်းမေးမြန်းရန်</a>
                 <div class="space-y-1">
-                    <button class="w-full text-left px-3 py-2 text-base font-medium text-gray-600 dark:text-gray-300">အထွေထွေ ဗဟုသုတ</button>
-                    <a href="/history/cities" class="block pl-6 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700">မြို့ပြနိုင်ငံများ</a>
-                    <a href="/history/religion" class="block pl-6 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700">သာသနာထွန်းကားမှု</a>
-                    <a href="/history/language" class="block pl-6 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700">ပျူဘာသာစကား နှင့် အက္ခရာ</a>
-                    <a href="/history/culture" class="block pl-6 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700">ယဉ်ကျေးမှု နှင့် ဘာသာရေး</a>
-                    <a href="/history/artifacts" class="block pl-6 px-3 py-2 rounded-md text-sm font-semibold bg-gray-200 dark:bg-gray-700 text-indigo-600 dark:text-indigo-400">ရှေးဟောင်းသုတေသန ပစ္စည်းများ</a>
-                    <a href="/history/artifacts/3d" class="block pl-6 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">3D ရှေးဟောင်းပစ္စည်းများ</a>
+                    <button
+                        class="w-full text-left px-3 py-2 text-base font-medium text-gray-600 dark:text-gray-300">အကြောင်းအရာများ
+                    </button>
+                    <a href="/history/cities"
+                        class="block pl-6 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700">မြို့ပြနိုင်ငံများ</a>
+                    <a href="/history/religion"
+                        class="block pl-6 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700">သာသနာထွန်းကားမှု</a>
+                    <a href="/history/language"
+                        class="block pl-6 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700">ပျူဘာသာစကား
+                        နှင့် အက္ခရာ</a>
+                    <a href="/history/culture"
+                        class="block pl-6 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700">ယဉ်ကျေးမှု
+                        နှင့် ဘာသာရေး</a>
+                    <a href="/history/artifacts"
+                        class="block pl-6 px-3 py-2 rounded-md text-sm font-semibold bg-gray-200 dark:bg-gray-700 text-indigo-600 dark:text-indigo-400">ရှေးဟောင်းသုတေသန
+                        ပစ္စည်းများ</a>
+                    <a href="/history/artifacts/3d"
+                        class="block pl-6 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">3D
+                        ရှေးဟောင်းပစ္စည်းများ</a>
                 </div>
-                <button id="mobile-theme-toggle" class="w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-gray-200 dark:hover:bg-gray-700 flex justify-between items-center">
+                <button id="mobile-theme-toggle"
+                    class="w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-gray-200 dark:hover:bg-gray-700 flex justify-between items-center">
                     <span>Theme</span>
                     <span id="theme-status" class="text-sm text-gray-500">Light</span>
                 </button>
@@ -92,74 +132,141 @@
         <div class="absolute inset-0 opacity-20 bg-cover bg-center" style="background-image: url('/halin.webp');"></div>
         <div class="relative z-10 max-w-4xl mx-auto">
             <h1 class="text-3xl md:text-5xl font-extrabold mb-4">ရှေးဟောင်းသုတေသန ပစ္စည်းများ</h1>
-            <p class="text-indigo-200 text-lg md:text-xl">တူးဖော်တွေ့ရှိရသော ပျူခေတ် လက်ရာမွန်များနှင့် သမိုင်းဝင် အထောက်အထားများ</p>
+            <p class="text-indigo-200 text-lg md:text-xl">တူးဖော်တွေ့ရှိရသော ပျူခေတ် လက်ရာမွန်များနှင့် သမိုင်းဝင်
+                အထောက်အထားများ</p>
         </div>
     </header>
 
     <!-- Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            <% if (artifacts && artifacts.length > 0) { %>
+            <% if (artifacts && artifacts.length> 0) { %>
                 <% artifacts.forEach(function(a) { %>
-                    <div class="group bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all">
-                        <div class="h-64 bg-gray-200 dark:bg-gray-700 relative overflow-hidden">
+                    <div
+                        class="group bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all">
+                        <div class="h-64 bg-gray-200 dark:bg-gray-700 relative overflow-hidden cursor-pointer image-card"
+                            data-src="<%= a.image_url || '' %>" data-title="<%= a.title %>">
                             <% if (a.image_url) { %>
-                                <img src="<%= a.image_url %>" alt="<%= a.title %>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                            <% } else { %>
-                                <div class="absolute inset-0 flex items-center justify-center text-gray-400 dark:text-gray-500 font-bold italic">
-                                    <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                <img src="<%= a.image_url %>" alt="<%= a.title %>"
+                                    class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500">
+                                <div
+                                    class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center">
+                                    <div
+                                        class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-3 bg-white/20 backdrop-blur-sm rounded-full">
+                                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7">
+                                            </path>
+                                        </svg>
+                                    </div>
                                 </div>
-                            <% } %>
-                            <div class="absolute top-4 left-4 bg-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase"><%= a.category || 'General' %></div>
+                                <% } else { %>
+                                    <div
+                                        class="absolute inset-0 flex items-center justify-center text-gray-400 dark:text-gray-500 font-bold italic">
+                                        <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                    <% } %>
+                                        <div
+                                            class="absolute top-4 left-4 bg-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase">
+                                            <%= a.category || 'General' %>
+                                        </div>
                         </div>
                         <div class="p-8">
-                            <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white"><%= a.title %></h3>
-                            <p class="text-gray-600 dark:text-gray-400 leading-relaxed"><%= a.description %></p>
+                            <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">
+                                <%= a.title %>
+                            </h3>
+                            <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                                <%= a.description %>
+                            </p>
                         </div>
                     </div>
-                <% }); %>
-            <% } else { %>
-                <div class="col-span-full text-center py-20 text-gray-500 dark:text-gray-400">
-                    <p class="text-2xl font-bold mb-2">ဒေတာမရှိသေးပါ။</p>
-                    <p>ရှေးဟောင်းသုတေသန ပစ္စည်းများကို ထည့်သွင်းပြီးပါက ဤနေရာတွင် ကြည့်ရှုနိုင်ပါမည်။</p>
-                </div>
-            <% } %>
+                    <% }); %>
+                        <% } else { %>
+                            <div class="col-span-full text-center py-20 text-gray-500 dark:text-gray-400">
+                                <p class="text-2xl font-bold mb-2">ဒေတာမရှိသေးပါ။</p>
+                                <p>ရှေးဟောင်းသုတေသန ပစ္စည်းများကို ထည့်သွင်းပြီးပါက ဤနေရာတွင် ကြည့်ရှုနိုင်ပါမည်။</p>
+                            </div>
+                            <% } %>
         </div>
 
         <section class="mt-20 bg-gray-50 dark:bg-gray-800 rounded-3xl p-10 shadow-inner">
-            <h2 class="text-3xl font-bold mb-8 text-center text-gray-900 dark:text-white">ရှေးဟောင်းပစ္စည်းများ ထိန်းသိမ်းစောင့်ရှောက်ခြင်း</h2>
+            <h2 class="text-3xl font-bold mb-8 text-center text-gray-900 dark:text-white">ရှေးဟောင်းပစ္စည်းများ
+                ထိန်းသိမ်းစောင့်ရှောက်ခြင်း</h2>
             <div class="max-w-3xl mx-auto text-center space-y-6">
                 <p class="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
-                    တူးဖော်ရရှိသော ပျူရှေးဟောင်းပစ္စည်းများကို ဟန်လင်း၊ ဗိဿနိုး နှင့် သရေခေတ္တရာရှိ ရှေးဟောင်းသုတေသန ပြတိုက်များတွင် စနစ်တကျ ထိန်းသိမ်းပြသထားပါသည်။ ဤပစ္စည်းများသည် ကျွန်ုပ်တို့၏ ဘိုးဘွားများ၏ အနုပညာလက်ရာများသာမက မြန်မာ့ယဉ်ကျေးမှု အရင်းအမြစ်များကို ဖော်ပြနေသည့် အဖိုးမဖြတ်နိုင်သော ရတနာများ ဖြစ်ကြသည်။
+                    တူးဖော်ရရှိသော ပျူရှေးဟောင်းပစ္စည်းများကို ဟန်လင်း၊ ဗိဿနိုး နှင့် သရေခေတ္တရာရှိ ရှေးဟောင်းသုတေသန
+                    ပြတိုက်များတွင် စနစ်တကျ ထိန်းသိမ်းပြသထားပါသည်။ ဤပစ္စည်းများသည် ကျွန်ုပ်တို့၏ ဘိုးဘွားများ၏
+                    အနုပညာလက်ရာများသာမက မြန်မာ့ယဉ်ကျေးမှု အရင်းအမြစ်များကို ဖော်ပြနေသည့် အဖိုးမဖြတ်နိုင်သော ရတနာများ
+                    ဖြစ်ကြသည်။
                 </p>
                 <div class="pt-6">
-                    <a href="/history/cities" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-8 py-3 rounded-full transition-transform active:scale-95 shadow-lg">ပြတိုက်များတည်ရှိရာ မြို့များသို့</a>
+                    <a href="/history/cities"
+                        class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-8 py-3 rounded-full transition-transform active:scale-95 shadow-lg">ပြတိုက်များတည်ရှိရာ
+                        မြို့များသို့</a>
                 </div>
             </div>
         </section>
     </main>
 
+    <!-- Image Viewer Modal -->
+    <div id="image-viewer-overlay"
+        class="fixed inset-0 bg-black/85 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4"
+        onclick="closeImageViewer(event)">
+        <div class="relative max-w-4xl w-full flex items-center justify-center"
+            onclick="event.stopPropagation()">
+            <button onclick="closeImageViewer()"
+                class="absolute -top-10 right-0 sm:top-0 sm:-right-12 p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors z-10">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            <img id="viewer-image" src="" alt=""
+                class="max-h-[85vh] w-full object-contain rounded-2xl shadow-2xl">
+            <div id="viewer-loading" class="absolute inset-0 flex items-center justify-center">
+                <div class="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer Section -->
-    <footer class="bg-gray-100 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 transition-colors duration-300 mt-24">
+    <footer
+        class="bg-gray-100 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 transition-colors duration-300 mt-24">
         <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
                 <div class="col-span-1 md:col-span-2">
                     <span class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">ပျူအမွေအနှစ်</span>
                     <p class="mt-4 text-gray-600 dark:text-gray-400 max-w-sm leading-relaxed">
-                        ပျူအမွေအနှစ် ပရောဂျက်သည် မြန်မာနိုင်ငံ၏ ရှေးဦးယဉ်ကျေးမှုဖြစ်သော ပျူမြို့ပြနိုင်ငံများ၏ သမိုင်းကြောင်း၊ အနုပညာနှင့် နည်းပညာများကို နောင်လာနောက်သားများ လေ့လာနိုင်ရန်နှင့် ထိန်းသိမ်းစောင့်ရှောက်ရန် ရည်ရွယ်ပါသည်။
+                        ပျူအမွေအနှစ် ပရောဂျက်သည် မြန်မာနိုင်ငံ၏ ရှေးဦးယဉ်ကျေးမှုဖြစ်သော ပျူမြို့ပြနိုင်ငံများ၏
+                        သမိုင်းကြောင်း၊ အနုပညာနှင့် နည်းပညာများကို နောင်လာနောက်သားများ လေ့လာနိုင်ရန်နှင့်
+                        ထိန်းသိမ်းစောင့်ရှောက်ရန် ရည်ရွယ်ပါသည်။
                     </p>
                 </div>
                 <div>
-                    <h3 class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-4">ကဏ္ဍများ</h3>
+                    <h3 class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-4">ကဏ္ဍများ
+                    </h3>
                     <ul class="space-y-3">
-                        <li><a href="/" class="text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition">ပင်မစာမျက်နှာ</a></li>
-                        <li><a href="/chat" class="text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition">ပျူအကြောင်းမေးမြန်းရန်</a></li>
-                        <li><a href="/history/cities" class="text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition">မြို့ပြနိုင်ငံများ</a></li>
-                        <li><a href="/history/culture" class="text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition">ယဉ်ကျေးမှုနှင့် အနုပညာ</a></li>
+                        <li><a href="/"
+                                class="text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition">ပင်မစာမျက်နှာ</a>
+                        </li>
+                        <li><a href="/chat"
+                                class="text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition">ပျူအကြောင်းမေးမြန်းရန်</a>
+                        </li>
+                        <li><a href="/history/cities"
+                                class="text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition">မြို့ပြနိုင်ငံများ</a>
+                        </li>
+                        <li><a href="/history/culture"
+                                class="text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition">ယဉ်ကျေးမှုနှင့်
+                                အနုပညာ</a></li>
                     </ul>
                 </div>
             </div>
-            <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
+            <div
+                class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
                 <p>&copy; 2026 PyuHeritage Project. All rights reserved.</p>
                 <p class="mt-4 md:mt-0">Developed for Final Year Project</p>
             </div>
@@ -184,11 +291,11 @@
         if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
             lightIcon?.classList.remove('hidden');
-            if(themeStatus) themeStatus.textContent = 'Dark';
+            if (themeStatus) themeStatus.textContent = 'Dark';
         } else {
             document.documentElement.classList.remove('dark');
             darkIcon?.classList.remove('hidden');
-            if(themeStatus) themeStatus.textContent = 'Light';
+            if (themeStatus) themeStatus.textContent = 'Light';
         }
 
         function toggleTheme() {
@@ -197,13 +304,13 @@
                 localStorage.setItem('color-theme', 'light');
                 lightIcon?.classList.add('hidden');
                 darkIcon?.classList.remove('hidden');
-                if(themeStatus) themeStatus.textContent = 'Light';
+                if (themeStatus) themeStatus.textContent = 'Light';
             } else {
                 document.documentElement.classList.add('dark');
                 localStorage.setItem('color-theme', 'dark');
                 darkIcon?.classList.add('hidden');
                 lightIcon?.classList.remove('hidden');
-                if(themeStatus) themeStatus.textContent = 'Dark';
+                if (themeStatus) themeStatus.textContent = 'Dark';
             }
         }
 
@@ -233,6 +340,49 @@
                 historyArrow.classList.remove('rotate-180');
             }
         });
+
+        // Image Viewer
+        const viewerOverlay = document.getElementById('image-viewer-overlay');
+        const viewerImage = document.getElementById('viewer-image');
+        const viewerLoading = document.getElementById('viewer-loading');
+
+        document.querySelectorAll('.image-card').forEach(card => {
+            const src = card.dataset.src;
+            if (!src) return;
+            card.addEventListener('click', () => {
+                viewerImage.src = src;
+                viewerImage.alt = card.dataset.title;
+                viewerLoading.classList.remove('hidden');
+                viewerOverlay.classList.remove('hidden');
+                viewerOverlay.classList.add('flex');
+                document.body.classList.add('overflow-hidden');
+            });
+        });
+
+        viewerImage.addEventListener('load', () => {
+            viewerLoading.classList.add('hidden');
+        });
+
+        viewerImage.addEventListener('error', () => {
+            viewerLoading.innerHTML = '<p class="text-red-400 text-sm">ပုံအားပြသ၍မရပါ</p>';
+        });
+
+        function closeImageViewer(e) {
+            if (e && e.target !== viewerOverlay) return;
+            viewerOverlay.classList.add('hidden');
+            viewerOverlay.classList.remove('flex');
+            document.body.classList.remove('overflow-hidden');
+            viewerImage.src = '';
+            viewerLoading.classList.remove('hidden');
+            viewerLoading.innerHTML = '<div class="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !viewerOverlay.classList.contains('hidden')) {
+                closeImageViewer();
+            }
+        });
     </script>
 </body>
+
 </html>

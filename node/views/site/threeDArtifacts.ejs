@@ -139,7 +139,10 @@
                         <!-- Content -->
                         <div class="p-5">
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2"><%= a.title %></h3>
-                            <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-3"><%= a.description %></p>
+                            <div class="desc-container">
+                                <p class="text-sm text-gray-600 dark:text-gray-400 desc-text line-clamp-3"><%= a.description %></p>
+                                <button class="desc-toggle mt-1 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors hidden">ပိုမိုကြည့်ရှုရန်</button>
+                            </div>
                         </div>
                     </div>
                 <% }); %>
@@ -203,6 +206,10 @@
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
+        }
+        .desc-text.expanded {
+            -webkit-line-clamp: unset;
+            display: block;
         }
     </style>
 
@@ -294,6 +301,20 @@
                 </div>
             `;
         }
+
+        // Description toggle (see more / see less)
+        document.querySelectorAll('.desc-container').forEach(container => {
+            const text = container.querySelector('.desc-text');
+            const btn = container.querySelector('.desc-toggle');
+            if (!text || !btn || text.textContent.length < 150) return;
+
+            btn.classList.remove('hidden');
+            btn.addEventListener('click', () => {
+                const expanded = text.classList.toggle('expanded');
+                text.classList.toggle('line-clamp-3', !expanded);
+                btn.textContent = expanded ? 'ရှည်လျားသောစာကိုချုံ့ရန်' : 'ပိုမိုကြည့်ရှုရန်';
+            });
+        });
 
         // Keyboard shortcut
         document.addEventListener('keydown', (e) => {
