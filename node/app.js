@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 require('dotenv').config();
+const rag = require('./rag');
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views'));
@@ -23,5 +24,6 @@ app.listen(PORT, (err) => {
         console.log(err);
     } else {
         console.log('Server listen at port: ' + PORT);
+        rag.init().catch(e => console.error('RAG init error:', e.message));
     }
 })

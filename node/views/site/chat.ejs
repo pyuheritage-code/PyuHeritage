@@ -80,24 +80,15 @@
             <!-- Bot Welcome Message -->
             <div class="flex justify-start">
                 <div class="max-w-[85%] md:max-w-[70%] bg-gray-100 dark:bg-gray-700 rounded-2xl px-4 py-3 text-gray-800 dark:text-gray-200 rounded-tl-none shadow-sm">
-                    <p>မင်္ဂလာပါ! ပျူမြို့ဟောင်းများနှင့် ပတ်သက်ပြီး သိရှိလိုသည်များကို မေးမြန်းနိုင်ပါသည်။</p>
-                    <span class="text-[10px] text-gray-500 mt-1 block">Just now</span>
-                </div>
-            </div>
-
-            <!-- Example User Message -->
-            <div class="flex justify-end">
-                <div class="max-w-[85%] md:max-w-[70%] bg-indigo-600 text-white rounded-2xl px-4 py-3 rounded-tr-none shadow-md">
-                    <p>ဟန်လင်းမြို့ဟောင်းအကြောင်း သိချင်ပါတယ်။</p>
-                    <span class="text-[10px] text-indigo-200 mt-1 block text-right">Just now</span>
-                </div>
-            </div>
-
-            <!-- Example Bot Response -->
-            <div class="flex justify-start">
-                <div class="max-w-[85%] md:max-w-[70%] bg-gray-100 dark:bg-gray-700 rounded-2xl px-4 py-3 text-gray-800 dark:text-gray-200 rounded-tl-none shadow-sm">
-                    <p>ဟန်လင်းမြို့ဟောင်းသည် စစ်ကိုင်းတိုင်းဒေသကြီး၊ ဝက်လက်မြို့နယ်တွင် တည်ရှိပြီး ရှေးဟောင်းပျူမြို့ပြနိုင်ငံများထဲတွင် အကြီးဆုံးမြို့များထဲမှ တစ်ခုဖြစ်ပါသည်။ ၂၀၁၄ ခုနှစ်တွင် UNESCO ကမ္ဘာ့အမွေအနှစ်စာရင်းဝင်ခဲ့ပါသည်။</p>
-                    <span class="text-[10px] text-gray-500 mt-1 block">Just now</span>
+                    <p class="mb-2">မင်္ဂလာပါ! ပျူမြို့ဟောင်းများနှင့် ပတ်သက်ပြီး သိရှိလိုသည်များကို မေးမြန်းနိုင်ပါသည်။</p>
+                    <div class="flex flex-wrap gap-2 mt-3" id="suggestion-chips">
+                        <button class="suggestion-chip text-xs bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 px-3 py-1.5 rounded-full hover:bg-indigo-200 dark:hover:bg-indigo-800/60 transition-colors" data-question="ဟန်လင်းမြို့ဟောင်းအကြောင်း ပြောပြပါ">ဟန်လင်းမြို့ဟောင်း</button>
+                        <button class="suggestion-chip text-xs bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 px-3 py-1.5 rounded-full hover:bg-indigo-200 dark:hover:bg-indigo-800/60 transition-colors" data-question="ပျူမြို့ပြနိုင်ငံများအကြောင်း ရှင်းပြပါ">ပျူမြို့ပြနိုင်ငံများ</button>
+                        <button class="suggestion-chip text-xs bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 px-3 py-1.5 rounded-full hover:bg-indigo-200 dark:hover:bg-indigo-800/60 transition-colors" data-question="ပျူလူမျိုးတို့၏ ယဉ်ကျေးမှုအကြောင်း ပြောပြပါ">ယဉ်ကျေးမှု</button>
+                        <button class="suggestion-chip text-xs bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 px-3 py-1.5 rounded-full hover:bg-indigo-200 dark:hover:bg-indigo-800/60 transition-colors" data-question="ပျူဘာသာစကားအကြောင်း ပြောပြပါ">ပျူဘာသာစကား</button>
+                        <button class="suggestion-chip text-xs bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 px-3 py-1.5 rounded-full hover:bg-indigo-200 dark:hover:bg-indigo-800/60 transition-colors" data-question="သရေခေတ္တရာမြို့ဟောင်းအကြောင်း သိချင်ပါတယ်">သရေခေတ္တရာ</button>
+                    </div>
+                    <span class="text-[10px] text-gray-500 mt-2 block">Just now</span>
                 </div>
             </div>
         </div>
@@ -158,10 +149,12 @@
             mobileMenu.classList.toggle('hidden');
         });
 
-        // Chat Interaction Logic (Basic)
+        // Chat Interaction Logic
         const chatForm = document.getElementById('chat-form');
         const userInput = document.getElementById('user-input');
         const chatMessages = document.getElementById('chat-messages');
+        const suggestionChips = document.querySelectorAll('.suggestion-chip');
+        let isStreaming = false;
 
         function addMessage(text, isUser = false) {
             const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -172,7 +165,7 @@
             bubble.className = `max-w-[85%] md:max-w-[70%] ${isUser ? 'bg-indigo-600 text-white rounded-tr-none' : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-tl-none'} rounded-2xl px-4 py-3 shadow-sm`;
 
             const p = document.createElement('p');
-            p.textContent = text; // Safe: prevents XSS
+            p.textContent = text;
 
             const span = document.createElement('span');
             span.className = `text-[10px] ${isUser ? 'text-indigo-200 text-right' : 'text-gray-500'} mt-1 block`;
@@ -184,56 +177,133 @@
             
             chatMessages.appendChild(messageDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
+            return bubble;
         }
 
-        chatForm.addEventListener('submit', async (e) => {
+        function createBotBubble() {
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'flex justify-start animate-fadeIn';
+
+            const bubble = document.createElement('div');
+            bubble.className = 'max-w-[85%] md:max-w-[70%] bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-tl-none rounded-2xl px-4 py-3 shadow-sm';
+
+            const p = document.createElement('p');
+            p.id = 'streaming-text';
+
+            const thinking = document.createElement('div');
+            thinking.id = 'thinking-indicator';
+            thinking.className = 'flex items-center space-x-1.5';
+            thinking.innerHTML = `
+                <span class="text-sm text-gray-500 dark:text-gray-400">ခနစောင့်</span>
+                <span class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0s"></span>
+                <span class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0.15s"></span>
+                <span class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0.3s"></span>
+            `;
+            p.appendChild(thinking);
+
+            const span = document.createElement('span');
+            span.className = 'text-[10px] text-gray-500 mt-1 block';
+            span.textContent = time;
+
+            bubble.appendChild(p);
+            bubble.appendChild(span);
+            messageDiv.appendChild(bubble);
+
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            return { p, thinking };
+        }
+
+        async function sendMessage(text) {
+            if (isStreaming) return;
+            isStreaming = true;
+            userInput.disabled = true;
+            document.querySelector('#chat-form button[type="submit"]').disabled = true;
+
+            addMessage(text, true);
+            const { p: textElement, thinking } = createBotBubble();
+
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'text/event-stream'
+                    },
+                    body: JSON.stringify({ message: text })
+                });
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let buffer = '';
+                let gotFirstToken = false;
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+
+                    buffer += decoder.decode(value, { stream: true });
+                    const lines = buffer.split('\n');
+                    buffer = lines.pop();
+
+                    for (const line of lines) {
+                        const trimmed = line.trim();
+                        if (!trimmed || trimmed === 'data: [DONE]') continue;
+                        if (trimmed.startsWith('data: ')) {
+                            try {
+                                const parsed = JSON.parse(trimmed.slice(6));
+                                if (parsed.content) {
+                                    if (!gotFirstToken) {
+                                        gotFirstToken = true;
+                                        thinking.remove();
+                                        textElement.textContent = '';
+                                    }
+                                    textElement.textContent += parsed.content;
+                                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                                }
+                                if (parsed.error) {
+                                    thinking.remove();
+                                    textElement.textContent = parsed.error;
+                                }
+                            } catch (e) {}
+                        }
+                    }
+                }
+
+                if (!gotFirstToken) {
+                    thinking.remove();
+                    textElement.textContent = '';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                thinking.remove();
+                textElement.textContent = "ကွန်နက်ရှင် အမှားတစ်ခုဖြစ်သွားပါသည်။";
+            }
+
+            isStreaming = false;
+            userInput.disabled = false;
+            document.querySelector('#chat-form button[type="submit"]').disabled = false;
+            userInput.focus();
+        }
+
+        chatForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const text = userInput.value.trim();
             if (text) {
-                addMessage(text, true);
+                sendMessage(text);
                 userInput.value = '';
-                
-                // Show loading indicator
-                const loadingDiv = document.createElement('div');
-                loadingDiv.id = 'loading-indicator';
-                loadingDiv.className = 'flex justify-start animate-fadeIn';
-                loadingDiv.innerHTML = `
-                    <div class="max-w-[85%] md:max-w-[70%] bg-gray-100 dark:bg-gray-700 rounded-2xl px-4 py-3 text-gray-800 dark:text-gray-200 rounded-tl-none shadow-sm flex items-center space-x-2">
-                        <div class="flex space-x-1">
-                            <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                            <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0.2s]"></div>
-                            <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0.4s]"></div>
-                        </div>
-                    </div>
-                `;
-                chatMessages.appendChild(loadingDiv);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-
-                try {
-                    const response = await fetch('/chat', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ message: text })
-                    });
-
-                    const data = await response.json();
-                    
-                    // Remove loading indicator
-                    document.getElementById('loading-indicator').remove();
-
-                    if (data.response) {
-                        addMessage(data.response);
-                    } else if (data.error) {
-                        addMessage(data.detail || "စိတ်မရှိပါနဲ့၊ အမှားတစ်ခုဖြစ်သွားလို့ နောက်တစ်ခေါက်ပြန်ကြိုးစားကြည့်ပေးပါ။");
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    document.getElementById('loading-indicator')?.remove();
-                    addMessage("ကွန်နက်ရှင် အမှားတစ်ခုဖြစ်သွားပါသည်။");
-                }
             }
+        });
+
+        // Suggestion chips
+        suggestionChips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                const question = chip.dataset.question;
+                if (question && !isStreaming) {
+                    sendMessage(question);
+                }
+            });
         });
 
         // Auto-scroll to bottom on load

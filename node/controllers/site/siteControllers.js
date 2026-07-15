@@ -1,6 +1,4 @@
-const axios = require('axios');
-
-const RAG_API_URL = process.env.RAG_API_URL || 'http://localhost:5000';
+const rag = require('../../rag');
 
 const index = (req, res) => {
     res.render('site/index');
@@ -12,41 +10,38 @@ const chat = (req, res) => {
 
 const chatMessage = async (req, res) => {
     const message = req.body.message?.trim();
-    console.log(message);
     if (!message) {
         return res.status(400).json({ error: 'Message is required' });
     }
 
-    try {
-        const ragResponse = await axios.post(`${RAG_API_URL}/rag`, {
-            question: message,
-        }, { timeout: 60000 });
+    const wantsStream = req.headers.accept === 'text/event-stream';
 
-        const data = ragResponse.data;
+    if (wantsStream) {
+        res.setHeader('Content-Type', 'text/event-stream');
+        res.setHeader('Cache-Control', 'no-cache');
+        res.setHeader('Connection', 'keep-alive');
+        res.setHeader('X-Accel-Buffering', 'no');
+        res.flushHeaders();
 
-        if (data.error) {
-            console.error('RAG API error:', data.error);
-            return res.status(502).json({ error: 'RAG server error', detail: data.error });
+        try {
+            await rag.queryStream(message, res);
+        } catch (error) {
+            console.error('Stream query error:', error.message);
+            res.write(`data: ${JSON.stringify({ error: error.message })}\n\n`);
+            res.write('data: [DONE]\n\n');
+            res.end();
         }
-
-        res.json({ response: data.answer, sources: data.sources || [] });
-    } catch (error) {
-        const detail = error.response?.data?.error
-            || error.code
-            || error.message
-            || 'Unknown RAG API error';
-
-        console.error('RAG API Error:', {
-            status: error.response?.status,
-            code: error.code,
-            message: detail,
-        });
-
-        const status = error.response?.status || 502;
-        res.status(status).json({
-            error: 'Failed to get response from RAG service',
-            detail,
-        });
+    } else {
+        try {
+            const answer = await rag.query(message);
+            res.json({ response: answer, sources: [] });
+        } catch (error) {
+            console.error('RAG query error:', error.message);
+            res.status(502).json({
+                error: 'Failed to get response',
+                detail: error.message,
+            });
+        }
     }
 }
 

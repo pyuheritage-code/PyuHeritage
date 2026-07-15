@@ -8,7 +8,16 @@
     <script>
         tailwind.config = { darkMode: 'class' }
     </script>
-    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js">
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+    <script nomodule>
+        console.warn('model-viewer not supported in this browser');
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('[onclick*="open3DViewer"]').forEach(btn => {
+                btn.textContent = '3D View (unsupported)';
+                btn.disabled = true;
+                btn.classList.add('opacity-50', 'cursor-not-allowed');
+            });
+        });
     </script>
 </head>
 <body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300 overflow-x-hidden">
@@ -116,7 +125,8 @@
                                 </span>
                             <% } %>
                             <% if (a.model_url) { %>
-                                <button onclick="open3DViewer('<%= a.model_url %>', '<%= a.title.replace(/'/g, "\\'") %>')"
+                                <button data-model-url="<%= a.model_url %>" data-model-title="<%= a.title %>"
+                                    onclick="open3DViewer(this.dataset.modelUrl, this.dataset.modelTitle)"
                                     class="absolute bottom-3 right-3 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl shadow-lg shadow-indigo-500/30 transition-all hover:shadow-indigo-500/40 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 duration-300 flex items-center space-x-1.5">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"></path>
