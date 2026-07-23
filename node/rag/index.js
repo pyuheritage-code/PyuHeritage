@@ -15,7 +15,7 @@ let initPromise = null;
 const SYSTEM_PROMPT = `You are a helpful assistant specialized in Pyu (ပျူ) ancient cities and heritage. 
 Answer questions based ONLY on the provided context from the documents. 
 If the answer is not found in the context, say "ဤအကြောင်းအရာကို ကျွန်ုပ်၏ အချက်အလက်များတွင် မတွေ့ရှိပါ။" (I don't have information about this in my documents).
-Always answer in Myanmar (Burmese) language. Be concise and informative.`;
+Always answer in Myanmar (Burmese) language and English language. Be concise and informative.`;
 
 async function init(forceReindex = false) {
     if (initialized && !forceReindex) return;
@@ -149,11 +149,11 @@ async function queryStream(question, res) {
         ? [
             { role: 'system', content: SYSTEM_PROMPT },
             { role: 'user', content: `Context:\n${context}\n\nQuestion: ${question}` },
-          ]
+        ]
         : [
             { role: 'system', content: 'You are a helpful assistant. Answer in Myanmar (Burmese) language.' },
             { role: 'user', content: question },
-          ];
+        ];
 
     try {
         const response = await axios.post('https://openrouter.ai/api/v1/chat/completions', {
@@ -187,7 +187,7 @@ async function queryStream(question, res) {
                         if (content) {
                             res.write(`data: ${JSON.stringify({ content })}\n\n`);
                         }
-                    } catch (e) {}
+                    } catch (e) { }
                 }
             }
         });
