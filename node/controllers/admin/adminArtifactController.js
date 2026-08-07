@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const artifactsModel = require('../../models/admin/artifactsModel');
+const artifactStore = require('../../rag/artifactStore');
 
 const list = (req, res) => {
     artifactsModel.getAllArtifacts((err, results) => {
@@ -39,6 +40,9 @@ const create = (req, res) => {
             console.error('Error creating artifact:', err);
             return res.status(500).json({ error: 'Failed to create artifact' });
         }
+        artifactStore.upsertOne('artifacts', result.insertId, title).catch(e =>
+            console.error('Embedding sync error on create:', e.message)
+        );
         res.json({ success: true, id: result.insertId, message: 'Artifact created successfully' });
     });
 };
@@ -72,6 +76,9 @@ const update = (req, res) => {
                 console.error('Error updating artifact:', err);
                 return res.status(500).json({ error: 'Failed to update artifact' });
             }
+            artifactStore.upsertOne('artifacts', Number(id), title).catch(e =>
+                console.error('Embedding sync error on update:', e.message)
+            );
             res.json({ success: true, message: 'Artifact updated successfully' });
         });
     });
@@ -92,6 +99,10 @@ const remove = (req, res) => {
                 console.error('Error deleting artifact:', err);
                 return res.status(500).json({ error: 'Failed to delete artifact' });
             }
+
+            artifactStore.removeOne('artifacts', Number(id)).catch(e =>
+                console.error('Embedding sync error on delete:', e.message)
+            );
 
             if (artifact.image_url) {
                 const filePath = path.join(__dirname, '..', '..', artifact.image_url);
