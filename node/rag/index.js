@@ -3,6 +3,7 @@ const pdfLoader = require('./pdfLoader');
 const chunker = require('./chunker');
 const embedder = require('./embedder');
 const vectorStore = require('./vectorStore');
+const artifactStore = require('./artifactStore');
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 const CHAT_MODEL = process.env.OPENROUTER_MODEL || 'deepseek/deepseek-v4-flash';
@@ -13,9 +14,11 @@ let initialized = false;
 let initPromise = null;
 
 const SYSTEM_PROMPT = `You are a helpful assistant specialized in Pyu (ပျူ) ancient cities and heritage. 
-Answer questions based ONLY on the provided context from the documents. 
-If the answer is not found in the context, say "ဤအကြောင်းအရာကို ကျွန်ုပ်၏ အချက်အလက်များတွင် မတွေ့ရှိပါ။" (I don't have information about this in my documents).
+Answer questions based ONLY on the provided context from the documents and artifact database.
+If the answer is not found in the context, search from google and give right answer with source links.
 Always answer in Myanmar (Burmese) language. Be concise and informative.`;
+
+// If the answer is not found in the context, say "ဤအကြောင်းအရာကို ကျွန်ုပ်၏ အချက်အလက်များတွင် မတွေ့ရှိပါ။" (I don't have information about this in my documents).
 
 async function init(forceReindex = false) {
     if (initialized && !forceReindex) return;
@@ -23,24 +26,22 @@ async function init(forceReindex = false) {
 
     initPromise = (async () => {
         try {
-            if (vectorStore.size() > 0 && !forceReindex) {
-                console.log(`RAG ready: ${vectorStore.size()} chunks loaded from cache`);
-                initialized = true;
-                return;
+            if (vectorStore.size() === 0 || forceReindex) {
+                const documents = await pdfLoader.loadPDFs();
+                if (documents.length > 0) {
+                    const chunks = chunker.chunkDocuments(documents);
+                    console.log(`Indexing ${chunks.length} chunks...`);
+                    const embeddings = await embedder.getEmbeddings(chunks.map(c => c.text));
+                    vectorStore.add(chunks, embeddings);
+                    console.log(`PDF RAG: ${documents.length} PDF(s), ${vectorStore.size()} chunks indexed`);
+                }
+            } else {
+                console.log(`PDF RAG ready: ${vectorStore.size()} chunks loaded from cache`);
             }
 
-            const documents = await pdfLoader.loadPDFs();
-            if (documents.length === 0) {
-                initialized = true;
-                return;
-            }
+            await artifactStore.init();
+            console.log(`Artifact RAG ready: ${artifactStore.size()} items loaded from DB`);
 
-            const chunks = chunker.chunkDocuments(documents);
-            console.log(`Indexing ${chunks.length} chunks...`);
-            const embeddings = await embedder.getEmbeddings(chunks.map(c => c.text));
-            vectorStore.add(chunks, embeddings);
-
-            console.log(`RAG initialized: ${documents.length} PDF(s), ${vectorStore.size()} chunks indexed`);
             initialized = true;
         } catch (err) {
             console.error('RAG init error:', err.message);
@@ -58,23 +59,42 @@ async function query(question) {
         return 'OpenRouter API key not configured. Set OPENROUTER_API_KEY in .env';
     }
 
-    if (vectorStore.size() === 0) {
-        return generateFallback(question);
-    }
-
     const questionEmbedding = await embedder.getEmbedding(question);
-    const results = vectorStore.search(questionEmbedding, 5);
 
-    const context = results
-        .filter(r => r.score > 0.3)
-        .map(r => r.chunk.text)
-        .join('\n\n---\n\n');
+    const context = await buildHybridContext(questionEmbedding);
 
     if (!context) {
         return generateFallback(question);
     }
 
     return generateAnswer(question, context);
+}
+
+async function buildHybridContext(questionEmbedding) {
+    const parts = [];
+
+    if (vectorStore.size() > 0) {
+        const pdfResults = vectorStore.search(questionEmbedding, 5);
+        const pdfContext = pdfResults
+            .filter(r => r.score > 0.3)
+            .map(r => r.chunk.text)
+            .join('\n\n---\n\n');
+        if (pdfContext) {
+            parts.push('[From PDF documents:]\n' + pdfContext);
+        }
+    }
+
+    if (artifactStore.size() > 0) {
+        const artResults = artifactStore.search(questionEmbedding, 5);
+        const artLines = artResults
+            .filter(r => r.score > 0.3)
+            .map(r => `- ${r.item.title}\n  Description: ${r.item.description || 'N/A'}\n  Category: ${r.item.category || 'N/A'} (Source: ${r.item.source_table})`);
+        if (artLines.length > 0) {
+            parts.push('[From Artifact database:]\n' + artLines.join('\n'));
+        }
+    }
+
+    return parts.length > 0 ? parts.join('\n\n') : null;
 }
 
 async function generateAnswer(question, context) {
@@ -135,25 +155,18 @@ async function queryStream(question, res) {
         return;
     }
 
-    let context = '';
-    if (vectorStore.size() > 0) {
-        const questionEmbedding = await embedder.getEmbedding(question);
-        const results = vectorStore.search(questionEmbedding, 5);
-        context = results
-            .filter(r => r.score > 0.3)
-            .map(r => r.chunk.text)
-            .join('\n\n---\n\n');
-    }
+    const questionEmbedding = await embedder.getEmbedding(question);
+    const context = await buildHybridContext(questionEmbedding);
 
     const messages = context
         ? [
             { role: 'system', content: SYSTEM_PROMPT },
             { role: 'user', content: `Context:\n${context}\n\nQuestion: ${question}` },
-          ]
+        ]
         : [
             { role: 'system', content: 'You are a helpful assistant. Answer in Myanmar (Burmese) language.' },
             { role: 'user', content: question },
-          ];
+        ];
 
     try {
         const response = await axios.post('https://openrouter.ai/api/v1/chat/completions', {
@@ -187,7 +200,7 @@ async function queryStream(question, res) {
                         if (content) {
                             res.write(`data: ${JSON.stringify({ content })}\n\n`);
                         }
-                    } catch (e) {}
+                    } catch (e) { }
                 }
             }
         });
