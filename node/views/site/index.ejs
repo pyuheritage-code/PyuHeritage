@@ -76,7 +76,13 @@
                 </div>
 
                 <!-- End: Theme Changer (Desktop) -->
-                <div class="hidden md:flex items-center">
+                <div class="hidden md:flex items-center space-x-3">
+                    <% if (user) { %>
+                        <%- include('partials/profile-menu') %>
+                    <% } else { %>
+                        <a href="/auth/signin" class="px-4 py-1.5 text-sm font-medium bg-indigo-600 hover:bg-indigo-700 text-white rounded-full shadow transition">Sign In</a>
+                    <% } %>
+                    <% if (!user) { %>
                     <button id="theme-toggle"
                         class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none">
                         <!-- Sun Icon -->
@@ -91,6 +97,7 @@
                             <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
                         </svg>
                     </button>
+                    <% } %>
                 </div>
 
                 <!-- Mobile: Hamburger Menu Bar -->
@@ -134,6 +141,20 @@
                         class="block pl-6 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">3D
                         ရှေးဟောင်းပစ္စည်းများ</a>
                 </div>
+                <% if (user) { %>
+                    <div class="px-3 py-3 flex items-center space-x-3 border-b border-gray-200 dark:border-gray-700">
+                        <% if (user.picture) { %>
+                            <img src="<%= user.picture %>" alt="<%= user.name %>" class="w-9 h-9 rounded-full object-cover">
+                        <% } else { %>
+                            <span class="w-9 h-9 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold"><%= user.name ? user.name[0].toUpperCase() : 'U' %></span>
+                        <% } %>
+                        <span class="text-base font-medium truncate"><%= user.name %></span>
+                    </div>
+                    <button id="mobile-change-username-btn" class="w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-gray-200 dark:hover:bg-gray-700">Change Username</button>
+                    <a href="/auth/logout" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-200 dark:hover:bg-gray-700">Logout</a>
+                <% } else { %>
+                    <a href="/auth/signin" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-200 dark:hover:bg-gray-700">Sign In</a>
+                <% } %>
                 <button id="mobile-theme-toggle"
                     class="w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-gray-200 dark:hover:bg-gray-700 flex justify-between items-center">
                     <span>Theme</span>
@@ -142,6 +163,9 @@
             </div>
         </div>
     </nav>
+    <% if (user) { %>
+    <%- include('partials/profile-modal') %>
+    <% } %>
     <!-- /nav_section -->
 
     <!-- Slider Section -->
@@ -451,8 +475,8 @@
             }
         }
 
-        themeToggleBtn.addEventListener('click', toggleTheme);
-        mobileThemeToggleBtn.addEventListener('click', toggleTheme);
+        themeToggleBtn?.addEventListener('click', toggleTheme);
+        mobileThemeToggleBtn?.addEventListener('click', toggleTheme);
 
         // History Dropdown Toggle Logic
         const historyDropdownBtn = document.getElementById('history-dropdown-btn');

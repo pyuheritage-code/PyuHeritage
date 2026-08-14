@@ -1,0 +1,20 @@
+<div id="username-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4">
+    <div id="username-modal-backdrop" class="absolute inset-0 bg-black/50"></div>
+    <div
+        class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-sm border border-gray-200 dark:border-gray-700 p-6">
+        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Change Username</h3>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">Usernames must be 3–30 characters (letters, numbers,
+            underscore).</p>
+        <input id="username-input" type="text" value="<%= user.name %>" maxlength="30"
+            class="w-full bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-600 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+        <p id="username-error" class="hidden text-xs text-red-500 mt-2"></p>
+        <div class="flex justify-end space-x-2 mt-5">
+            <button id="username-cancel"
+                class="px-4 py-2 text-sm font-medium border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">Cancel</button>
+            <button id="username-save"
+                class="px-4 py-2 text-sm font-medium bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition disabled:opacity-50">Save</button>
+        </div>
+    </div>
+</div>
+
+<script src="/js/profile-menu.js"></script>

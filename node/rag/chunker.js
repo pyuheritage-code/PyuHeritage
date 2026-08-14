@@ -1,5 +1,5 @@
-const CHUNK_SIZE = 3000;
-const CHUNK_OVERLAP = 200;
+const CHUNK_SIZE = 1000;
+const CHUNK_OVERLAP = 150;
 
 function splitText(text, source) {
     const lines = text.split(/\n\s*\n/);

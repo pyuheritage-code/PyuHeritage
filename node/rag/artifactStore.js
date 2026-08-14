@@ -60,15 +60,15 @@ class ArtifactStore {
         return this.items.length;
     }
 
-    async upsertOne(sourceTable, sourceId, title) {
-        const embedding = await embedder.getEmbedding(title);
+    async upsertOne(sourceTable, sourceId, title, description, category) {
+        const embedding = await embedder.getPassageEmbedding(title);
         const embeddingJson = JSON.stringify(embedding);
         return new Promise((resolve, reject) => {
             db.query(
-                `INSERT INTO artifact_embeddings (source_table, source_id, title, embedding)
-                 VALUES (?, ?, ?, ?)
-                 ON DUPLICATE KEY UPDATE title = VALUES(title), embedding = VALUES(embedding)`,
-                [sourceTable, sourceId, title, embeddingJson],
+                `INSERT INTO artifact_embeddings (source_table, source_id, title, description, category, embedding)
+                 VALUES (?, ?, ?, ?, ?, ?)
+                 ON DUPLICATE KEY UPDATE title = VALUES(title), description = VALUES(description), category = VALUES(category), embedding = VALUES(embedding)`,
+                [sourceTable, sourceId, title, description || null, category || null, embeddingJson],
                 (err) => {
                     if (err) return reject(err);
                     this._syncFromDB().then(resolve).catch(reject);
@@ -92,7 +92,7 @@ class ArtifactStore {
         const all = [...artifacts, ...threeD];
         for (let i = 0; i < all.length; i++) {
             const item = all[i];
-            const embedding = await embedder.getEmbedding(item.title);
+            const embedding = await embedder.getPassageEmbedding(item.title);
             await this._upsertRaw(item.source_table, item.source_id, item.title, item.description, item.category, embedding);
             if ((i + 1) % 10 === 0) console.log(`  embedded ${i + 1}/${all.length}`);
         }

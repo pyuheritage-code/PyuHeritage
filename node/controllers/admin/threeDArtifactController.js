@@ -41,7 +41,7 @@ const create = (req, res) => {
             console.error('Error creating 3D artifact:', err);
             return res.status(500).json({ error: 'Failed to create 3D artifact' });
         }
-        artifactStore.upsertOne('three_d_artifacts', result.insertId, title).catch(e =>
+        artifactStore.upsertOne('three_d_artifacts', result.insertId, title, description, category).catch(e =>
             console.error('Embedding sync error on 3D create:', e.message)
         );
         res.json({ success: true, id: result.insertId, message: '3D artifact created successfully' });
@@ -84,7 +84,7 @@ const update = (req, res) => {
                 console.error('Error updating 3D artifact:', err);
                 return res.status(500).json({ error: 'Failed to update 3D artifact' });
             }
-            artifactStore.upsertOne('three_d_artifacts', Number(id), title).catch(e =>
+            artifactStore.upsertOne('three_d_artifacts', Number(id), title, description, category).catch(e =>
                 console.error('Embedding sync error on 3D update:', e.message)
             );
             res.json({ success: true, message: '3D artifact updated successfully' });

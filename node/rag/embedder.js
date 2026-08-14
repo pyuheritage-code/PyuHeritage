@@ -1,27 +1,39 @@
 const { pipeline } = require('@huggingface/transformers');
 
-const MODEL_NAME = 'Xenova/all-MiniLM-L6-v2';
+const MODEL_NAME = 'Xenova/multilingual-e5-small';
 const BATCH_SIZE = 32;
 let extractor = null;
 
-async function getEmbedding(text) {
+async function getExtractor() {
     if (!extractor) {
         extractor = await pipeline('feature-extraction', MODEL_NAME);
     }
-    const result = await extractor(text, { pooling: 'mean', normalize: true });
+    return extractor;
+}
+
+// e5 models are trained with role prefixes for asymmetric retrieval:
+// queries => "query: ...", stored passages => "passage: ...".
+
+async function getQueryEmbedding(text) {
+    const ex = await getExtractor();
+    const result = await ex(`query: ${text}`, { pooling: 'mean', normalize: true });
     return Array.from(result.data);
 }
 
-async function getEmbeddings(texts) {
-    if (!extractor) {
-        extractor = await pipeline('feature-extraction', MODEL_NAME);
-    }
+async function getPassageEmbedding(text) {
+    const ex = await getExtractor();
+    const result = await ex(`passage: ${text}`, { pooling: 'mean', normalize: true });
+    return Array.from(result.data);
+}
+
+async function getPassageEmbeddings(texts) {
+    const ex = await getExtractor();
     const results = [];
     const total = texts.length;
     for (let i = 0; i < total; i += BATCH_SIZE) {
         if (i % 128 === 0) console.log(`  embedding ${i}/${total}`);
-        const batch = texts.slice(i, i + BATCH_SIZE);
-        const output = await extractor(batch, { pooling: 'mean', normalize: true });
+        const batch = texts.slice(i, i + BATCH_SIZE).map(t => `passage: ${t}`);
+        const output = await ex(batch, { pooling: 'mean', normalize: true });
         const dim = output.dims[output.dims.length - 1];
         const data = Array.from(output.data);
         for (let j = 0; j < batch.length; j++) {
@@ -31,4 +43,8 @@ async function getEmbeddings(texts) {
     return results;
 }
 
-module.exports = { getEmbedding, getEmbeddings };
+// Backwards-compatible aliases.
+const getEmbedding = getQueryEmbedding;
+const getEmbeddings = getPassageEmbeddings;
+
+module.exports = { getEmbedding, getEmbeddings, getQueryEmbedding, getPassageEmbedding, getPassageEmbeddings };

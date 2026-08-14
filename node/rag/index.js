@@ -1,8 +1,7 @@
 const axios = require('axios');
-const pdfLoader = require('./pdfLoader');
-const chunker = require('./chunker');
 const embedder = require('./embedder');
-const vectorStore = require('./vectorStore');
+const { normalizeToUnicode } = require('./normalizer');
+const documentStore = require('./documentStore');
 const artifactStore = require('./artifactStore');
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
@@ -13,9 +12,9 @@ const SITE_NAME = process.env.OPENROUTER_SITE_NAME || 'PyuHeritage';
 let initialized = false;
 let initPromise = null;
 
-const SYSTEM_PROMPT = `You are a helpful assistant specialized in Pyu (ပျူ) ancient cities and heritage. 
-Answer questions based ONLY on the provided context from the documents and artifact database.
-If the answer is not found in the context, search from google and give right answer with source links.
+const SYSTEM_PROMPT = `You are a helpful assistant specialized in Pyu (ပျူ) ancient cities and heritage.  
+Answer questions based on the provided context from the documents and artifact database.
+If the answer is not found in the context,you don't need to said about context and search from google and give right answer with source links.
 Always answer in Myanmar (Burmese) language. Be concise and informative.`;
 
 // If the answer is not found in the context, say "ဤအကြောင်းအရာကို ကျွန်ုပ်၏ အချက်အလက်များတွင် မတွေ့ရှိပါ။" (I don't have information about this in my documents).
@@ -26,18 +25,12 @@ async function init(forceReindex = false) {
 
     initPromise = (async () => {
         try {
-            if (vectorStore.size() === 0 || forceReindex) {
-                const documents = await pdfLoader.loadPDFs();
-                if (documents.length > 0) {
-                    const chunks = chunker.chunkDocuments(documents);
-                    console.log(`Indexing ${chunks.length} chunks...`);
-                    const embeddings = await embedder.getEmbeddings(chunks.map(c => c.text));
-                    vectorStore.add(chunks, embeddings);
-                    console.log(`PDF RAG: ${documents.length} PDF(s), ${vectorStore.size()} chunks indexed`);
-                }
+            if (forceReindex) {
+                await documentStore.syncAll();
             } else {
-                console.log(`PDF RAG ready: ${vectorStore.size()} chunks loaded from cache`);
+                await documentStore.init();
             }
+            console.log(`Document RAG ready: ${documentStore.size()} chunks indexed from documents`);
 
             await artifactStore.init();
             console.log(`Artifact RAG ready: ${artifactStore.size()} items loaded from DB`);
@@ -59,7 +52,7 @@ async function query(question) {
         return 'OpenRouter API key not configured. Set OPENROUTER_API_KEY in .env';
     }
 
-    const questionEmbedding = await embedder.getEmbedding(question);
+    const questionEmbedding = await embedder.getQueryEmbedding(normalizeToUnicode(question));
 
     const context = await buildHybridContext(questionEmbedding);
 
@@ -73,14 +66,14 @@ async function query(question) {
 async function buildHybridContext(questionEmbedding) {
     const parts = [];
 
-    if (vectorStore.size() > 0) {
-        const pdfResults = vectorStore.search(questionEmbedding, 5);
+    if (documentStore.size() > 0) {
+        const pdfResults = documentStore.search(questionEmbedding, 5);
         const pdfContext = pdfResults
             .filter(r => r.score > 0.3)
-            .map(r => r.chunk.text)
+            .map(r => `[${r.chunk.source}]\n${r.chunk.text}`)
             .join('\n\n---\n\n');
         if (pdfContext) {
-            parts.push('[From PDF documents:]\n' + pdfContext);
+            parts.push('[From documents:]\n' + pdfContext);
         }
     }
 
@@ -145,7 +138,7 @@ async function generateFallback(question) {
     return res.data.choices[0].message.content;
 }
 
-async function queryStream(question, res) {
+async function queryStream(question, res, callbacks = {}) {
     await init();
 
     if (!OPENROUTER_API_KEY || OPENROUTER_API_KEY === 'sk-or-v1-YourKeyHere') {
@@ -155,7 +148,7 @@ async function queryStream(question, res) {
         return;
     }
 
-    const questionEmbedding = await embedder.getEmbedding(question);
+    const questionEmbedding = await embedder.getQueryEmbedding(normalizeToUnicode(question));
     const context = await buildHybridContext(questionEmbedding);
 
     const messages = context
@@ -186,6 +179,7 @@ async function queryStream(question, res) {
         });
 
         let buffer = '';
+        let fullText = '';
         response.data.on('data', (chunk) => {
             buffer += chunk.toString();
             const lines = buffer.split('\n');
@@ -198,7 +192,9 @@ async function queryStream(question, res) {
                         const parsed = JSON.parse(trimmed.slice(6));
                         const content = parsed.choices?.[0]?.delta?.content || '';
                         if (content) {
+                            fullText += content;
                             res.write(`data: ${JSON.stringify({ content })}\n\n`);
+                            if (callbacks.onToken) callbacks.onToken(content);
                         }
                     } catch (e) { }
                 }
@@ -208,6 +204,7 @@ async function queryStream(question, res) {
         response.data.on('end', () => {
             res.write('data: [DONE]\n\n');
             res.end();
+            if (callbacks.onDone) callbacks.onDone(fullText);
         });
 
         response.data.on('error', (err) => {
@@ -215,12 +212,14 @@ async function queryStream(question, res) {
             res.write(`data: ${JSON.stringify({ error: err.message })}\n\n`);
             res.write('data: [DONE]\n\n');
             res.end();
+            if (callbacks.onError) callbacks.onError(err, fullText);
         });
     } catch (err) {
         console.error('Stream request error:', err.message);
         res.write(`data: ${JSON.stringify({ error: err.message })}\n\n`);
         res.write('data: [DONE]\n\n');
         res.end();
+        if (callbacks.onError) callbacks.onError(err);
     }
 }
 

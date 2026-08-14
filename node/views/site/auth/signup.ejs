@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - PyuHeritage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+</head>
+
+<body
+    class="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300 flex flex-col">
+    <!-- Header -->
+    <header class="w-full">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <a href="/" class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">ပျူအမွေအနှစ်</a>
+            <div class="flex items-center space-x-3">
+                <a href="/"
+                    class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">ပင်မစာမျက်နှာ</a>
+                <button id="theme-toggle"
+                    class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none">
+                    <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                            d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z">
+                        </path>
+                    </svg>
+                    <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sign Up Card -->
+    <main class="flex-grow flex items-center justify-center px-4 py-10">
+        <div
+            class="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8">
+            <div class="text-center mb-8">
+                <h1 class="text-2xl font-bold mb-1">စာရင်းဖွင့်မည် (Sign Up)</h1>
+                <p class="text-sm text-gray-600 dark:text-gray-400">အကောင့်အသစ် တစ်ခု ဖန်တီးပါ</p>
+            </div>
+
+            <% if (error) { %>
+            <div id="error-box"
+                class="mb-6 px-4 py-3 rounded-lg bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-sm text-red-700 dark:text-red-300">
+                <%= error %>
+            </div>
+            <% } %>
+
+            <!-- Google -->
+            <a href="/auth/google"
+                class="w-full flex items-center justify-center space-x-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 rounded-xl py-2.5 font-medium hover:bg-gray-50 dark:hover:bg-gray-600 transition shadow-sm">
+                <svg class="w-5 h-5" viewBox="0 0 24 24">
+                    <path fill="#4285F4"
+                        d="M23.49 12.27c0-.79-.07-1.54-.19-2.27H12v4.51h6.47c-.29 1.48-1.14 2.73-2.4 3.58v3h3.86c2.26-2.09 3.56-5.17 3.56-8.82z" />
+                    <path fill="#34A853"
+                        d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.86-3c-1.08.72-2.45 1.16-4.07 1.16-3.13 0-5.78-2.11-6.73-4.96H1.29v3.09C3.26 21.3 7.31 24 12 24z" />
+                    <path fill="#FBBC05"
+                        d="M5.27 14.29c-.25-.72-.38-1.49-.38-2.29s.14-1.57.38-2.29V6.62H1.29C.47 8.24 0 10.06 0 12s.47 3.76 1.29 5.38l3.98-3.09z" />
+                    <path fill="#EA4335"
+                        d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.62l3.98 3.09C6.22 6.86 8.87 4.75 12 4.75z" />
+                </svg>
+                <span>Sign up with Google</span>
+            </a>
+
+            <!-- Divider -->
+            <div class="flex items-center my-6">
+                <div class="flex-grow border-t border-gray-200 dark:border-gray-700"></div>
+                <span class="px-4 text-xs text-gray-500 dark:text-gray-400">or</span>
+                <div class="flex-grow border-t border-gray-200 dark:border-gray-700"></div>
+            </div>
+
+            <!-- Username/Email/Password Form -->
+            <form method="POST" action="/auth/signup" class="space-y-4">
+                <div>
+                    <label for="username" class="block text-sm font-medium mb-1">Username</label>
+                    <input type="text" id="username" name="username" required pattern="[A-Za-z0-9_]{3,30}"
+                        title="3-30 characters: letters, numbers, underscore" autocomplete="username"
+                        class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition">
+                </div>
+                <div>
+                    <label for="email" class="block text-sm font-medium mb-1">Email</label>
+                    <input type="email" id="email" name="email" required autocomplete="email"
+                        class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition">
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-medium mb-1">Password</label>
+                    <input type="password" id="password" name="password" required minlength="6"
+                        autocomplete="new-password"
+                        class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition">
+                </div>
+                <div>
+                    <label for="confirmPassword" class="block text-sm font-medium mb-1">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required
+                        autocomplete="new-password"
+                        class="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition">
+                </div>
+                <button type="submit"
+                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl py-2.5 font-semibold transition shadow-lg">Sign
+                    Up</button>
+            </form>
+
+            <p class="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
+                Already have an account?
+                <a href="/auth/signin" class="text-indigo-600 dark:text-indigo-400 font-medium hover:underline">Sign
+                    In</a>
+            </p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full py-6 text-center text-sm text-gray-500">
+        <p>&copy; 2026 PyuHeritage Project. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const darkIcon = document.getElementById('theme-toggle-dark-icon');
+        const lightIcon = document.getElementById('theme-toggle-light-icon');
+
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            if (lightIcon) lightIcon.classList.remove('hidden');
+        } else {
+            document.documentElement.classList.remove('dark');
+            if (darkIcon) darkIcon.classList.remove('hidden');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+                lightIcon?.classList.add('hidden');
+                darkIcon?.classList.remove('hidden');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+                darkIcon?.classList.add('hidden');
+                lightIcon?.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+
+</html>

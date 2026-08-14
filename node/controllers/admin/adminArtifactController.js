@@ -40,7 +40,7 @@ const create = (req, res) => {
             console.error('Error creating artifact:', err);
             return res.status(500).json({ error: 'Failed to create artifact' });
         }
-        artifactStore.upsertOne('artifacts', result.insertId, title).catch(e =>
+        artifactStore.upsertOne('artifacts', result.insertId, title, description, category).catch(e =>
             console.error('Embedding sync error on create:', e.message)
         );
         res.json({ success: true, id: result.insertId, message: 'Artifact created successfully' });
@@ -76,7 +76,7 @@ const update = (req, res) => {
                 console.error('Error updating artifact:', err);
                 return res.status(500).json({ error: 'Failed to update artifact' });
             }
-            artifactStore.upsertOne('artifacts', Number(id), title).catch(e =>
+            artifactStore.upsertOne('artifacts', Number(id), title, description, category).catch(e =>
                 console.error('Embedding sync error on update:', e.message)
             );
             res.json({ success: true, message: 'Artifact updated successfully' });
