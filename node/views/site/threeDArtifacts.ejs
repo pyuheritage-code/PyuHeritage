@@ -198,7 +198,8 @@
                                                 <% if (a.model_url) { %>
                                                     <button data-model-url="<%= a.model_url %>"
                                                         data-model-title="<%= a.title %>"
-                                                        onclick="open3DViewer(this.dataset.modelUrl, this.dataset.modelTitle)"
+                                                        data-voice-url="<%= a.voice_url || '' %>"
+                                                        onclick="open3DViewer(this.dataset.modelUrl, this.dataset.modelTitle, this.dataset.voiceUrl)"
                                                         class="absolute bottom-3 right-3 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl shadow-lg shadow-indigo-500/30 transition-all hover:shadow-indigo-500/40 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 duration-300 flex items-center space-x-1.5">
                                                         <svg class="w-4 h-4" fill="none" stroke="currentColor"
                                                             viewBox="0 0 24 24">
@@ -255,14 +256,29 @@
             <div
                 class="absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-4 sm:px-6 py-3 bg-gradient-to-b from-black/60 to-transparent">
                 <h3 id="viewer-title" class="text-white font-bold text-lg truncate pr-4">3D Model</h3>
-                <button onclick="close3DViewer()"
-                    class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors flex-shrink-0">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
-                        </path>
-                    </svg>
-                </button>
+                <div class="flex items-center space-x-2 flex-shrink-0">
+                    <button id="voice-toggle" onclick="toggleVoice()"
+                        class="hidden p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors"
+                        title="Mute voice">
+                        <svg id="voice-icon-on" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
+                        </svg>
+                        <svg id="voice-icon-off" class="hidden w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15zm12.828 0l-3-3m3 3l3 3m-3-3l3-3m-3 3l-3-3"></path>
+                        </svg>
+                    </button>
+                    <button onclick="close3DViewer()"
+                        class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors flex-shrink-0">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
             </div>
+
+            <!-- Voiceover Audio -->
+            <audio id="artifact-voice" preload="auto" class="hidden"></audio>
 
             <!-- Model Viewer -->
             <model-viewer id="artifact-model-viewer" class="w-full h-full" camera-controls auto-rotate
@@ -353,8 +369,25 @@
         const modelViewer = document.getElementById('artifact-model-viewer');
         const viewerTitle = document.getElementById('viewer-title');
         const viewerLoading = document.getElementById('viewer-loading');
+        const voiceAudio = document.getElementById('artifact-voice');
+        const voiceToggle = document.getElementById('voice-toggle');
+        const voiceIconOn = document.getElementById('voice-icon-on');
+        const voiceIconOff = document.getElementById('voice-icon-off');
 
-        function open3DViewer(modelUrl, title) {
+        function setVoiceIcon(playing) {
+            if (voiceIconOn) voiceIconOn.classList.toggle('hidden', !playing);
+            if (voiceIconOff) voiceIconOff.classList.toggle('hidden', playing);
+        }
+
+        function stopVoice() {
+            if (voiceAudio) {
+                voiceAudio.pause();
+                voiceAudio.currentTime = 0;
+                setVoiceIcon(true);
+            }
+        }
+
+        function open3DViewer(modelUrl, title, voiceUrl) {
             viewerTitle.textContent = title || '3D Model';
             modelViewer.setAttribute('src', modelUrl);
             viewerLoading.classList.remove('hidden');
@@ -368,14 +401,40 @@
             modelViewer.addEventListener('error', () => {
                 viewerLoading.innerHTML = '<p class="text-red-400">Failed to load 3D model</p>';
             }, { once: true });
+
+            stopVoice();
+            if (voiceUrl) {
+                voiceAudio.src = voiceUrl;
+                voiceToggle.classList.remove('hidden');
+                voiceAudio.play().catch(() => setVoiceIcon(false));
+            } else {
+                voiceToggle.classList.add('hidden');
+            }
         }
+
+        function toggleVoice() {
+            if (!voiceAudio || !voiceAudio.src) return;
+            if (voiceAudio.paused) {
+                voiceAudio.play().then(() => setVoiceIcon(true)).catch(() => setVoiceIcon(false));
+            } else {
+                voiceAudio.pause();
+                setVoiceIcon(false);
+            }
+        }
+
+        voiceAudio?.addEventListener('ended', () => setVoiceIcon(true));
+        voiceAudio?.addEventListener('pause', () => setVoiceIcon(false));
+        voiceAudio?.addEventListener('play', () => setVoiceIcon(true));
 
         function close3DViewer(e) {
             if (e && e.target !== viewerOverlay) return;
+            stopVoice();
             viewerOverlay.classList.add('hidden');
             viewerOverlay.classList.remove('flex');
             document.body.classList.remove('overflow-hidden');
             modelViewer.removeAttribute('src');
+            if (voiceAudio) voiceAudio.src = '';
+            if (voiceToggle) voiceToggle.classList.add('hidden');
             viewerLoading.classList.add('hidden');
             viewerLoading.innerHTML = `
                 <div class="text-center">

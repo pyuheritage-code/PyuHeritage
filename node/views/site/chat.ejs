@@ -208,7 +208,16 @@
                 <div class="relative flex-grow">
                     <input type="text" id="user-input" placeholder="ဒီနေရာမှာ မေးမြန်းနိုင်ပါတယ်..."
                         class="w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-600 rounded-full py-3 px-6 pr-12 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all shadow-inner">
-                    <button type="button"
+                    <!-- Emoji Picker Panel -->
+                    <div id="emoji-picker"
+                        class="hidden absolute bottom-full mb-2 left-0 right-0 z-20 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-xl overflow-hidden">
+                        <div
+                            class="flex items-center justify-between px-3 py-2 border-b border-gray-100 dark:border-gray-700">
+                            <p class="text-xs font-semibold text-gray-500 dark:text-gray-400">Emoji</p>
+                        </div>
+                        <div id="emoji-grid" class="max-h-56 overflow-y-auto p-2 grid grid-cols-8 gap-1"></div>
+                    </div>
+                    <button type="button" id="emoji-btn" aria-label="Emoji"
                         class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-indigo-500 transition-colors">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -469,7 +478,11 @@
         mobileHistoryClose?.addEventListener('click', closeMobileHistory);
         mobileHistoryOverlay?.addEventListener('click', closeMobileHistory);
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeMobileHistory();
+            if (e.key === 'Escape') {
+                closeMobileHistory();
+                const ep = document.getElementById('emoji-picker');
+                if (ep && !ep.classList.contains('hidden')) ep.classList.add('hidden');
+            }
         });
 
         // Chat Interaction Logic
@@ -478,6 +491,53 @@
         const chatMessages = document.getElementById('chat-messages');
         const suggestionChips = document.querySelectorAll('.suggestion-chip');
         let isStreaming = false;
+
+        // Emoji Picker
+        const EMOJIS = [
+            '😀','😃','😄','😁','😆','😅','🤣','😂','🙂','😉','😊','😇','🥰','😍','😘','😋','😎','🤗','🤔','🫡',
+            '🤭','😴','🤤','😪','😮','😬','😐','😏','😢','😭','😡','🤯','😱','🥳',
+            '❤️','🧡','💛','💚','💙','💜','🖤','🤍','💔','💕','💞','💓','💗','💖',
+            '👍','👎','👌','✌️','🤞','🤟','🤘','👏','🙌','🙏','🤝','💪','👋','🤙','🫶','👀',
+            '✅','❌','❗','❓','⭐','🌟','✨','🔥','💯','🎉','🎊','⚡','💫','🍀',
+            '🏛️','⛩️','🕉️','🪷','📜','🏺','🗿','🏯','🌏','🗺️','📖','🧘','🪔','🕯️','⛰️','🌄','🌅','🌊','🌸','🍃'
+        ];
+        const emojiBtn = document.getElementById('emoji-btn');
+        const emojiPicker = document.getElementById('emoji-picker');
+        const emojiGrid = document.getElementById('emoji-grid');
+
+        if (emojiBtn && emojiPicker && emojiGrid) {
+            emojiGrid.innerHTML = EMOJIS.map(e =>
+                `<button type="button" data-emoji="${e}" class="text-xl leading-none p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">${e}</button>`
+            ).join('');
+
+            emojiBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                emojiPicker.classList.toggle('hidden');
+            });
+
+            function insertEmoji(emoji) {
+                const start = userInput.selectionStart ?? userInput.value.length;
+                const end = userInput.selectionEnd ?? start;
+                userInput.value = userInput.value.slice(0, start) + emoji + userInput.value.slice(end);
+                const newPos = start + emoji.length;
+                userInput.setSelectionRange(newPos, newPos);
+                userInput.focus();
+            }
+
+            emojiGrid.addEventListener('click', (e) => {
+                const btn = e.target.closest('button[data-emoji]');
+                if (!btn) return;
+                e.stopPropagation();
+                insertEmoji(btn.dataset.emoji);
+            });
+
+            document.addEventListener('click', (e) => {
+                if (emojiPicker.classList.contains('hidden')) return;
+                if (!emojiPicker.contains(e.target) && e.target !== emojiBtn) {
+                    emojiPicker.classList.add('hidden');
+                }
+            });
+        }
 
         function addMessage(text, isUser = false) {
             const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });

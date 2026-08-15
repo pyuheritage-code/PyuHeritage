@@ -19,7 +19,7 @@ Server listens on `http://localhost:3003` (PORT in `node/.env`).
 ## Architecture
 
 - **Express 5** + **EJS** views (`views/site/` public, `views/admin/` dashboard).
-- **MySQL** (mysql2 pool) — DB `pyu`, tables: `artifacts` (id, title, description, image_url, category, timestamps) and `three_d_artifacts` (same + model_url).
+- **MySQL** (mysql2 pool) — DB `pyu`, tables: `artifacts` (id, title, description, image_url, category, timestamps) and `three_d_artifacts` (same + model_url, voice_url).
 - Two route groups defined in `routes/routers.js` (public) and `routes/adminrouters.js` (admin CRUD, prefix `/admin`).
 - Controllers use **callback-style** models (no async/await in DB queries).
 - **Auth** (`routes/authrouters.js`, `controllers/site/authController.js`, `middleware/auth.js`): two sign-in methods, both ending in an httpOnly `pyu_token` JWT cookie (7d).
@@ -37,7 +37,7 @@ Server listens on `http://localhost:3003` (PORT in `node/.env`).
   - `rag/normalizer.js` converts Zawgyi→Unicode before embedding (statistical detector, model file `rag/resources/zawgyiUnicodeModel.dat`); text already in Unicode passes through unchanged.
 - File uploads via multer:
   - Regular artifacts: single `image`, 5 MB limit, accepts jpeg/jpg/png/webp/gif.
-  - 3D artifacts: fields `image` + `model` (.glb), 100 MB limit.
+  - 3D artifacts: fields `image` + `model` (.glb), 100 MB limit; optional `voice` audio (wav/mp3/ogg/m4a/aac/webm, 100 MB) stored in `uploads/voice/`, saved as `voice_url` on the row. The site 3D viewer (`views/site/threeDArtifacts.ejs`) auto-plays the voiceover when a model opens (mute/unmute toggle in the header); admin add/edit modal has an optional voice file field (upload replaces the old file, delete removes it).
 - `rag/index.js` streams LLM chat answers via OpenRouter (`query`/`queryStream`); `queryStream(question, res, callbacks)` reports tokens/end/error so the controller can persist history.
 
 ## Commands

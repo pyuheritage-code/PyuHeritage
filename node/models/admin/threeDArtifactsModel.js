@@ -11,24 +11,26 @@ const getById = (id, callback) => {
 };
 
 const create = (data, callback) => {
-    const sql = 'INSERT INTO three_d_artifacts (title, description, image_url, model_url, category) VALUES (?, ?, ?, ?, ?)';
+    const sql = 'INSERT INTO three_d_artifacts (title, description, image_url, model_url, voice_url, category) VALUES (?, ?, ?, ?, ?, ?)';
     const params = [
         data.title,
         data.description,
         data.image_url || null,
         data.model_url || null,
+        data.voice_url || null,
         data.category || 'General'
     ];
     db.query(sql, params, callback);
 };
 
 const update = (id, data, callback) => {
-    const sql = 'UPDATE three_d_artifacts SET title = ?, description = ?, image_url = ?, model_url = ?, category = ? WHERE id = ?';
+    const sql = 'UPDATE three_d_artifacts SET title = ?, description = ?, image_url = ?, model_url = ?, voice_url = ?, category = ? WHERE id = ?';
     const params = [
         data.title,
         data.description,
         data.image_url,
         data.model_url,
+        data.voice_url,
         data.category || 'General',
         id
     ];

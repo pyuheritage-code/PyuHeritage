@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS three_d_artifacts (
     description TEXT         NOT NULL,
     image_url   VARCHAR(500) DEFAULT NULL,
     model_url   VARCHAR(500) DEFAULT NULL,
+    voice_url   VARCHAR(500) DEFAULT NULL,
     category    VARCHAR(100) DEFAULT 'General',
     created_at  TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
     updated_at  TIMESTAMP    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP

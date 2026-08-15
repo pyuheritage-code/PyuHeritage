@@ -31,12 +31,13 @@ const create = (req, res) => {
     const { title, description, category } = req.body;
     const image_url = req.files?.image?.[0] ? '/uploads/' + req.files.image[0].filename : null;
     const model_url = req.files?.model?.[0] ? '/uploads/' + req.files.model[0].filename : null;
+    const voice_url = req.files?.voice?.[0] ? '/uploads/voice/' + req.files.voice[0].filename : null;
 
     if (!title || !description) {
         return res.status(400).json({ error: 'Title and description are required' });
     }
 
-    threeDArtifactsModel.create({ title, description, image_url, model_url, category }, (err, result) => {
+    threeDArtifactsModel.create({ title, description, image_url, model_url, voice_url, category }, (err, result) => {
         if (err) {
             console.error('Error creating 3D artifact:', err);
             return res.status(500).json({ error: 'Failed to create 3D artifact' });
@@ -53,6 +54,7 @@ const update = (req, res) => {
     const { title, description, category } = req.body;
     const newImageUrl = req.files?.image?.[0] ? '/uploads/' + req.files.image[0].filename : null;
     const newModelUrl = req.files?.model?.[0] ? '/uploads/' + req.files.model[0].filename : null;
+    const newVoiceUrl = req.files?.voice?.[0] ? '/uploads/voice/' + req.files.voice[0].filename : null;
 
     if (!title || !description) {
         return res.status(400).json({ error: 'Title and description are required' });
@@ -66,6 +68,7 @@ const update = (req, res) => {
         const existing = results[0];
         const image_url = newImageUrl || existing.image_url;
         const model_url = newModelUrl || existing.model_url;
+        const voice_url = newVoiceUrl || existing.voice_url;
 
         const deleteFile = (fileUrl) => {
             if (fileUrl) {
@@ -78,8 +81,9 @@ const update = (req, res) => {
 
         if (newImageUrl && existing.image_url) deleteFile(existing.image_url);
         if (newModelUrl && existing.model_url) deleteFile(existing.model_url);
+        if (newVoiceUrl && existing.voice_url) deleteFile(existing.voice_url);
 
-        threeDArtifactsModel.update(id, { title, description, image_url, model_url, category }, (err, result) => {
+        threeDArtifactsModel.update(id, { title, description, image_url, model_url, voice_url, category }, (err, result) => {
             if (err) {
                 console.error('Error updating 3D artifact:', err);
                 return res.status(500).json({ error: 'Failed to update 3D artifact' });
@@ -123,6 +127,7 @@ const remove = (req, res) => {
 
             deleteFile(artifact.image_url);
             deleteFile(artifact.model_url);
+            deleteFile(artifact.voice_url);
 
             res.json({ success: true, message: '3D artifact deleted successfully' });
         });

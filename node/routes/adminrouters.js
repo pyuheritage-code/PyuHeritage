@@ -17,8 +17,8 @@ adminrouters.delete('/admin/artifacts/:id', adminArtifactController.remove);
 // 3D Artifact CRUD routes
 adminrouters.get('/admin/3d-artifacts', threeDArtifactController.list);
 adminrouters.get('/admin/3d-artifacts/:id', threeDArtifactController.getOne);
-adminrouters.post('/admin/3d-artifacts', modelUpload.fields([{ name: 'image', maxCount: 1 }, { name: 'model', maxCount: 1 }]), threeDArtifactController.create);
-adminrouters.post('/admin/3d-artifacts/:id', modelUpload.fields([{ name: 'image', maxCount: 1 }, { name: 'model', maxCount: 1 }]), threeDArtifactController.update);
+adminrouters.post('/admin/3d-artifacts', modelUpload.fields([{ name: 'image', maxCount: 1 }, { name: 'model', maxCount: 1 }, { name: 'voice', maxCount: 1 }]), threeDArtifactController.create);
+adminrouters.post('/admin/3d-artifacts/:id', modelUpload.fields([{ name: 'image', maxCount: 1 }, { name: 'model', maxCount: 1 }, { name: 'voice', maxCount: 1 }]), threeDArtifactController.update);
 adminrouters.delete('/admin/3d-artifacts/:id', threeDArtifactController.remove);
 
 module.exports = adminrouters;

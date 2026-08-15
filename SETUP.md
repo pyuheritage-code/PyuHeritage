@@ -164,7 +164,7 @@ Open the following in your browser:
 | POST | `/admin/artifacts/:id` | Update artifact |
 | DELETE | `/admin/artifacts/:id` | Delete artifact |
 | GET | `/admin/3d-artifacts` | List 3D artifacts |
-| POST | `/admin/3d-artifacts` | Create 3D artifact (multipart: `title`, `description`, `category`, `image`, `model` `.glb`) |
+| POST | `/admin/3d-artifacts` | Create 3D artifact (multipart: `title`, `description`, `category`, `image`, `model` `.glb`, optional `voice` audio) |
 | POST | `/admin/3d-artifacts/:id` | Update 3D artifact |
 | DELETE | `/admin/3d-artifacts/:id` | Delete 3D artifact |
 
