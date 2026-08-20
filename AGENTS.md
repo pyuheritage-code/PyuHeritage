@@ -37,7 +37,7 @@ Server listens on `http://localhost:3003` (PORT in `node/.env`).
   - `rag/normalizer.js` converts Zawgyi→Unicode before embedding (statistical detector, model file `rag/resources/zawgyiUnicodeModel.dat`); text already in Unicode passes through unchanged.
 - File uploads via multer:
   - Regular artifacts: single `image`, 5 MB limit, accepts jpeg/jpg/png/webp/gif.
-  - 3D artifacts: fields `image` + `model` (.glb), 100 MB limit; optional `voice` audio (wav/mp3/ogg/m4a/aac/webm, 100 MB) stored in `uploads/voice/`, saved as `voice_url` on the row. The site 3D viewer (`views/site/threeDArtifacts.ejs`) auto-plays the voiceover when a model opens (mute/unmute toggle in the header); admin add/edit modal has an optional voice file field (upload replaces the old file, delete removes it).
+  - 3D artifacts: fields `image` + `model` (.glb), 150 MB limit; optional `voice` audio (wav/mp3/ogg/m4a/aac/webm, 150 MB) stored in `uploads/voice/`, saved as `voice_url` on the row. The site 3D viewer (`views/site/threeDArtifacts.ejs`) auto-plays the voiceover when a model opens (mute/unmute toggle in the header); admin add/edit modal has an optional voice file field (upload replaces the old file, delete removes it). Oversized 3D uploads return a JSON `{ error }` notice (413) via the `upload3D` wrapper in `routes/adminrouters.js`; the admin modal shows it in a toast and pre-checks the `.glb` size client-side.
 - `rag/index.js` streams LLM chat answers via OpenRouter (`query`/`queryStream`); `queryStream(question, res, callbacks)` reports tokens/end/error so the controller can persist history.
 
 ## Commands
