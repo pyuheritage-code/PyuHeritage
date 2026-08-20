@@ -27,8 +27,10 @@ const imageFilter = (req, file, cb) => {
     }
 };
 
+const useBlob = !!process.env.BLOB_READ_WRITE_TOKEN;
+
 const upload = multer({
-    storage: imageStorage,
+    storage: useBlob ? multer.memoryStorage() : imageStorage,
     fileFilter: imageFilter,
     limits: { fileSize: 5 * 1024 * 1024 }
 });
@@ -92,7 +94,7 @@ const modelFilter = (req, file, cb) => {
 };
 
 const modelUpload = multer({
-    storage: modelStorage,
+    storage: useBlob ? multer.memoryStorage() : modelStorage,
     fileFilter: modelFilter,
     limits: { fileSize: 150 * 1024 * 1024 }
 });

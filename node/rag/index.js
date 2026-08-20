@@ -8,6 +8,9 @@ const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 const CHAT_MODEL = process.env.OPENROUTER_MODEL || 'deepseek/deepseek-v4-flash';
 const SITE_URL = process.env.OPENROUTER_SITE_URL || 'http://localhost:3003';
 const SITE_NAME = process.env.OPENROUTER_SITE_NAME || 'PyuHeritage';
+const SCORE_THRESHOLD = process.env.RAG_SCORE_THRESHOLD
+    ? parseFloat(process.env.RAG_SCORE_THRESHOLD)
+    : (process.env.RAG_EMBED_API === 'true' ? 0.2 : 0.3);
 
 let initialized = false;
 let initPromise = null;
@@ -69,7 +72,7 @@ async function buildHybridContext(questionEmbedding) {
     if (documentStore.size() > 0) {
         const pdfResults = documentStore.search(questionEmbedding, 5);
         const pdfContext = pdfResults
-            .filter(r => r.score > 0.3)
+            .filter(r => r.score > SCORE_THRESHOLD)
             .map(r => `[${r.chunk.source}]\n${r.chunk.text}`)
             .join('\n\n---\n\n');
         if (pdfContext) {
@@ -80,7 +83,7 @@ async function buildHybridContext(questionEmbedding) {
     if (artifactStore.size() > 0) {
         const artResults = artifactStore.search(questionEmbedding, 5);
         const artLines = artResults
-            .filter(r => r.score > 0.3)
+            .filter(r => r.score > SCORE_THRESHOLD)
             .map(r => `- ${r.item.title}\n  Description: ${r.item.description || 'N/A'}\n  Category: ${r.item.category || 'N/A'} (Source: ${r.item.source_table})`);
         if (artLines.length > 0) {
             parts.push('[From Artifact database:]\n' + artLines.join('\n'));

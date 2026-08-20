@@ -25,11 +25,15 @@ app.use(adminrouters);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const PORT = process.env.PORT;
-app.listen(PORT, (err) => {
-    if (err) {
-        console.log(err);
-    } else {
-        console.log('Server listen at port: ' + PORT);
-        rag.init().catch(e => console.error('RAG init error:', e.message));
-    }
-})
+if (require.main === module) {
+    app.listen(PORT, (err) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('Server listen at port: ' + PORT);
+            rag.init().catch(e => console.error('RAG init error:', e.message));
+        }
+    })
+}
+
+module.exports = app;

@@ -26,8 +26,10 @@ class DocumentStore {
 
     async init() {
         await this._syncFromDB();
-        await this._syncNewFiles();
-        await this._syncFromDB();
+        if (process.env.RAG_DB_ONLY !== 'true') {
+            await this._syncNewFiles();
+            await this._syncFromDB();
+        }
     }
 
     async _syncNewFiles() {

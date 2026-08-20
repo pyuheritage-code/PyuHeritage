@@ -1,7 +1,6 @@
-const fs = require('fs');
-const path = require('path');
 const artifactsModel = require('../../models/admin/artifactsModel');
 const artifactStore = require('../../rag/artifactStore');
+const { saveFile, deleteFile } = require('../../config/blobStorage');
 
 const list = (req, res) => {
     artifactsModel.getAllArtifacts((err, results) => {
@@ -27,9 +26,17 @@ const getOne = (req, res) => {
     });
 };
 
-const create = (req, res) => {
+const create = async (req, res) => {
     const { title, description, category } = req.body;
-    const image_url = req.file ? '/uploads/' + req.file.filename : null;
+    let image_url = null;
+    if (req.file) {
+        try {
+            image_url = await saveFile(req.file, '');
+        } catch (e) {
+            console.error('Error storing uploaded image:', e.message);
+            return res.status(500).json({ error: 'Failed to store uploaded image' });
+        }
+    }
 
     if (!title || !description) {
         return res.status(400).json({ error: 'Title and description are required' });
@@ -47,10 +54,18 @@ const create = (req, res) => {
     });
 };
 
-const update = (req, res) => {
+const update = async (req, res) => {
     const id = req.params.id;
     const { title, description, category } = req.body;
-    const newImageUrl = req.file ? '/uploads/' + req.file.filename : null;
+    let newImageUrl = null;
+    if (req.file) {
+        try {
+            newImageUrl = await saveFile(req.file, '');
+        } catch (e) {
+            console.error('Error storing uploaded image:', e.message);
+            return res.status(500).json({ error: 'Failed to store uploaded image' });
+        }
+    }
 
     if (!title || !description) {
         return res.status(400).json({ error: 'Title and description are required' });
@@ -65,10 +80,7 @@ const update = (req, res) => {
         const image_url = newImageUrl || existing.image_url;
 
         if (newImageUrl && existing.image_url) {
-            const oldPath = path.join(__dirname, '..', '..', existing.image_url);
-            fs.unlink(oldPath, (unlinkErr) => {
-                if (unlinkErr) console.error('Error deleting old image:', unlinkErr);
-            });
+            deleteFile(existing.image_url);
         }
 
         artifactsModel.updateArtifact(id, { title, description, image_url, category }, (err, result) => {
@@ -105,10 +117,7 @@ const remove = (req, res) => {
             );
 
             if (artifact.image_url) {
-                const filePath = path.join(__dirname, '..', '..', artifact.image_url);
-                fs.unlink(filePath, (unlinkErr) => {
-                    if (unlinkErr) console.error('Error deleting image file:', unlinkErr);
-                });
+                deleteFile(artifact.image_url);
             }
 
             res.json({ success: true, message: 'Artifact deleted successfully' });

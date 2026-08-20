@@ -1,8 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { PDFParse } = require('pdf-parse');
-const mammoth = require('mammoth');
 const { normalizeToUnicode } = require('./normalizer');
 
 const DOCUMENTS_DIR = path.join(__dirname, 'documents');
@@ -23,6 +21,7 @@ function computeFileHash(filePath) {
 }
 
 async function extractPdf(filePath) {
+    const { PDFParse } = require('pdf-parse');
     const buffer = fs.readFileSync(filePath);
     const pdf = new PDFParse({ data: buffer });
     await pdf.load();
@@ -31,6 +30,7 @@ async function extractPdf(filePath) {
 }
 
 async function extractDocx(filePath) {
+    const mammoth = require('mammoth');
     const result = await mammoth.extractRawText({ path: filePath });
     return normalizeToUnicode(result.value || '');
 }

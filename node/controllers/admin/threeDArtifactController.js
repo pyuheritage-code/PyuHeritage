@@ -1,7 +1,6 @@
-const fs = require('fs');
-const path = require('path');
 const threeDArtifactsModel = require('../../models/admin/threeDArtifactsModel');
 const artifactStore = require('../../rag/artifactStore');
+const { saveFile, deleteFile } = require('../../config/blobStorage');
 
 const list = (req, res) => {
     threeDArtifactsModel.getAll((err, results) => {
@@ -27,11 +26,19 @@ const getOne = (req, res) => {
     });
 };
 
-const create = (req, res) => {
+const create = async (req, res) => {
     const { title, description, category } = req.body;
-    const image_url = req.files?.image?.[0] ? '/uploads/' + req.files.image[0].filename : null;
-    const model_url = req.files?.model?.[0] ? '/uploads/' + req.files.model[0].filename : null;
-    const voice_url = req.files?.voice?.[0] ? '/uploads/voice/' + req.files.voice[0].filename : null;
+    let image_url = null;
+    let model_url = null;
+    let voice_url = null;
+    try {
+        if (req.files?.image?.[0]) image_url = await saveFile(req.files.image[0], '');
+        if (req.files?.model?.[0]) model_url = await saveFile(req.files.model[0], '');
+        if (req.files?.voice?.[0]) voice_url = await saveFile(req.files.voice[0], 'voice');
+    } catch (e) {
+        console.error('Error storing uploaded file:', e.message);
+        return res.status(500).json({ error: 'Failed to store uploaded file' });
+    }
 
     if (!title || !description) {
         return res.status(400).json({ error: 'Title and description are required' });
@@ -49,12 +56,20 @@ const create = (req, res) => {
     });
 };
 
-const update = (req, res) => {
+const update = async (req, res) => {
     const id = req.params.id;
     const { title, description, category } = req.body;
-    const newImageUrl = req.files?.image?.[0] ? '/uploads/' + req.files.image[0].filename : null;
-    const newModelUrl = req.files?.model?.[0] ? '/uploads/' + req.files.model[0].filename : null;
-    const newVoiceUrl = req.files?.voice?.[0] ? '/uploads/voice/' + req.files.voice[0].filename : null;
+    let newImageUrl = null;
+    let newModelUrl = null;
+    let newVoiceUrl = null;
+    try {
+        if (req.files?.image?.[0]) newImageUrl = await saveFile(req.files.image[0], '');
+        if (req.files?.model?.[0]) newModelUrl = await saveFile(req.files.model[0], '');
+        if (req.files?.voice?.[0]) newVoiceUrl = await saveFile(req.files.voice[0], 'voice');
+    } catch (e) {
+        console.error('Error storing uploaded file:', e.message);
+        return res.status(500).json({ error: 'Failed to store uploaded file' });
+    }
 
     if (!title || !description) {
         return res.status(400).json({ error: 'Title and description are required' });
@@ -69,15 +84,6 @@ const update = (req, res) => {
         const image_url = newImageUrl || existing.image_url;
         const model_url = newModelUrl || existing.model_url;
         const voice_url = newVoiceUrl || existing.voice_url;
-
-        const deleteFile = (fileUrl) => {
-            if (fileUrl) {
-                const filePath = path.join(__dirname, '..', '..', fileUrl);
-                fs.unlink(filePath, (unlinkErr) => {
-                    if (unlinkErr) console.error('Error deleting file:', unlinkErr);
-                });
-            }
-        };
 
         if (newImageUrl && existing.image_url) deleteFile(existing.image_url);
         if (newModelUrl && existing.model_url) deleteFile(existing.model_url);
@@ -115,15 +121,6 @@ const remove = (req, res) => {
             artifactStore.removeOne('three_d_artifacts', Number(id)).catch(e =>
                 console.error('Embedding sync error on 3D delete:', e.message)
             );
-
-            const deleteFile = (fileUrl) => {
-                if (fileUrl) {
-                    const filePath = path.join(__dirname, '..', '..', fileUrl);
-                    fs.unlink(filePath, (unlinkErr) => {
-                        if (unlinkErr) console.error('Error deleting file:', unlinkErr);
-                    });
-                }
-            };
 
             deleteFile(artifact.image_url);
             deleteFile(artifact.model_url);
