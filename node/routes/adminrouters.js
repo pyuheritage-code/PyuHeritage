@@ -17,8 +17,27 @@ adminrouters.delete('/admin/artifacts/:id', adminArtifactController.remove);
 // 3D Artifact CRUD routes
 adminrouters.get('/admin/3d-artifacts', threeDArtifactController.list);
 adminrouters.get('/admin/3d-artifacts/:id', threeDArtifactController.getOne);
-adminrouters.post('/admin/3d-artifacts', modelUpload.fields([{ name: 'image', maxCount: 1 }, { name: 'model', maxCount: 1 }, { name: 'voice', maxCount: 1 }]), threeDArtifactController.create);
-adminrouters.post('/admin/3d-artifacts/:id', modelUpload.fields([{ name: 'image', maxCount: 1 }, { name: 'model', maxCount: 1 }, { name: 'voice', maxCount: 1 }]), threeDArtifactController.update);
+
+const modelFields = [
+    { name: 'image', maxCount: 1 },
+    { name: 'model', maxCount: 1 },
+    { name: 'voice', maxCount: 1 }
+];
+
+const upload3D = (controller) => (req, res) => {
+    modelUpload.fields(modelFields)(req, res, (err) => {
+        if (err) {
+            const message = err.code === 'LIMIT_FILE_SIZE'
+                ? 'File too large. Maximum allowed size is 150MB.'
+                : (err.message || 'Upload failed');
+            return res.status(413).json({ error: message });
+        }
+        controller(req, res);
+    });
+};
+
+adminrouters.post('/admin/3d-artifacts', upload3D(threeDArtifactController.create));
+adminrouters.post('/admin/3d-artifacts/:id', upload3D(threeDArtifactController.update));
 adminrouters.delete('/admin/3d-artifacts/:id', threeDArtifactController.remove);
 
 module.exports = adminrouters;

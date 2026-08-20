@@ -141,14 +141,14 @@
                 <label for="three-d-artifact-form-model" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">3D Model (.glb)</label>
                 <input type="file" id="three-d-artifact-form-model" name="model" accept=".glb,model/gltf-binary"
                     class="w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-purple-50 dark:file:bg-purple-900/30 file:text-purple-600 dark:file:text-purple-400 hover:file:bg-purple-100 dark:hover:file:bg-purple-900/50 file:cursor-pointer file:transition-colors">
-                <p class="text-xs text-gray-400 mt-1">Upload .glb files only (max 100MB)</p>
+                <p id="three-d-artifact-model-note" class="text-xs text-gray-400 mt-1">Upload .glb files only (max 150MB)</p>
             </div>
 
             <div>
                 <label for="three-d-artifact-form-voice" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Voice File <span class="text-gray-400 font-normal">(optional)</span></label>
                 <input type="file" id="three-d-artifact-form-voice" name="voice" accept=".wav,.mp3,.ogg,.m4a,.aac,.webm,audio/*"
                     class="w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-amber-50 dark:file:bg-amber-900/30 file:text-amber-600 dark:file:text-amber-400 hover:file:bg-amber-100 dark:hover:file:bg-amber-900/50 file:cursor-pointer file:transition-colors">
-                <p class="text-xs text-gray-400 mt-1">Upload wav, mp3, ogg, m4a, aac, or webm (max 100MB)</p>
+                <p class="text-xs text-gray-400 mt-1">Upload wav, mp3, ogg, m4a, aac, or webm (max 150MB)</p>
                 <p id="three-d-artifact-voice-note" class="hidden text-xs text-green-600 dark:text-green-400 mt-1"></p>
             </div>
 
@@ -217,6 +217,23 @@
     const threeDFormModel = document.getElementById('three-d-artifact-form-model');
     const threeDFormVoice = document.getElementById('three-d-artifact-form-voice');
     const threeDVoiceNote = document.getElementById('three-d-artifact-voice-note');
+    const threeDFormModelNote = document.getElementById('three-d-artifact-model-note');
+    const MAX_MODEL_SIZE = 150 * 1024 * 1024;
+
+    threeDFormModel.addEventListener('change', () => {
+        const file = threeDFormModel.files[0];
+        if (file && file.size > MAX_MODEL_SIZE) {
+            threeDFormModelNote.textContent = 'File exceeds 150MB limit. Please choose a smaller .glb file.';
+            threeDFormModelNote.classList.add('text-red-600', 'dark:text-red-400');
+            threeDFormModelNote.classList.remove('text-gray-400');
+            threeDFormModel.value = '';
+            show3DArtifactToast('File exceeds 150MB limit. Choose a smaller .glb file.', 'delete');
+        } else {
+            threeDFormModelNote.textContent = 'Upload .glb files only (max 150MB)';
+            threeDFormModelNote.classList.add('text-gray-400');
+            threeDFormModelNote.classList.remove('text-red-600', 'dark:text-red-400');
+        }
+    });
 
     async function open3DArtifactModal(id = null) {
         threeDFormId.value = id || '';
@@ -345,10 +362,11 @@
         toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
         toast.classList.add('translate-y-0', 'opacity-100');
 
+        const duration = type === 'delete' ? 5000 : 3000;
         setTimeout(() => {
             toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
             toast.classList.remove('translate-y-0', 'opacity-100');
-        }, 3000);
+        }, duration);
     }
 
     document.addEventListener('keydown', (e) => {
