@@ -155,11 +155,17 @@ class DocumentStore {
             console.log('DocumentStore: no documents to index');
             return;
         }
+        let ok = 0;
         for (const file of files) {
-            await this._indexFile(file, pdfLoader.computeFileHash(path.join(pdfLoader.DOCUMENTS_DIR, file)));
+            try {
+                await this._indexFile(file, pdfLoader.computeFileHash(path.join(pdfLoader.DOCUMENTS_DIR, file)));
+                ok++;
+            } catch (err) {
+                console.error(`DocumentStore: failed to index "${file}": ${err.message}`);
+            }
         }
         await this._syncFromDB();
-        console.log(`DocumentStore syncAll complete: ${this.chunks.length} chunks`);
+        console.log(`DocumentStore syncAll complete: ${ok}/${files.length} files, ${this.chunks.length} chunks`);
     }
 }
 

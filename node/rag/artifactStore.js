@@ -90,12 +90,19 @@ class ArtifactStore {
         const artifacts = await this._fetchFromTable('artifacts');
         const threeD = await this._fetchFromTable('three_d_artifacts');
         const all = [...artifacts, ...threeD];
+        let ok = 0;
         for (let i = 0; i < all.length; i++) {
             const item = all[i];
-            const embedding = await embedder.getPassageEmbedding(item.title);
-            await this._upsertRaw(item.source_table, item.source_id, item.title, item.description, item.category, embedding);
+            try {
+                const embedding = await embedder.getPassageEmbedding(item.title);
+                await this._upsertRaw(item.source_table, item.source_id, item.title, item.description, item.category, embedding);
+                ok++;
+            } catch (err) {
+                console.error(`  artifact ${item.source_table}#${item.source_id} failed: ${err.message}`);
+            }
             if ((i + 1) % 10 === 0) console.log(`  embedded ${i + 1}/${all.length}`);
         }
+        console.log(`  artifact embeddings ok: ${ok}/${all.length}`);
         await this._syncFromDB();
         console.log(`ArtifactStore syncAll complete: ${all.length} items`);
     }

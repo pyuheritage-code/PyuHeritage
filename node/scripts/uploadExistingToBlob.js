@@ -12,6 +12,23 @@ const path = require('path');
 const { put } = require('@vercel/blob');
 const db = require('../config/config');
 
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function putWithRetry(pathname, body, options) {
+    let lastErr;
+    for (let attempt = 1; attempt <= 4; attempt++) {
+        try {
+            return await put(pathname, body, options);
+        } catch (err) {
+            lastErr = err;
+            const transient = /Access denied|Invalid token|ENOTFOUND|ETIMEDOUT|ECONNRESET|ECONNREFUSED|EAI_AGAIN|socket hang up|fetch failed|rate|429|5[0-9][0-9]/i.test(err.message || '');
+            if (!transient || attempt === 4) throw err;
+            await sleep(attempt * 2000);
+        }
+    }
+    throw lastErr;
+}
+
 const UPLOADS_DIR = path.join(__dirname, '..', 'uploads');
 
 function walk(dir, out = []) {
@@ -42,14 +59,15 @@ function runQuery(sql, values) {
         process.exit(1);
     }
 
-    const files = walk(UPLOADS_DIR);
-    console.log(`Found ${files.length} file(s) in uploads/`);
+    const INCLUDE_GLB = process.env.INCLUDE_GLB === 'true';
+    const files = walk(UPLOADS_DIR).filter((f) => INCLUDE_GLB || !f.toLowerCase().endsWith('.glb'));
+    console.log(`Found ${files.length} file(s) to upload in uploads/`);
 
     const mapping = {};
     for (const file of files) {
         const rel = path.relative(UPLOADS_DIR, file).replace(/\\/g, '/');
         const buffer = fs.readFileSync(file);
-        const blob = await put(`uploads/${rel}`, buffer, {
+        const blob = await putWithRetry(`uploads/${rel}`, buffer, {
             access: 'public',
             addRandomSuffix: true,
         });

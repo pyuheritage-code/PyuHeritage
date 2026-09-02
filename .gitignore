@@ -1,4 +1,10 @@
 node/node_modules/
 node/.env
-node/.env.example
-node/.vercel/
+node/.env.local
+node/.env.vercel
+node/.vercel
+node/.vercelignore
+node/vercel.json
+node/scripts
+node/api
+node/upload/

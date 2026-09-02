@@ -11,14 +11,35 @@ let extractor = null;
 // @huggingface/transformers package is never loaded on Vercel.
 async function getExtractor() {
     if (!extractor) {
-        const { pipeline } = require('@huggingface/transformers');
+        const TRANSFORMERS_PKG = '@huggingface/transformers';
+        const { pipeline } = require(TRANSFORMERS_PKG);
         extractor = await pipeline('feature-extraction', MODEL_NAME);
     }
     return extractor;
 }
 
+const RETRYABLE_ERR = /ENOTFOUND|ETIMEDOUT|ECONNRESET|ECONNREFUSED|EAI_AGAIN|socket hang up/i;
+
+// Retries transient network errors and OpenRouter rate-limit/5xx responses.
+async function apiCall(fn) {
+    let lastErr;
+    for (let attempt = 1; attempt <= 4; attempt++) {
+        try {
+            return await fn();
+        } catch (err) {
+            lastErr = err;
+            const status = err.response && err.response.status;
+            const retryable = RETRYABLE_ERR.test(err.message || '') || status === 429 || (status >= 500);
+            if (!retryable || attempt === 4) throw err;
+            console.log(`OpenRouter call failed (${err.message || status}), retrying ${attempt}/3...`);
+            await new Promise((r) => setTimeout(r, 2000 * attempt));
+        }
+    }
+    throw lastErr;
+}
+
 async function apiEmbed(text) {
-    const res = await axios.post('https://openrouter.ai/api/v1/embeddings', {
+    const res = await apiCall(() => axios.post('https://openrouter.ai/api/v1/embeddings', {
         model: EMBED_MODEL,
         input: [text],
     }, {
@@ -27,7 +48,7 @@ async function apiEmbed(text) {
             'Content-Type': 'application/json',
         },
         timeout: 30000,
-    });
+    }));
     return res.data.data[0].embedding;
 }
 
@@ -35,7 +56,7 @@ async function apiEmbedBatch(texts) {
     const results = [];
     for (let i = 0; i < texts.length; i += BATCH_SIZE) {
         const batch = texts.slice(i, i + BATCH_SIZE);
-        const res = await axios.post('https://openrouter.ai/api/v1/embeddings', {
+        const res = await apiCall(() => axios.post('https://openrouter.ai/api/v1/embeddings', {
             model: EMBED_MODEL,
             input: batch,
         }, {
@@ -44,7 +65,7 @@ async function apiEmbedBatch(texts) {
                 'Content-Type': 'application/json',
             },
             timeout: 60000,
-        });
+        }));
         results.push(...res.data.data.map(d => d.embedding));
     }
     return results;

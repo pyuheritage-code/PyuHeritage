@@ -24,7 +24,7 @@ app.use(routers);
 app.use(adminrouters);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3003;
 if (require.main === module) {
     app.listen(PORT, (err) => {
         if (err) {
