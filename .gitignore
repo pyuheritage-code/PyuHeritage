@@ -6,5 +6,16 @@ node/.vercel
 node/.vercelignore
 node/vercel.json
 node/scripts
-node/api
-node/upload/*
+node/api/
+
+# Uploads (runtime-generated)
+node/uploads/
+node/upload/
+
+# Large binary files
+*.glb
+*.wav
+*.sql
+
+# Large documents
+node/rag/documents/
