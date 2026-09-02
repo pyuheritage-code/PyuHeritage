@@ -15,7 +15,6 @@ node/upload/
 # Large binary files
 *.glb
 *.wav
-*.sql
 
 # Large documents
 node/rag/documents/
