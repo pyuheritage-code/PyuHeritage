@@ -7,4 +7,4 @@ node/.vercelignore
 node/vercel.json
 node/scripts
 node/api
-node/upload/
+node/upload/*
