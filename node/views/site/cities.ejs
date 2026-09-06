@@ -161,89 +161,283 @@
         </div>
     </header>
 
+    <!-- Location Map Section (Google Maps) -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
+        <div class="bg-gray-50 dark:bg-gray-800 p-6 md:p-8 rounded-3xl shadow-lg">
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center">
+                ပျူမြို့ဟောင်း သုံးမြို့ တည်နေရာ မြေပုံ</h2>
+            <p class="text-gray-600 dark:text-gray-300 text-center mb-6">
+                မြန်မာနိုင်ငံ၏ လက်ရှိနယ်မြေပေါ်တွင် ပျူမြို့ဟောင်း သုံးမြို့ တည်ရှိနေသည့် နေရာများ</p>
+            <div class="flex flex-wrap justify-center gap-3 mb-6" role="tablist">
+                <button data-map="halin"
+                    class="map-tab px-5 py-2 rounded-full text-sm font-semibold transition-colors duration-200">ဟန်လင်း</button>
+                <button data-map="beikthano"
+                    class="map-tab px-5 py-2 rounded-full text-sm font-semibold transition-colors duration-200">ဗိဿနိုး</button>
+                <button data-map="sriksetra"
+                    class="map-tab px-5 py-2 rounded-full text-sm font-semibold transition-colors duration-200">သရေခေတ္တရာ</button>
+            </div>
+            <div
+                class="w-full h-[420px] md:h-[500px] rounded-2xl shadow-md overflow-hidden border border-gray-200 dark:border-gray-700">
+                <iframe id="pyu-map" title="ပျူမြို့ဟောင်း မြေပုံ"
+                    src="https://www.google.com/maps?q=Halin+Ancient+City,+Wetlet,+Sagaing,+Myanmar&z=11&output=embed"
+                    class="w-full h-full border-0" allowfullscreen loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </section>
+
     <!-- Main Content Grid -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <article class="space-y-16">
 
-            <!-- Halin Section -->
+            <!-- Halin Card -->
             <section
-                class="flex flex-col lg:flex-row gap-8 items-center bg-gray-50 dark:bg-gray-800 p-6 md:p-8 rounded-3xl shadow-lg transition-transform duration-300 hover:shadow-xl">
-                <div class="w-full lg:w-1/2">
-                    <img src="/halin.webp" alt="Halin City" class="rounded-2xl w-full h-80 object-cover shadow-md">
-                </div>
-                <div class="w-full lg:w-1/2 space-y-4">
+                class="bg-gray-50 dark:bg-gray-800 rounded-3xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+                <div class="relative">
+                    <img src="/halin.webp" alt="Halin City"
+                        class="w-full h-64 md:h-80 object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
                     <span
-                        class="px-3 py-1 text-xs font-bold uppercase tracking-wider bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200 rounded-full">Sagaing
+                        class="absolute top-4 left-4 px-3 py-1 text-xs font-bold uppercase tracking-wider bg-indigo-600/90 text-white rounded-full shadow">Sagaing
                         Region</span>
-                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">ဟန်လင်းမြို့ဟောင်း (Halin
-                        Ancient City)</h2>
+                    <div class="absolute bottom-4 left-5 right-5">
+                        <h2 class="text-2xl md:text-3xl font-bold text-white drop-shadow">ဟန်လင်းမြို့ဟောင်း <span
+                                class="text-base md:text-lg font-normal text-gray-200">(Halin Ancient City)</span></h2>
+                    </div>
+                </div>
+                <div class="p-6 md:p-8 space-y-4">
                     <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
                         ဟန်လင်းမြို့ဟောင်းသည် စစ်ကိုင်းတိုင်းဒေသကြီး၊ ဝက်လက်မြို့နယ်တွင် တည်ရှိပြီး
                         ပျူမြို့ပြနိုင်ငံများတွင် အစောဆုံးနှင့် သမိုင်းဝင် အရေးပါသော မြို့ကြီးတစ်မြို့ ဖြစ်သည်။
-                        တံတိုင်းဝိုင်းအနက် စတုဂံပုံစံရှိပြီး စနစ်တကျ တည်ဆောက်ထားသော ရေသွင်းစနစ်များနှင့်
-                        အုတ်မြို့ရိုးများကို တွေ့ရှိရသည်။
+                        စတုဂံပုံ အုတ်မြို့ရိုးနှင့် စနစ်တကျ တည်ဆောက်ထားသော ရေသွင်းစနစ်များကြောင့် ထင်ရှားသည်။
                     </p>
-                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
-                        တူးဖော်မှုများအရ ရှေးဟောင်း ရွှေထည်၊ ငွေထည်၊ ပျူသင်္ကေတပါသော ဒင်္ဂါးပြားများနှင့် ကျောက်မျက်ရတနာ
-                        ပုတီးစေ့များစွာကို တွေ့ရှိရသဖြင့် ဟန်လင်းသည် ကုန်သွယ်ရေးနှင့် ယဉ်ကျေးမှု ထွန်းကားရာ ဗဟိုချက်မ
-                        ဖြစ်ခဲ့ကြောင်း သက်သေပြနေသည်။
-                    </p>
+                    <details class="group">
+                        <summary
+                            class="inline-flex items-center gap-1 text-indigo-600 dark:text-indigo-400 font-semibold cursor-pointer select-none hover:text-indigo-800 dark:hover:text-indigo-300 transition-colors duration-200">
+                            <span class="group-open:hidden">ပိုများစွာဖတ်ရန် ▾</span>
+                            <span class="hidden group-open:inline">လျှော့ကြည့်ရန် ▴</span>
+                        </summary>
+                        <div class="space-y-4 pt-4">
+                            <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                                တူးဖော်မှုများအရ ရှေးဟောင်း ရွှေထည်၊ ငွေထည်၊ ပျူသင်္ကေတပါသော ဒင်္ဂါးပြားများနှင့်
+                                ကျောက်မျက်ရတနာ
+                                ပုတီးစေ့များစွာကို တွေ့ရှိရသဖြင့် ဟန်လင်းသည် ကုန်သွယ်ရေးနှင့် ယဉ်ကျေးမှု ထွန်းကားရာ
+                                ဗဟိုချက်မ
+                                ဖြစ်ခဲ့ကြောင်း သက်သေပြနေသည်။
+                            </p>
+                            <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                                သမိုင်းပညာရှင်များ၏ ခန့်မှန်းချက်အရ ဟန်လင်းမြို့ဟောင်းသည် ဘီစီ ၂ ရာစုမှ အေဒီ ၁၁
+                                ရာစုအထိ
+                                နေထိုင်သည်ဟု ယူဆရသည်။ မြို့ရိုးစည်သည် အလျား ၁.၄ ကီလိုမီတာခန့် ရှိပြီး မြို့တွင်းရှိ
+                                ရေကန်များ၊ ရေတွင်းများနှင့် ရေသွင်းတူးမြောင်းစနစ်သည် ပျူတို့၏ အင်ဂျင်နီယာပညာကို
+                                ထင်ရှားစေသည်။ ၂၀၁၅ ခုနှစ်တွင် ယူနက်စကို ကမ္ဘာ့အမွေအနှစ်နေရာ စာရင်းတွင်
+                                သရေခေတ္တရာနှင့်
+                                ဗိဿနိုးတို့နှင့်အတူ "ပျူရှေးမြို့ဟောင်းများ" (Pyu Ancient Cities) အဖြစ် တရားဝင်
+                                ထည့်သွင်းခြင်း ခံရသည်။ ထို့အပြင် ဟန်လင်းမှ တွေ့ရှိသော ကျောက်စာများတွင် ပျူအက္ခရာများ
+                                ရေးထိုးထားပြီး မြန်မာနိုင်ငံရှိ အစောဆုံး အက္ခရာမှတ်တမ်းများထဲမှ တစ်ခု ဖြစ်သည်။
+                            </p>
+                        </div>
+                    </details>
+                    <div class="flex flex-wrap gap-2 pt-1">
+                        <span
+                            class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-full border border-gray-200 dark:border-gray-600">
+                            📍 ဝက်လက်မြို့နယ်
+                        </span>
+                        <span
+                            class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-full border border-gray-200 dark:border-gray-600">
+                            🕐 ဘီစီ ၂ ရာစု – အေဒီ ၁၁ ရာစု
+                        </span>
+                        <span
+                            class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-full border border-gray-200 dark:border-gray-600">
+                            🌍 UNESCO ၂၀၁၅
+                        </span>
+                        <a href="https://www.google.com/maps/search/Halin+Ancient+City,+Wetlet,+Sagaing,+Myanmar"
+                            target="_blank" rel="noopener"
+                            class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 rounded-full border border-indigo-200 dark:border-indigo-800 hover:bg-indigo-50 dark:hover:bg-indigo-900/40 transition-colors duration-200">
+                            🗺️ Google Maps တွင် ဖွင့်ရန်
+                        </a>
+                    </div>
                 </div>
             </section>
 
-            <!-- Beikthano Section -->
+            <!-- Beikthano Card -->
             <section
-                class="flex flex-col lg:flex-row-reverse gap-8 items-center bg-gray-50 dark:bg-gray-800 p-6 md:p-8 rounded-3xl shadow-lg transition-transform duration-300 hover:shadow-xl">
-                <div class="w-full lg:w-1/2">
-                    <img src="/beikthano.webp" alt="Beikthano" class="rounded-2xl w-full h-80 object-cover shadow-md">
-                </div>
-                <div class="w-full lg:w-1/2 space-y-4">
+                class="bg-gray-50 dark:bg-gray-800 rounded-3xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+                <div class="relative">
+                    <img src="/beikthano.webp" alt="Beikthano"
+                        class="w-full h-64 md:h-80 object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
                     <span
-                        class="px-3 py-1 text-xs font-bold uppercase tracking-wider bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200 rounded-full">Magway
+                        class="absolute top-4 left-4 px-3 py-1 text-xs font-bold uppercase tracking-wider bg-indigo-600/90 text-white rounded-full shadow">Magway
                         Region</span>
-                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">ဗိဿနိုးမြို့ဟောင်း
-                        (Beikthano Ancient City)</h2>
+                    <div class="absolute bottom-4 left-5 right-5">
+                        <h2 class="text-2xl md:text-3xl font-bold text-white drop-shadow">ဗိဿနိုးမြို့ဟောင်း <span
+                                class="text-base md:text-lg font-normal text-gray-200">(Beikthano Ancient
+                                City)</span></h2>
+                    </div>
+                </div>
+                <div class="p-6 md:p-8 space-y-4">
                     <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
                         ဗိဿနိုးမြို့ဟောင်းသည် မကွေးတိုင်းဒေသကြီး၊ တောင်တွင်းကြီးမြို့နယ်တွင် တည်ရှိပြီး ခရစ်တော်မပေါ်မီ
-                        ကာလကတည်းက စတင်ထွန်းကားခဲ့သော မြို့ဟောင်းဖြစ်သည်။ ဗိဿနိုးမြို့ဟောင်းသည် အဆောက်အအုံ ဗိသုကာပညာတွင်
-                        အုတ်များဖြင့် စနစ်တကျ တည်ဆောက်ထားသော ဘုန်းကြီးကျောင်းဆောင်များနှင့် ကိုးကွယ်မှုဆိုင်ရာ
-                        နေရာများကြောင့် ထင်ရှားသည်။
+                        ကာလကတည်းက စတင်ထွန်းကားခဲ့သော မြို့ဟောင်းဖြစ်သည်။ အုတ်များဖြင့် စနစ်တကျ တည်ဆောက်ထားသော
+                        ဘုန်းကြီးကျောင်းဆောင်များနှင့် ကိုးကွယ်မှုဆိုင်ရာ နေရာများကြောင့် ထင်ရှားသည်။
                     </p>
-                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
-                        ဗိဿနိုးတွင် အိုးလုပ်ငန်းနှင့် အင်္ဂတေပန်းတော့ပညာရပ်များ အဆင့်မြင့်မားခဲ့ပြီး၊ သေဆုံးသူများ၏
-                        အရိုးပြာများကို အိုးများတွင်ထည့်၍ မြေမြှုပ်သင်္ဂြိုဟ်သည့် ရှေးဟောင်းပျူဓလေ့ထုံးတမ်းများကို
-                        ဤနေရာတွင် အထင်ရှားဆုံး လေ့လာနိုင်သည်။
-                    </p>
+                    <details class="group">
+                        <summary
+                            class="inline-flex items-center gap-1 text-indigo-600 dark:text-indigo-400 font-semibold cursor-pointer select-none hover:text-indigo-800 dark:hover:text-indigo-300 transition-colors duration-200">
+                            <span class="group-open:hidden">ပိုများစွာဖတ်ရန် ▾</span>
+                            <span class="hidden group-open:inline">လျှော့ကြည့်ရန် ▴</span>
+                        </summary>
+                        <div class="space-y-4 pt-4">
+                            <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                                ဗိဿနိုးတွင် အိုးလုပ်ငန်းနှင့် အင်္ဂတေပန်းတော့ပညာရပ်များ အဆင့်မြင့်မားခဲ့ပြီး၊
+                                သေဆုံးသူများ၏
+                                အရိုးပြာများကို အိုးများတွင်ထည့်၍ မြေမြှုပ်သင်္ဂြိုဟ်သည့် ရှေးဟောင်းပျူဓလေ့ထုံးတမ်းများကို
+                                ဤနေရာတွင် အထင်ရှားဆုံး လေ့လာနိုင်သည်။
+                            </p>
+                            <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                                ဗိဿနိုးသည် ပျူမြို့ပြနိုင်ငံများအနက် အစောဆုံး မြို့ပြအဖြစ် ပေါက်ဖွားလာခဲ့သော
+                                နေရာဖြစ်ပြီး
+                                ဘီစီ ၂ ရာစုမှ အေဒီ ၅ ရာစုအထိ ထွန်းကားခဲ့သည်ဟု ခန့်မှန်းကြသည်။ မြို့အား ဗိဿနိုးနတ်ဘုရား
+                                (ဣန္ဒြာနတ်သား) အား ရည်စူး၍ မှည့်ခေါ်ထားခြင်း ဖြစ်သည်။ တူးဖော်တွေ့ရှိချက်များအရ
+                                အုတ်အမြိုက်စေတီ၊ ရေကန်များ၊ အုတ်တံတိုင်းများနှင့် နေအိမ်အုတ်အုတ်စဲများ ပါဝင်ပြီး
+                                ပျူဗိသုကာပညာ၏ မူလအစကို ဖော်ပြနေသည်။ ဗိဿနိုးမှ တွေ့ရှိသော ပျူဒင်္ဂါးပြားများ၊
+                                ဖောင်းကြွေ
+                                ပုတီးစေ့များနှင့် သံကိရိယာများသည် အိန္ဒိယနိုင်ငံ အရှေ့တောင်ပိုင်းနှင့် ကုန်သွယ်ဆက်ဆံမှု
+                                ရှိခဲ့ကြောင်း ဖော်ပြနေသည်။
+                            </p>
+                        </div>
+                    </details>
+                    <div class="flex flex-wrap gap-2 pt-1">
+                        <span
+                            class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-full border border-gray-200 dark:border-gray-600">
+                            📍 တောင်တွင်းကြီးမြို့နယ်
+                        </span>
+                        <span
+                            class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-full border border-gray-200 dark:border-gray-600">
+                            🕐 ဘီစီ ၂ ရာစု – အေဒီ ၅ ရာစု
+                        </span>
+                        <span
+                            class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-full border border-gray-200 dark:border-gray-600">
+                            🌍 UNESCO ၂၀၁၅
+                        </span>
+                        <a href="https://www.google.com/maps/search/Beikthano+Ancient+City,+Taungdwingyi,+Magway,+Myanmar"
+                            target="_blank" rel="noopener"
+                            class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 rounded-full border border-indigo-200 dark:border-indigo-800 hover:bg-indigo-50 dark:hover:bg-indigo-900/40 transition-colors duration-200">
+                            🗺️ Google Maps တွင် ဖွင့်ရန်
+                        </a>
+                    </div>
                 </div>
             </section>
 
-            <!-- Sri Ksetra Section -->
+            <!-- Sri Ksetra Card -->
             <section
-                class="flex flex-col lg:flex-row gap-8 items-center bg-gray-50 dark:bg-gray-800 p-6 md:p-8 rounded-3xl shadow-lg transition-transform duration-300 hover:shadow-xl">
-                <div class="w-full lg:w-1/2">
-                    <img src="/sri_ksetra.webp" alt="Sri Ksetra" class="rounded-2xl w-full h-80 object-cover shadow-md">
-                </div>
-                <div class="w-full lg:w-1/2 space-y-4">
+                class="bg-gray-50 dark:bg-gray-800 rounded-3xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+                <div class="relative">
+                    <img src="/sri_ksetra.webp" alt="Sri Ksetra"
+                        class="w-full h-64 md:h-80 object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
                     <span
-                        class="px-3 py-1 text-xs font-bold uppercase tracking-wider bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200 rounded-full">Bago
+                        class="absolute top-4 left-4 px-3 py-1 text-xs font-bold uppercase tracking-wider bg-indigo-600/90 text-white rounded-full shadow">Bago
                         Region</span>
-                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">သရေခေတ္တရာမြို့ဟောင်း (Sri
-                        Ksetra Ancient City)</h2>
+                    <div class="absolute bottom-4 left-5 right-5">
+                        <h2 class="text-2xl md:text-3xl font-bold text-white drop-shadow">သရေခေတ္တရာမြို့ဟောင်း <span
+                                class="text-base md:text-lg font-normal text-gray-200">(Sri Ksetra Ancient
+                                City)</span></h2>
+                    </div>
+                </div>
+                <div class="p-6 md:p-8 space-y-4">
                     <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
                         သရေခေတ္တရာမြို့ဟောင်းသည် ပဲခူးတိုင်းဒေသကြီး၊ ပြည်မြို့အနီးတွင် တည်ရှိပြီး ပျူမြို့ဟောင်းများအနက်
-                        အကြီးဆုံးနှင့် အစည်ကားဆုံး မြို့ပြနိုင်ငံဖြစ်သည်။ စက်ဝိုင်းပုံသဏ္ဌာန် မြို့ရိုးရှိပြီး အေဒီ ၅
-                        ရာစုမှ ၉ ရာစုအထိ အထွန်းကားဆုံးဖြစ်ခဲ့သည်။ ဘောဘောကြီး၊ ပုထိုးကြီးနှင့် ပုယမာ စသည့် ရှေးဟောင်း
-                        စေတီပုထိုးကြီးများသည် ပျူတို့၏ အဆင့်မြင့်မားသော ဗိသုကာလက်ရာများကို ဖော်ပြနေသည်။
+                        အကြီးဆုံးနှင့် အစည်ကားဆုံး မြို့ပြနိုင်ငံဖြစ်သည်။ စက်ဝိုင်းပုံသဏ္ဌာန် မြို့ရိုးရှိပြီး ဘောဘောကြီး၊
+                        ပုထိုးကြီးနှင့် ပုယမာ စသည့် ရှေးဟောင်းစေတီပုထိုးကြီးများသည် ပျူတို့၏ အဆင့်မြင့်မားသော
+                        ဗိသုကာလက်ရာများကို ဖော်ပြနေသည်။
                     </p>
-                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
-                        ဤနေရာတွင် ပါဠိဘာသာဖြင့် ရေးထိုးထားသော ကမ္ပည်းစာများ၊ ဗုဒ္ဓဆင်းတုတော်များနှင့်
-                        ဟိန္ဒူနတ်ဘုရားရုပ်တုများကို တွေ့ရှိရသဖြင့် ဗုဒ္ဓဘာသာ ထွန်းကားပြန့်ပွားမှု၏ ဗဟိုချက်မ
-                        ဖြစ်ခဲ့ကြောင်း ထင်ရှားလှပေသည်။
-                    </p>
+                    <details class="group">
+                        <summary
+                            class="inline-flex items-center gap-1 text-indigo-600 dark:text-indigo-400 font-semibold cursor-pointer select-none hover:text-indigo-800 dark:hover:text-indigo-300 transition-colors duration-200">
+                            <span class="group-open:hidden">ပိုများစွာဖတ်ရန် ▾</span>
+                            <span class="hidden group-open:inline">လျှော့ကြည့်ရန် ▴</span>
+                        </summary>
+                        <div class="space-y-4 pt-4">
+                            <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                                ဤနေရာတွင် ပါဠိဘာသာဖြင့် ရေးထိုးထားသော ကမ္ပည်းစာများ၊ ဗုဒ္ဓဆင်းတုတော်များနှင့်
+                                ဟိန္ဒူနတ်ဘုရားရုပ်တုများကို တွေ့ရှိရသဖြင့် ဗုဒ္ဓဘာသာ ထွန်းကားပြန့်ပွားမှု၏ ဗဟိုချက်မ
+                                ဖြစ်ခဲ့ကြောင်း ထင်ရှားလှပေသည်။
+                            </p>
+                            <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                                သရေခေတ္တရာသည် စတုရန်းကီလိုမီတာ ၁၄ ခန့် ကျယ်ဝန်းသော စက်ဝိုင်းပုံ မြို့တော်ဖြစ်ပြီး
+                                ပျူမြို့ပြနိုင်ငံများထဲတွင် အကြီးဆုံးဖြစ်ကာ အေဒီ ၁၁ ရာစုအထိ နေထိုင်ခဲ့ကြသည်။ မြို့တော်တွင်
+                                ရေကန်ကြီးများ၊ အုတ်စေတီပုထိုးများ၊ မြို့ရိုးနှင့် တူးမြောင်းစနစ်များ စနစ်တကျ ဖွဲ့စည်းထားသည်။
+                                တူးဖော်ရရှိသော သရေခေတ္တရာမြို့ တံခါးပျူစာကျောက်စာ၊ မြေအိုးများပေါ်ရှိ ပျူအက္ခရာများနှင့်
+                                လက္ခဏာများကြောင့် သရေခေတ္တရာသည် ပျူဘာသာစကားနှင့် အက္ခရာ လေ့လာရာတွင်
+                                အရေးပါဆုံး နေရာဖြစ်သည်။ ၂၀၁၅ ခုနှစ်တွင် ဟန်လင်း၊ ဗိဿနိုးတို့နှင့်အတူ ယူနက်စကို
+                                ကမ္ဘာ့အမွေအနှစ်နေရာ စာရင်းတွင် ထည့်သွင်းခြင်း ခံရပြီး မြန်မာနိုင်ငံ၏ ပထမဆုံး
+                                ကမ္ဘာ့အမွေအနှစ်နေရာ ဖြစ်လာခဲ့သည်။
+                            </p>
+                        </div>
+                    </details>
+                    <div class="flex flex-wrap gap-2 pt-1">
+                        <span
+                            class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-full border border-gray-200 dark:border-gray-600">
+                            📍 ပြည်မြို့နယ်
+                        </span>
+                        <span
+                            class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-full border border-gray-200 dark:border-gray-600">
+                            🕐 အေဒီ ၅ – ၁၁ ရာစု
+                        </span>
+                        <span
+                            class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-full border border-gray-200 dark:border-gray-600">
+                            📐 ၁၄ စတုရန်းကီလိုမီတာ
+                        </span>
+                        <span
+                            class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-full border border-gray-200 dark:border-gray-600">
+                            🌍 UNESCO ၂၀၁၅
+                        </span>
+                        <a href="https://www.google.com/maps/search/Sri+Ksetra+Ancient+City,+Pyay,+Bago,+Myanmar"
+                            target="_blank" rel="noopener"
+                            class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 rounded-full border border-indigo-200 dark:border-indigo-800 hover:bg-indigo-50 dark:hover:bg-indigo-900/40 transition-colors duration-200">
+                            🗺️ Google Maps တွင် ဖွင့်ရန်
+                        </a>
+                    </div>
                 </div>
             </section>
         </article>
     </main>
+
+    <!-- Google Maps Tab Script -->
+    <script>
+        const mapSources = {
+            halin: 'https://www.google.com/maps?q=Halin+Ancient+City,+Wetlet,+Sagaing,+Myanmar&z=11&output=embed',
+            beikthano: 'https://www.google.com/maps?q=Beikthano+Ancient+City,+Taungdwingyi,+Magway,+Myanmar&z=11&output=embed',
+            sriksetra: 'https://www.google.com/maps?q=Sri+Ksetra+Ancient+City,+Pyay,+Bago,+Myanmar&z=11&output=embed'
+        };
+
+        const mapFrame = document.getElementById('pyu-map');
+        const mapTabs = document.querySelectorAll('.map-tab');
+
+        const activeTabClasses = ['bg-indigo-600', 'text-white', 'shadow'];
+        const inactiveTabClasses = ['bg-white', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-200', 'border', 'border-gray-200', 'dark:border-gray-600', 'hover:bg-indigo-50', 'dark:hover:bg-gray-600'];
+
+        const setTabState = (tab, isActive) => {
+            tab.classList.remove(...activeTabClasses, ...inactiveTabClasses);
+            if (isActive) {
+                tab.classList.add(...activeTabClasses);
+            } else {
+                tab.classList.add(...inactiveTabClasses);
+            }
+        };
+
+        mapTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const key = tab.dataset.map;
+                if (!mapSources[key]) return;
+                mapFrame.src = mapSources[key];
+                mapTabs.forEach(t => setTabState(t, t === tab));
+            });
+            setTabState(tab, tab.dataset.map === 'halin');
+        });
+    </script>
 
     <!-- Footer Section -->
     <footer
